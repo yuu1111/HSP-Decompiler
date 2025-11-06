@@ -13,49 +13,57 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             this.token = token;
         }
 
-        readonly private LiteralPrimitive token;
+        private readonly LiteralPrimitive token;
 
         internal bool IsNegativeNumber
         {
             get
             {
-                if (token == null)
+                if (this.token == null)
+                {
                     return false;
+                }
 
-                return token.IsNegativeNumber;
+                return this.token.IsNegativeNumber;
             }
         }
 
         internal bool IsMinusOne
         {
-            get { return token.IsMinusOne; }
+            get { return this.token.IsMinusOne; }
         }
 
         internal override int TokenOffset
         {
             get
             {
-                if (token == null)
+                if (this.token == null)
+                {
                     return -1;
+                }
 
-                return token.TokenOffset;
+                return this.token.TokenOffset;
             }
         }
 
         public override string ToString()
         {
-            if ((token.CodeType == HspCodeType.Symbol) && (token.ToString() == "?"))
-                return "";
+            if ((this.token.CodeType == HspCodeType.Symbol) && (this.token.ToString() == "?"))
+            {
+                return string.Empty;
+            }
 
-            return token.ToString();
+            return this.token.ToString();
         }
 
         internal override int Priority
         {
             get
             {
-                if (IsNegativeNumber)
+                if (this.IsNegativeNumber)
+                {
                     return -1;
+                }
 
                 return 100;
             }
@@ -63,7 +71,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal override void CheckLabel()
         {
-            LabelPrimitive label = token as LabelPrimitive;
+            LabelPrimitive? label = this.token as LabelPrimitive;
             if (label != null)
             {
                 label.LabelIsUsed();

@@ -6,13 +6,13 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         public override string ToString()
         {
-            return "#module " + name;
+            return "#module " + this.name;
         }
     }
 }

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
     internal enum UsedllType
     {
         None = 0x00,
-        uselib = 0x01,
-        usecom = 0x02
+        Uselib = 0x01,
+        Usecom = 0x02,
     }
 
     internal sealed class Usedll : Preprocessor
@@ -17,29 +17,30 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
         }
 
-        private Usedll(int index) : base(index)
+        private Usedll(int index)
+            : base(index)
         {
         }
 
         private string name;
         private string clsName;
         private int type;
-        private int int_2;
+        private int int2;
 
         internal static Usedll FromBinaryReader(BinaryReader reader, AxData parent, int index)
         {
             Usedll ret = new Usedll(index);
             ret.type = reader.ReadInt32();
             int nameOffset = reader.ReadInt32();
-            ret.int_2 = reader.ReadInt32();
+            ret.int2 = reader.ReadInt32();
             int clsNameOffset = reader.ReadInt32();
             switch (ret.Type)
             {
-                case UsedllType.usecom:
+                case UsedllType.Usecom:
                     ret.name = parent.ReadIidCodeLiteral(nameOffset);
                     ret.clsName = parent.ReadStringLiteral(clsNameOffset);
                     break;
-                case UsedllType.uselib:
+                case UsedllType.Uselib:
                     ret.name = parent.ReadStringLiteral(nameOffset);
                     break;
             }
@@ -47,18 +48,18 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             return ret;
         }
 
-        List<Function> functions = new List<Function>();
+        private List<Function> functions = new List<Function>();
 
         internal UsedllType Type
         {
             get
             {
-                switch (type)
+                switch (this.type)
                 {
                     case 1:
-                        return UsedllType.uselib;
+                        return UsedllType.Uselib;
                     case 4:
-                        return UsedllType.usecom;
+                        return UsedllType.Usecom;
                 }
 
                 return UsedllType.None;
@@ -67,23 +68,25 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         public override string ToString()
         {
-            if (name == null)
+            if (this.name == null)
+            {
                 return @"//#uselib? //dll名不明";
+            }
 
             StringBuilder strBld = new StringBuilder();
-            switch (Type)
+            switch (this.Type)
             {
-                case UsedllType.uselib:
+                case UsedllType.Uselib:
                     strBld.Append(@"#uselib """);
-                    strBld.Append(name);
+                    strBld.Append(this.name);
                     strBld.Append(@"""");
                     break;
-                case UsedllType.usecom:
+                case UsedllType.Usecom:
                     strBld.Append(@"#usecom");
-                    if (functions.Count != 0)
+                    if (this.functions.Count != 0)
                     {
                         strBld.Append(' ');
-                        strBld.Append(functions[0].FunctionName);
+                        strBld.Append(this.functions[0].FunctionName);
                     }
                     else
                     {
@@ -93,11 +96,11 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
                     strBld.Append(' ');
                     strBld.Append('"');
-                    strBld.Append(name);
+                    strBld.Append(this.name);
                     strBld.Append('"');
                     strBld.Append(' ');
                     strBld.Append('"');
-                    strBld.Append(clsName);
+                    strBld.Append(this.clsName);
                     strBld.Append('"');
                     break;
                 default:
@@ -109,19 +112,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal void AddFunction(Function ret)
         {
-            functions.Add(ret);
+            this.functions.Add(ret);
         }
 
         internal List<Function> GetFunctions()
         {
-            if ((Type == UsedllType.usecom) && (functions.Count != 0))
+            if ((this.Type == UsedllType.Usecom) && (this.functions.Count != 0))
             {
-                List<Function> ret = new List<Function>(functions);
+                List<Function> ret = new List<Function>(this.functions);
                 ret.RemoveAt(0);
                 return ret;
             }
 
-            return functions;
+            return this.functions;
         }
     }
 }

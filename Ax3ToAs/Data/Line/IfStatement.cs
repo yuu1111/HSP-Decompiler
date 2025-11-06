@@ -1,11 +1,11 @@
 using System.Text;
-using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
+using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// if, else構文
+    /// if, else構文.
     /// </summary>
     internal sealed class IfStatement : LogicalLine
     {
@@ -15,51 +15,57 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal IfStatement(IfStatementPrimitive token)
         {
-            ifToken = token;
+            this.ifToken = token;
         }
 
         internal IfStatement(IfStatementPrimitive token, ArgumentToken theArg)
         {
-            ifToken = token;
-            arg = theArg;
+            this.ifToken = token;
+            this.arg = theArg;
         }
 
-        readonly IfStatementPrimitive ifToken;
-        readonly ArgumentToken arg;
+        private readonly IfStatementPrimitive ifToken;
+        private readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
             get
             {
-                if (ifToken == null)
+                if (this.ifToken == null)
+                {
                     return -1;
+                }
 
-                return ifToken.TokenOffset;
+                return this.ifToken.TokenOffset;
             }
         }
 
         internal int JumpToOffset
         {
-            get { return ifToken.JumpToOffset; }
+            get { return this.ifToken.JumpToOffset; }
         }
 
-        internal bool isIfStatement
+        internal bool IsIfStatement
         {
             get
             {
-                if ((ifToken.CodeType & HspCodeType.IfStatement) == HspCodeType.IfStatement)
+                if ((this.ifToken.CodeType & HspCodeType.IfStatement) == HspCodeType.IfStatement)
+                {
                     return true;
+                }
 
                 return false;
             }
         }
 
-        internal bool isElseStatement
+        internal bool IsElseStatement
         {
             get
             {
-                if ((ifToken.CodeType & HspCodeType.ElseStatement) == HspCodeType.ElseStatement)
+                if ((this.ifToken.CodeType & HspCodeType.ElseStatement) == HspCodeType.ElseStatement)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -69,22 +75,22 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal bool ScoopEndIsDefined
         {
-            get { return scoopEndIsDefined; }
-            set { scoopEndIsDefined = value; }
+            get { return this.scoopEndIsDefined; }
+            set { this.scoopEndIsDefined = value; }
         }
 
         internal override bool TabIncrement
         {
-            get { return scoopEndIsDefined; }
+            get { return this.scoopEndIsDefined; }
         }
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(ifToken.ToString());
-            if (arg != null)
+            StringBuilder builder = new StringBuilder(this.ifToken.ToString());
+            if (this.arg != null)
             {
                 builder.Append(" (");
-                builder.Append(arg);
+                builder.Append(this.arg);
                 builder.Append(" )");
             }
 
@@ -92,17 +98,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             return builder.ToString();
         }
 
-
         internal override void CheckLabel()
         {
-            if (arg != null)
-                arg.CheckLabel();
+            if (this.arg != null)
+            {
+                this.arg.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
-            if (arg != null)
-                return arg.CheckRpn();
+            if (this.arg != null)
+            {
+                return this.arg.CheckRpn();
+            }
 
             return true;
         }

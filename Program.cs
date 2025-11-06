@@ -1,17 +1,21 @@
-﻿using System;
-using System.Windows.Forms;
+using System;
 using System.IO;
+using System.Text;
+using System.Windows.Forms;
 
 namespace KttK.HspDecompiler
 {
     internal static class Program
     {
         /// <summary>
-        /// アプリケーションのメイン エントリ ポイントです。
+        /// アプリケーションのメイン エントリ ポイントです。.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            // Shift-JISサポートのためにCodePagesエンコーディングプロバイダーを登録
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             HspConsole.Initialize();
@@ -21,7 +25,7 @@ namespace KttK.HspDecompiler
                 return;
             }
 
-            string filename = null;
+            string? filename = null;
             if ((args != null) && (args.Length > 0))
             {
                 foreach (string file in args)
@@ -36,7 +40,7 @@ namespace KttK.HspDecompiler
 
             try
             {
-                Application.Run(new deHspDialog(filename));
+                Application.Run(new DeHspDialog(filename));
             }
             catch (Exception e)
             {
@@ -52,28 +56,12 @@ namespace KttK.HspDecompiler
             }
 
             HspConsole.Close();
-
-
         }
 
-        private readonly static string exeDir = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
-        private readonly static string exeName = Path.GetFileName(Application.ExecutablePath);
-        private readonly static System.Diagnostics.FileVersionInfo exeVer =
-            System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath);
+        internal static string ExeName { get; } = Path.GetFileName(Application.ExecutablePath);
 
-        internal static string ExeName
-        {
-            get { return exeName; }
-        }
+        internal static System.Diagnostics.FileVersionInfo ExeVer { get; } = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath);
 
-        internal static System.Diagnostics.FileVersionInfo ExeVer
-        {
-            get { return exeVer; }
-        }
-
-        internal static string ExeDir
-        {
-            get { return exeDir; }
-        }
+        internal static string ExeDir { get; } = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
     }
 }

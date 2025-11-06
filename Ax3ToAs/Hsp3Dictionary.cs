@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualBasic.FileIO;
-using KttK.HspDecompiler.Ax3ToAs.Dictionary;
 using System.IO;
+using System.Text;
+using KttK.HspDecompiler.Ax3ToAs.Dictionary;
+using Microsoft.VisualBasic.FileIO;
 
 namespace KttK.HspDecompiler.Ax3ToAs
 {
-    class Hsp3Dictionary
+    internal class Hsp3Dictionary
     {
         private Hsp3Dictionary()
         {
@@ -16,18 +16,16 @@ namespace KttK.HspDecompiler.Ax3ToAs
         private Dictionary<HspDictionaryKey, HspDictionaryValue> codeDictionary = new Dictionary<HspDictionaryKey, HspDictionaryValue>();
         private Dictionary<int, string> paramDictionary = new Dictionary<int, string>();
 
-
         internal static Hsp3Dictionary FromFile(string filePath)
         {
-            Hsp3Dictionary ret = null;
-            Stream stream = null;
-            TextFieldParser parser = null;
+            Hsp3Dictionary? ret = null;
+            Stream? stream = null;
+            TextFieldParser? parser = null;
             try
             {
                 stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                parser = new TextFieldParser(stream, Encoding.GetEncoding("SHIFT-JIS"));
+                parser = new TextFieldParser(stream, Encoding.UTF8);
                 ret = FromParser(parser);
-
             }
             catch
             {
@@ -36,16 +34,17 @@ namespace KttK.HspDecompiler.Ax3ToAs
             finally
             {
                 if (parser != null)
+                {
                     parser.Close();
+                }
                 else if (stream != null)
+                {
                     stream.Close();
+                }
             }
 
             return ret;
-
-
         }
-
 
         private static Hsp3Dictionary FromParser(TextFieldParser parser)
         {
@@ -56,36 +55,41 @@ namespace KttK.HspDecompiler.Ax3ToAs
             {
                 string[] tokens = parser.ReadFields();
                 if (tokens.Length == 0)
+                {
                     continue;
+                }
 
                 if (tokens[0].StartsWith("$"))
                 {
                     switch (tokens[0])
                     {
                         case "$Code":
-                            ret.loadCodeDictionary(parser);
+                            ret.LoadCodeDictionary(parser);
                             break;
                         case "$ParamType":
-                            ret.loadParamDictionary(parser);
+                            ret.LoadParamDictionary(parser);
                             break;
                     }
                 }
-
             }
 
             return ret;
         }
 
-        private void loadCodeDictionary(TextFieldParser stream)
+        private void LoadCodeDictionary(TextFieldParser stream)
         {
             while (!stream.EndOfData)
             {
                 string[] tokens = stream.ReadFields();
                 if (tokens.Length == 0)
+                {
                     continue;
+                }
 
                 if (tokens[0] == "$End")
+                {
                     return;
+                }
 
                 if (tokens.Length >= 4)
                 {
@@ -93,43 +97,51 @@ namespace KttK.HspDecompiler.Ax3ToAs
                     Array.Copy(tokens, 4, extraFlags, 0, tokens.Length - 4);
                     HspDictionaryKey key = new HspDictionaryKey(tokens[0], tokens[1]);
                     HspDictionaryValue value = new HspDictionaryValue(tokens[2], tokens[3], extraFlags);
-                    codeDictionary.Add(key, value);
+                    this.codeDictionary.Add(key, value);
                 }
             }
         }
 
-        private void loadParamDictionary(TextFieldParser stream)
+        private void LoadParamDictionary(TextFieldParser stream)
         {
             while (!stream.EndOfData)
             {
                 string[] tokens = stream.ReadFields();
                 if (tokens.Length == 0)
+                {
                     continue;
+                }
 
                 if (tokens[0] == "$End")
+                {
                     return;
+                }
 
                 if (tokens.Length >= 2)
                 {
                     int key = DicParser.StringToInt32(tokens[0]);
                     string value = tokens[1];
-                    paramDictionary.Add(key, value);
+                    this.paramDictionary.Add(key, value);
                 }
             }
         }
 
         internal bool CodeLookUp(HspDictionaryKey key, out HspDictionaryValue value)
         {
-            if (codeDictionary.TryGetValue(key, out value))
+            if (this.codeDictionary.TryGetValue(key, out value))
+            {
                 return true;
+            }
 
             HspDictionaryKey newkey = new HspDictionaryKey(key);
             newkey.Value = -1;
             newkey.AllValue = true;
-            if (codeDictionary.TryGetValue(newkey, out value))
+            if (this.codeDictionary.TryGetValue(newkey, out value))
+            {
                 return true;
+            }
 
-            if ((key.Type == 0x11) && (key.Value >= 0x1000)) //ComFunction
+            if ((key.Type == 0x11) && (key.Value >= 0x1000)) // ComFunction
             {
                 value.Name = "comfunc";
                 value.Type = HspCodeType.ComFunction;
@@ -137,7 +149,7 @@ namespace KttK.HspDecompiler.Ax3ToAs
                 return true;
             }
 
-            if (key.Type >= 0x12) //PlugInFunction
+            if (key.Type >= 0x12) // PlugInFunction
             {
                 value.Name = "pluginFuction";
                 value.OparatorPriority = key.Type - 0x12;
@@ -147,19 +159,17 @@ namespace KttK.HspDecompiler.Ax3ToAs
             }
 
             return false;
-
         }
 
         internal bool ParamLookUp(int paramKey, out string paramTypeName)
         {
-            return paramDictionary.TryGetValue(paramKey, out paramTypeName);
-
+            return this.paramDictionary.TryGetValue(paramKey, out paramTypeName);
         }
 
         internal List<string> GetAllFuncName()
         {
             List<string> ret = new List<string>();
-            foreach (KeyValuePair<HspDictionaryKey, HspDictionaryValue> pair in codeDictionary)
+            foreach (KeyValuePair<HspDictionaryKey, HspDictionaryValue> pair in this.codeDictionary)
             {
                 switch (pair.Value.Type)
                 {
@@ -173,7 +183,7 @@ namespace KttK.HspDecompiler.Ax3ToAs
                 }
             }
 
-            foreach (KeyValuePair<int, string> pair in paramDictionary)
+            foreach (KeyValuePair<int, string> pair in this.paramDictionary)
             {
                 ret.Add(pair.Value.ToLower());
             }

@@ -1,6 +1,6 @@
 namespace KttK.HspDecompiler
 {
-	partial class deHspDialog
+	partial class DeHspDialog
 	{
 		/// <summary>
 		/// 必要なデザイナ変数です。
@@ -28,7 +28,7 @@ namespace KttK.HspDecompiler
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(deHspDialog));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeHspDialog));
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.txtBoxMainInfo = new System.Windows.Forms.TextBox();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -165,9 +165,9 @@ namespace KttK.HspDecompiler
 			this.Name = "deHspDialog";
 			this.Text = "逆コンパイラ for HSP";
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
-			this.Activated += new System.EventHandler(this.deHspDialog_Activated);
+			this.Activated += new System.EventHandler(this.DeHspDialog_Activated);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
-			this.Load += new System.EventHandler(this.deHspDialog_Load);
+			this.Load += new System.EventHandler(this.DeHspDialog_Load);
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);

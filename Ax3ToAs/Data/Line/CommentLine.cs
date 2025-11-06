@@ -2,7 +2,7 @@ using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
-    class CommentLine : LogicalLine
+    internal class CommentLine : LogicalLine
     {
         internal CommentLine()
         {
@@ -10,8 +10,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal CommentLine(string str)
         {
-            comment = str;
-
+            this.comment = str;
         }
 
         private readonly string comment;
@@ -28,12 +27,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         public override string ToString()
         {
-            if (comment == null)
+            if (this.comment == null)
+            {
                 return string.Empty;
+            }
 
             StringBuilder strbd = new StringBuilder();
             strbd.Append("//");
-            strbd.Append(comment);
+            strbd.Append(this.comment);
             return strbd.ToString();
         }
     }

@@ -1,150 +1,139 @@
 using System.Drawing;
-using System.Windows.Forms;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace KttK.HspDecompiler
 {
     /// <summary>
-    /// AboutDialog の概要の説明です。
+    /// AboutDialog の概要の説明です。.
     /// </summary>
     internal sealed class AboutDialog : Form
     {
         private PictureBox pictureBox1;
-        private Label LB_Title;
-        private Label LB_Copyright;
+        private Label lBTitle;
+        private Label lBCopyright;
+
         /// <summary>
-        /// 必要なデザイナ変数です。
+        /// 必要なデザイナ変数です。.
         /// </summary>
         private System.ComponentModel.Container components = null;
 
         internal AboutDialog()
         {
-            //
             // Windows フォーム デザイナ サポートに必要です。
-            //
-            InitializeComponent();
+            this.InitializeComponent();
             Assembly mainAssembly = Assembly.GetEntryAssembly();
             string appCopyright = "-";
-            object[] CopyrightArray =
+            object[] copyrightArray =
                 mainAssembly.GetCustomAttributes(
                     typeof(AssemblyCopyrightAttribute), false);
-            if ((CopyrightArray != null) && (CopyrightArray.Length > 0))
+            if ((copyrightArray != null) && (copyrightArray.Length > 0))
             {
                 appCopyright =
-                    ((AssemblyCopyrightAttribute)CopyrightArray[0]).Copyright;
+                    ((AssemblyCopyrightAttribute)copyrightArray[0]).Copyright;
             }
 
-            LB_Copyright.Text = appCopyright;
-            //
+            this.lBCopyright.Text = appCopyright;
+
             // TODO: InitializeComponent 呼び出しの後に、コンストラクタ コードを追加してください。
-            //
         }
 
         /// <summary>
-        /// 使用されているリソースに後処理を実行します。
+        /// 使用されているリソースに後処理を実行します。.
         /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (components != null)
+                if (this.components != null)
                 {
-                    components.Dispose();
+                    this.components.Dispose();
                 }
             }
 
             base.Dispose(disposing);
         }
-
-        #region Windows フォーム デザイナで生成されたコード
         /// <summary>
         /// デザイナ サポートに必要なメソッドです。このメソッドの内容を
-        /// コード エディタで変更しないでください。
+        /// コード エディタで変更しないでください。.
         /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutDialog));
-            pictureBox1 = new PictureBox();
-            LB_Title = new Label();
-            LB_Copyright = new Label();
-            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).BeginInit();
-            SuspendLayout();
-            // 
+            this.pictureBox1 = new PictureBox();
+            this.lBTitle = new Label();
+            this.lBCopyright = new Label();
+            ((System.ComponentModel.ISupportInitialize)this.pictureBox1).BeginInit();
+            this.SuspendLayout();
+
             // pictureBox1
-            // 
-            pictureBox1.Image = ((Image)(resources.GetObject("pictureBox1.Image")));
-            pictureBox1.Location = new Point(12, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(32, 32);
-            pictureBox1.TabIndex = 4;
-            pictureBox1.TabStop = false;
-            // 
+            this.pictureBox1.Image =  (Image)resources.GetObject("pictureBox1.Image");
+            this.pictureBox1.Location = new Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new Size(32, 32);
+            this.pictureBox1.TabIndex = 4;
+            this.pictureBox1.TabStop = false;
+
             // LB_Title
-            // 
-            LB_Title.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-            LB_Title.Location = new Point(50, 12);
-            LB_Title.Name = "LB_Title";
-            LB_Title.Size = new Size(172, 16);
-            LB_Title.TabIndex = 5;
-            LB_Title.Text = "フリー HSP逆コンパイラ　Ver 1.20";
-            // 
+            this.lBTitle.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point,  (byte)128);
+            this.lBTitle.Location = new Point(50, 12);
+            this.lBTitle.Name = "LB_Title";
+            this.lBTitle.Size = new Size(172, 16);
+            this.lBTitle.TabIndex = 5;
+            this.lBTitle.Text = "フリー HSP逆コンパイラ　Ver 1.20";
+
             // LB_Copyright
-            // 
-            LB_Copyright.AutoSize = true;
-            LB_Copyright.Location = new Point(66, 37);
-            LB_Copyright.Name = "LB_Copyright";
-            LB_Copyright.Size = new Size(11, 12);
-            LB_Copyright.TabIndex = 6;
-            LB_Copyright.Text = "-";
-            // 
+            this.lBCopyright.AutoSize = true;
+            this.lBCopyright.Location = new Point(66, 37);
+            this.lBCopyright.Name = "LB_Copyright";
+            this.lBCopyright.Size = new Size(11, 12);
+            this.lBCopyright.TabIndex = 6;
+            this.lBCopyright.Text = "-";
+
             // AboutDialog
-            // 
-            AutoScaleBaseSize = new Size(5, 12);
-            ClientSize = new Size(240, 63);
-            Controls.Add(LB_Copyright);
-            Controls.Add(LB_Title);
-            Controls.Add(pictureBox1);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            ImeMode = ImeMode.Off;
-            MaximizeBox = false;
-            MaximumSize = new Size(246, 90);
-            MinimizeBox = false;
-            MinimumSize = new Size(246, 90);
-            Name = "AboutDialog";
-            ShowIcon = false;
-            ShowInTaskbar = false;
-            Text = "バージョン情報";
-            TopMost = true;
-            Load += new System.EventHandler(RegistDialog_Load);
-            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
-
+            this.AutoScaleBaseSize = new Size(5, 12);
+            this.ClientSize = new Size(240, 63);
+            this.Controls.Add(this.lBCopyright);
+            this.Controls.Add(this.lBTitle);
+            this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.ImeMode = ImeMode.Off;
+            this.MaximizeBox = false;
+            this.MaximumSize = new Size(246, 90);
+            this.MinimizeBox = false;
+            this.MinimumSize = new Size(246, 90);
+            this.Name = "AboutDialog";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.Text = "バージョン情報";
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.RegistDialog_Load);
+            ((System.ComponentModel.ISupportInitialize)this.pictureBox1).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
-        #endregion
 
-        private void buttonOK_Click(object sender, System.EventArgs e)
+        private void ButtonOK_Click(object sender, System.EventArgs e)
         {
         }
 
-        private void buttonCancel_Click(object sender, System.EventArgs e)
+        private void ButtonCancel_Click(object sender, System.EventArgs e)
         {
-            Close();
+            this.Close();
         }
-
 
         private void RegistDialog_Load(object sender, System.EventArgs e)
         {
-            Location = initialLocation;
+            this.Location = this.initialLocation;
         }
 
         private Point initialLocation;
 
         internal void SetInitialLocation(Form frm)
         {
-            initialLocation = frm.Location;
-            initialLocation.Offset(frm.Width / 2, frm.Height / 2);
-            initialLocation.Offset(-Width / 2, -Height / 2);
+            this.initialLocation = frm.Location;
+            this.initialLocation.Offset(frm.Width / 2, frm.Height / 2);
+            this.initialLocation.Offset(-this.Width / 2, -this.Height / 2);
         }
     }
 }

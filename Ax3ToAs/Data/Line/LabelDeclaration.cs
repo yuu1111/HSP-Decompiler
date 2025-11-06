@@ -1,7 +1,7 @@
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// プリプロセッサ、ラベル宣言行
+    /// プリプロセッサ、ラベル宣言行.
     /// </summary>
     internal sealed class PreprocessorDeclaration : LogicalLine
     {
@@ -16,7 +16,6 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         private readonly Preprocessor pp;
 
-
         internal override int TabCount
         {
             get { return 0; }
@@ -29,7 +28,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         public override string ToString()
         {
-            return pp.ToString();
+            return this.pp.ToString();
         }
     }
 }

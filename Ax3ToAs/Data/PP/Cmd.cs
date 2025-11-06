@@ -23,9 +23,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             {
                 StringBuilder strbd = new StringBuilder();
                 strbd.Append("cmd_");
-                strbd.Append(pluginIndex.ToString());
+                strbd.Append(this.pluginIndex.ToString());
                 strbd.Append('_');
-                strbd.Append(methodIndex.ToString());
+                strbd.Append(this.methodIndex.ToString());
                 return strbd.ToString();
             }
         }
@@ -34,9 +34,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             StringBuilder strbd = new StringBuilder();
             strbd.Append("#cmd ");
-            strbd.Append(FunctionName);
+            strbd.Append(this.FunctionName);
             strbd.Append(' ');
-            strbd.Append(methodIndex.ToString());
+            strbd.Append(this.methodIndex.ToString());
             return strbd.ToString();
         }
     }

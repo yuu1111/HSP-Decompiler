@@ -17,7 +17,7 @@ namespace KttK.HspDecompiler
         internal HspDecoderException(string source, string message)
             : base(message)
         {
-            Source = source;
+            this.Source = source;
         }
 
         internal HspDecoderException(string message, Exception e)
@@ -28,19 +28,19 @@ namespace KttK.HspDecompiler
         internal HspDecoderException(string source, string message, Exception e)
             : base(message, e)
         {
-            Source = source;
+            this.Source = source;
         }
 
         internal HspDecoderException(string message, HspDecoderException e)
             : base(e.Message, e.InnerException)
         {
-            Source = e.Source;
+            this.Source = e.Source;
         }
 
         internal HspDecoderException(HspDecoderException e)
             : base(e.Message, e.InnerException)
         {
-            Source = e.Source;
+            this.Source = e.Source;
         }
     }
 }

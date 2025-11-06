@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using KttK.HspDecompiler.Ax3ToAs.Dictionary;
 using KttK.HspDecompiler.Ax3ToAs.Data.Analyzer;
 using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
+using KttK.HspDecompiler.Ax3ToAs.Dictionary;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
     /// <summary>
-    /// PrimitiveTokenFactory
+    /// PrimitiveTokenFactory.
     /// </summary>
-    class LexicalAnalyzer
+    internal class LexicalAnalyzer
     {
         private LexicalAnalyzer()
         {
@@ -19,34 +19,40 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         internal LexicalAnalyzer(Hsp3Dictionary theDic)
         {
             if (theDic == null)
+            {
                 throw new ArgumentNullException();
+            }
 
-            dictionary = theDic;
+            this.dictionary = theDic;
         }
 
-        Hsp3Dictionary dictionary;
-        int tokenOffset;
+        private Hsp3Dictionary dictionary;
+        private int tokenOffset;
 
         internal TokenCollection Analyze(AxData data)
         {
             if (!data.IsStarted)
+            {
                 throw new InvalidOperationException();
+            }
 
             TokenCollection stream = new TokenCollection();
             BinaryReader reader = data.Reader;
             long sizeOfCode = data.Header.CodeSize;
             long startOfCode = data.StartOfCode;
-            tokenOffset = 0;
+            this.tokenOffset = 0;
             reader.BaseStream.Seek(startOfCode, SeekOrigin.Begin);
-            while (tokenOffset < sizeOfCode)
+            while (this.tokenOffset < sizeOfCode)
             {
-                PrimitiveToken code = ReadPrimitive(reader, data);
+                PrimitiveToken code = this.ReadPrimitive(reader, data);
                 if (code != null)
+                {
                     stream.Add(code);
+                }
             }
 #if DEBUG
-            List<int> variablesCount = null;
-            variablesCount = subAnalyzeVariables(stream);
+            List<int>? variablesCount = null;
+            variablesCount = this.SubAnalyzeVariables(stream);
             for (int i = 0; i < variablesCount.Count; i++)
             {
                 if (variablesCount[i] == 1)
@@ -68,18 +74,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             return stream;
         }
 
-        private List<int> subAnalyzeVariables(TokenCollection stream)
+        private List<int> SubAnalyzeVariables(TokenCollection stream)
         {
             List<int> variablesCount = new List<int>();
             foreach (PrimitiveToken token in stream.GetPrimives())
             {
                 if (!(token is GlobalVariablePrimitive))
+                {
                     continue;
+                }
 
                 GlobalVariablePrimitive variable = (GlobalVariablePrimitive)token;
                 if (token.Value >= variablesCount.Count)
                 {
-
                     variablesCount.Capacity = token.Value + 1;
                     while (token.Value >= variablesCount.Count)
                     {
@@ -88,7 +95,6 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 }
 
                 variablesCount[token.Value]++;
-
             }
 
             return variablesCount;
@@ -96,59 +102,61 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         private PrimitiveToken ReadPrimitive(BinaryReader reader, AxData data)
         {
-            PrimitiveToken ret = null;
+            PrimitiveToken? ret = null;
 
-            int theTokenOffset = tokenOffset;
+            int theTokenOffset = this.tokenOffset;
             int type = reader.ReadByte();
             int flag = reader.ReadByte();
             int value = 0;
             int extraValue = -1;
-            tokenOffset += 1;
+            this.tokenOffset += 1;
             if ((flag & 0x80) == 0x80)
             {
                 value = reader.ReadInt32();
-                tokenOffset += 2;
+                this.tokenOffset += 2;
             }
             else
             {
                 value = reader.ReadUInt16();
-                tokenOffset += 1;
+                this.tokenOffset += 1;
             }
 
-            HspDictionaryKey key = new HspDictionaryKey();
+            HspDictionaryKey key = default(HspDictionaryKey);
             key.Type = type;
             key.Value = value;
             HspDictionaryValue dicValue;
-            if (dictionary.CodeLookUp(key, out dicValue))
+            if (this.dictionary.CodeLookUp(key, out dicValue))
             {
                 if ((dicValue.Extra & HspCodeExtraFlags.HasExtraInt16) == HspCodeExtraFlags.HasExtraInt16)
                 {
-                    //HSP3.0aの仕様では行頭にないif,elseはジャンプ先アドレスを持たない。
+                    // HSP3.0aの仕様では行頭にないif,elseはジャンプ先アドレスを持たない。
                     if ((flag & 0x20) == 0x20)
                     {
                         extraValue = reader.ReadUInt16();
-                        tokenOffset += 1;
-                        ret = createPrimitive(data, dicValue, theTokenOffset, type, flag, value, extraValue);
+                        this.tokenOffset += 1;
+                        ret = this.CreatePrimitive(data, dicValue, theTokenOffset, type, flag, value, extraValue);
                     }
                     else
                     {
-                        ret = createPrimitive(data, dicValue, theTokenOffset, type, flag, value, -1);
+                        ret = this.CreatePrimitive(data, dicValue, theTokenOffset, type, flag, value, -1);
                     }
                 }
                 else
                 {
-                    ret = createPrimitive(data, dicValue, theTokenOffset, type, flag, value, -1);
+                    ret = this.CreatePrimitive(data, dicValue, theTokenOffset, type, flag, value, -1);
                 }
             }
             else
-                ret = createPrimitive(data, new HspDictionaryValue(), theTokenOffset, type, flag, value, -1);
+            {
+                ret = this.CreatePrimitive(data, default(HspDictionaryValue), theTokenOffset, type, flag, value, -1);
+            }
 
             ret.SetName();
 
             return ret;
         }
 
-        private PrimitiveToken createPrimitive(AxData data, HspDictionaryValue dicValue, int theTokenOffset, int type, int flag, int value, int extraValue)
+        private PrimitiveToken CreatePrimitive(AxData data, HspDictionaryValue dicValue, int theTokenOffset, int type, int flag, int value, int extraValue)
         {
             PrimitiveTokenDataSet dataset = new PrimitiveTokenDataSet();
             dataset.Parent = data;
@@ -180,9 +188,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 case HspCodeType.IfStatement:
                 case HspCodeType.ElseStatement:
                     if (extraValue >= 0)
+                    {
                         return new IfStatementPrimitive(dataset, extraValue);
+                    }
                     else
+                    {
                         return new HspFunctionPrimitive(dataset);
+                    }
+
                 case HspCodeType.HspFunction:
                     return new HspFunctionPrimitive(dataset);
                 case HspCodeType.OnStatement:

@@ -1,18 +1,15 @@
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
     /// <summary>
-    /// Header の概要の説明です。
+    /// Header の概要の説明です。.
     /// </summary>
     internal class Header
     {
         private Header()
         {
-            // 
             // TODO: コンストラクタ ロジックをここに追加してください。
-            //
         }
 
-        #region var
         private int allDataByte;
         private int scriptOffset;
         private int scriptByte;
@@ -28,129 +25,128 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         private int deffuncByte;
         private int moduleOffset;
         private int moduleByte;
-        #endregion
 
-        #region propaty
         internal int AllDataByte
         {
-            get { return allDataByte; }
+            get { return this.allDataByte; }
         }
 
         internal int ScriptOffset
         {
-            get { return scriptOffset; }
+            get { return this.scriptOffset; }
         }
 
         internal int ScriptByte
         {
-            get { return scriptByte; }
+            get { return this.scriptByte; }
         }
 
         internal int TextOffset
         {
-            get { return textOffset; }
+            get { return this.textOffset; }
         }
 
         internal int TextByte
         {
-            get { return textByte; }
+            get { return this.textByte; }
         }
 
         internal int LabelOffset
         {
-            get { return labelOffset; }
+            get { return this.labelOffset; }
         }
 
         internal int LabelByte
         {
-            get { return labelByte; }
+            get { return this.labelByte; }
         }
 
         internal int DllOffset
         {
-            get { return dllOffset; }
+            get { return this.dllOffset; }
         }
 
         internal int DllByte
         {
-            get { return dllByte; }
+            get { return this.dllByte; }
         }
 
         internal int FuncOffset
         {
-            get { return funcOffset; }
+            get { return this.funcOffset; }
         }
 
         internal int FuncByte
         {
-            get { return funcByte; }
+            get { return this.funcByte; }
         }
 
         internal int DeffuncOffset
         {
-            get { return deffuncOffset; }
+            get { return this.deffuncOffset; }
         }
 
         internal int DeffuncByte
         {
-            get { return deffuncByte; }
+            get { return this.deffuncByte; }
         }
 
         internal int ModuleOffset
         {
-            get { return moduleOffset; }
+            get { return this.moduleOffset; }
         }
 
         internal int ModuleByte
         {
-            get { return moduleByte; }
+            get { return this.moduleByte; }
         }
-
-
-
 
         internal int ScriptCount
         {
-            get { return scriptByte / 2; }
+            get { return this.scriptByte / 2; }
         }
 
         internal int ScriptEndOffset
         {
-            get { return scriptOffset + scriptByte; }
+            get { return this.scriptOffset + this.scriptByte; }
         }
 
         internal int LabelCount
         {
-            get { return labelByte / 4; }
+            get { return this.labelByte / 4; }
         }
 
         internal int DllCount
         {
-            get { return dllByte / 24; }
+            get { return this.dllByte / 24; }
         }
 
         internal int FuncCount
         {
-            get { return funcByte / 16; }
+            get { return this.funcByte / 16; }
         }
 
         internal int DeffuncCount
         {
-            get { return deffuncByte / 16; }
+            get { return this.deffuncByte / 16; }
         }
 
         internal int ModuleCount
         {
-            get { return moduleByte / 24; }
+            get { return this.moduleByte / 24; }
         }
-        #endregion
 
         internal static Header FromIntArray(int[] data)
         {
             if (data == null)
+            {
                 return null;
+            }
+
             if (data.Length < 20)
+            {
                 return null;
+            }
 
             Header ret = new Header();
             ret.allDataByte = data[3];

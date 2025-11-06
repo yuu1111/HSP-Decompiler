@@ -4,7 +4,7 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
     /// <summary>
-    /// 引数
+    /// 引数.
     /// </summary>
     internal sealed class ArgumentToken : CodeToken
     {
@@ -14,72 +14,92 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal ArgumentToken(List<ExpressionToken> theExps, bool hasBrackets, bool firstArgIsNull)
         {
-            exps = theExps;
+            this.exps = theExps;
             this.hasBrackets = hasBrackets;
             this.firstArgIsNull = firstArgIsNull;
         }
 
-        readonly List<ExpressionToken> exps;
-        readonly bool hasBrackets;
-        readonly bool firstArgIsNull;
+        private readonly List<ExpressionToken> exps;
+        private readonly bool hasBrackets;
+        private readonly bool firstArgIsNull;
 
         internal List<ExpressionToken> Exps
         {
-            get { return exps; }
+            get { return this.exps; }
         }
 
         internal override int TokenOffset
         {
             get
             {
-                if ((exps == null) || (exps.Count == 0))
+                if ((this.exps == null) || (this.exps.Count == 0))
+                {
                     return -1;
+                }
 
-                return exps[0].TokenOffset;
+                return this.exps[0].TokenOffset;
             }
         }
 
         public override string ToString()
         {
-            return ToString(false);
+            return this.ToString(false);
         }
 
         public string ToString(bool mcall)
         {
             StringBuilder builder = new StringBuilder();
-            if (hasBrackets)
+            if (this.hasBrackets)
+            {
                 builder.Append('(');
+            }
             else
+            {
                 builder.Append(' ');
-
+            }
 
             int i = 0;
-            foreach (ExpressionToken exp in exps)
+            foreach (ExpressionToken exp in this.exps)
             {
-                if ((i != 0) || (firstArgIsNull && !mcall))
+                if ((i != 0) || (this.firstArgIsNull && !mcall))
+                {
                     builder.Append(", ");
+                }
+
                 i++;
                 builder.Append(exp);
             }
 
-            if (hasBrackets)
+            if (this.hasBrackets)
+            {
                 builder.Append(')');
+            }
+
             return builder.ToString();
         }
 
         internal override void CheckLabel()
         {
-            if (exps != null)
-                foreach (ExpressionToken token in exps)
+            if (this.exps != null)
+            {
+                foreach (ExpressionToken token in this.exps)
+                {
                     token.CheckLabel();
+                }
+            }
         }
 
         internal override bool CheckRpn()
         {
             bool ret = true;
-            if (exps != null)
-                foreach (ExpressionToken token in exps)
+            if (this.exps != null)
+            {
+                foreach (ExpressionToken token in this.exps)
+                {
                     ret &= token.CheckRpn();
+                }
+            }
+
             return ret;
         }
     }

@@ -1,35 +1,41 @@
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
-    class Param : Preprocessor
+    internal class Param : Preprocessor
     {
         private Param()
         {
         }
 
-        private Param(int paramIndex) : base(paramIndex)
+        private Param(int paramIndex)
+            : base(paramIndex)
         {
         }
 
-        string paramTypeName = "NULL";
+        private string paramTypeName = "NULL";
+
         /// <summary>
-        /// structのindex。
+        /// structのindex。.
         /// </summary>
-        short deffuncIndex;
+        private short deffuncIndex;
+
         /// <summary>
-        /// パラメーターの開始サイズまたはmodinit関数のindex
+        /// パラメーターの開始サイズまたはmodinit関数のindex.
         /// </summary>
-        int paramStartByte;
+        private int paramStartByte;
 
         internal static Param FromBinaryReader(BinaryReader reader, AxData parent, int index)
         {
             Param ret = new Param(index);
             ret.paramType = reader.ReadUInt16();
             if (!parent.Dictionary.ParamLookUp(ret.paramType, out ret.paramTypeName))
+            {
                 ret.paramTypeName = "NULL";
+            }
+
             ret.deffuncIndex = reader.ReadInt16();
             ret.paramStartByte = reader.ReadInt32();
 
@@ -37,58 +43,66 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         }
 
         private bool paramNameIsUsed;
-        private UInt16 paramType;
+        private ushort paramType;
         private Function module;
 
         internal Function Module
         {
-            get { return module; }
+            get { return this.module; }
         }
 
         private bool isStructParameter;
 
         internal void SetFunction(AxData parent)
         {
-            if (deffuncIndex < 0)
+            if (this.deffuncIndex < 0)
+            {
                 return;
+            }
 
-            module = parent.GetUserFunction(deffuncIndex);
-            if (module == null)
+            this.module = parent.GetUserFunction(this.deffuncIndex);
+            if (this.module == null)
+            {
                 return;
+            }
 
-            if (module.IsModuleFunction)
-                if (IsModuleType)
-                    nameFormatter = module.FunctionName;
+            if (this.module.IsModuleFunction)
+            {
+                if (this.IsModuleType)
+                {
+                    this.nameFormatter = this.module.FunctionName;
+                }
                 else
-                    isStructParameter = true;
-
+                {
+                    this.isStructParameter = true;
+                }
+            }
         }
 
         internal bool ParamNameIsUsed
         {
-            get { return paramNameIsUsed; }
-            set { paramNameIsUsed = value; }
+            get { return this.paramNameIsUsed; }
+            set { this.paramNameIsUsed = value; }
         }
 
         private string nameFormatter = "prm_{0}";
 
         internal string ParamName
         {
-            //if (module != null)
-            //	return module.FunctionName;
+            // if (module != null)
+            // return module.FunctionName;
             get
             {
-                if (isStructParameter)
+                if (this.isStructParameter)
                 {
-
                     StringBuilder strbd = new StringBuilder();
-                    strbd.Append(module.FunctionName);
+                    strbd.Append(this.module.FunctionName);
                     strbd.Append('_');
-                    strbd.Append(string.Format(nameFormatter, index));
+                    strbd.Append(string.Format(this.nameFormatter, this.index));
                     return strbd.ToString();
                 }
 
-                return string.Format(nameFormatter, index);
+                return string.Format(this.nameFormatter, this.index);
             }
         }
 
@@ -97,23 +111,30 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             StringBuilder strbd = new StringBuilder();
             if (!remove_type)
             {
-                if (paramTypeName == "NULL")
+                if (this.paramTypeName == "NULL")
                 {
                     strbd.Append("/*不明な型 ");
-                    strbd.Append(paramType.ToString("X04"));
+                    strbd.Append(this.paramType.ToString("X04"));
                     strbd.Append("*/");
                 }
-                else if ((localToVar) && (paramTypeName.Equals("local", StringComparison.Ordinal)))
+                else if (localToVar && this.paramTypeName.Equals("local", StringComparison.Ordinal))
+                {
                     strbd.Append("var");
+                }
                 else
-                    strbd.Append(paramTypeName);
+                {
+                    strbd.Append(this.paramTypeName);
+                }
             }
 
-            if ((force_Named) || (paramNameIsUsed) || (IsModuleType))
+            if (force_Named || this.paramNameIsUsed || this.IsModuleType)
             {
                 if (strbd.Length > 0)
+                {
                     strbd.Append(' ');
-                strbd.Append(string.Format(nameFormatter, index));
+                }
+
+                strbd.Append(string.Format(this.nameFormatter, this.index));
             }
 
             return strbd.ToString();
@@ -121,14 +142,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         public override string ToString()
         {
-            return ToString(false, false, false);
+            return this.ToString(false, false, false);
         }
 
         internal bool IsModuleType
         {
             get
             {
-                switch (paramTypeName)
+                switch (this.paramTypeName)
                 {
                     case "modvar":
                     case "modinit":

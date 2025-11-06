@@ -8,51 +8,63 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         internal int HikiType
         {
-            get { return hikiType; }
-            set { hikiType = value; }
+            get { return this.hikiType; }
+            set { this.hikiType = value; }
         }
 
         internal int HikiCount
         {
-            get { return hikiCount; }
-            set { hikiCount = value; }
+            get { return this.hikiCount; }
+            set { this.hikiCount = value; }
         }
 
         public override string ToString()
         {
-            string hiki = "";
-            if (hikiCount >= 1)
+            string hiki = string.Empty;
+            if (this.hikiCount >= 1)
             {
-                if ((hikiType & 1) != 0)
+                if ((this.hikiType & 1) != 0)
+                {
                     hiki = "val";
-                else if ((hikiType & 2) != 0)
+                }
+                else if ((this.hikiType & 2) != 0)
+                {
                     hiki = "str";
+                }
                 else
+                {
                     hiki = "int";
+                }
             }
 
-            if (hikiCount >= 2)
+            if (this.hikiCount >= 2)
             {
-                if ((hikiType & 0x10) != 0)
+                if ((this.hikiType & 0x10) != 0)
+                {
                     hiki += ", val";
-                else if ((hikiType & 0x20) != 0)
+                }
+                else if ((this.hikiType & 0x20) != 0)
+                {
                     hiki += ", str";
+                }
                 else
+                {
                     hiki += ", int";
+                }
             }
 
-            for (int i = 0; i < (hikiCount - 2); i++)
+            for (int i = 0; i < (this.hikiCount - 2); i++)
             {
                 hiki += ", int";
             }
 
-            return "#deffunc " + name + " " + hiki;
+            return "#deffunc " + this.name + " " + hiki;
         }
     }
 }

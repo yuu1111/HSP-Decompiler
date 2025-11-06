@@ -4,7 +4,7 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// 代入式
+    /// 代入式.
     /// </summary>
     internal sealed class UnknownLine : LogicalLine
     {
@@ -14,30 +14,34 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal UnknownLine(List<PrimitiveToken> primitives)
         {
-            tokens = new PrimitiveToken[primitives.Count];
-            primitives.CopyTo(tokens);
+            this.tokens = new PrimitiveToken[primitives.Count];
+            primitives.CopyTo(this.tokens);
         }
 
-        readonly PrimitiveToken[] tokens;
+        private readonly PrimitiveToken[] tokens;
 
         internal override int TokenOffset
         {
             get
             {
-                if ((tokens == null) || (tokens.Length == 0))
+                if ((this.tokens == null) || (this.tokens.Length == 0))
+                {
                     return -1;
+                }
 
-                return tokens[0].TokenOffset;
+                return this.tokens[0].TokenOffset;
             }
         }
 
         public override string ToString()
         {
-            if ((tokens == null) || (tokens.Length == 0))
+            if ((this.tokens == null) || (this.tokens.Length == 0))
+            {
                 return "//空";
+            }
 
             StringBuilder builder = new StringBuilder("//");
-            foreach (PrimitiveToken token in tokens)
+            foreach (PrimitiveToken token in this.tokens)
             {
                 builder.Append(' ');
                 builder.Append(token);

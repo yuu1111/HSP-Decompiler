@@ -4,7 +4,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// 代入式
+    /// 代入式.
     /// </summary>
     internal sealed class Assignment : LogicalLine
     {
@@ -14,70 +14,84 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal Assignment(VariableToken theVar, OperatorToken theOp)
         {
-            var = theVar;
-            op = theOp;
+            this.var = theVar;
+            this.op = theOp;
         }
 
         internal Assignment(VariableToken theVar, OperatorToken theOp, ArgumentToken theArg)
         {
-            var = theVar;
-            op = theOp;
-            arg = theArg;
+            this.var = theVar;
+            this.op = theOp;
+            this.arg = theArg;
         }
 
-        readonly VariableToken var;
-        readonly OperatorToken op;
+        private readonly VariableToken var;
+        private readonly OperatorToken op;
 
-        //普通はひとつの式だが、配列変数にはたくさん代入することもある。
-        readonly ArgumentToken arg;
+        // 普通はひとつの式だが、配列変数にはたくさん代入することもある。
+        private readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
             get
             {
-                if (var == null)
+                if (this.var == null)
+                {
                     return -1;
+                }
 
-                return var.TokenOffset;
+                return this.var.TokenOffset;
             }
         }
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(var.ToString());
-            if (arg != null)
+            StringBuilder builder = new StringBuilder(this.var.ToString());
+            if (this.arg != null)
             {
                 builder.Append(' ');
-                builder.Append(op.ToString(true, arg != null));
-                builder.Append(arg);
+                builder.Append(this.op.ToString(true, this.arg != null));
+                builder.Append(this.arg);
             }
             else
             {
-                builder.Append(op.ToString(true, arg != null)); //a++とか。HSPではこの辺の書式はいい加減みたい。
+                builder.Append(this.op.ToString(true, this.arg != null)); // a++とか。HSPではこの辺の書式はいい加減みたい。
             }
 
             return builder.ToString();
         }
 
-
-
         internal override void CheckLabel()
         {
-            if (var != null)
-                var.CheckLabel();
-            if (op != null)
-                op.CheckLabel();
-            if (arg != null)
-                arg.CheckLabel();
+            if (this.var != null)
+            {
+                this.var.CheckLabel();
+            }
+
+            if (this.op != null)
+            {
+                this.op.CheckLabel();
+            }
+
+            if (this.arg != null)
+            {
+                this.arg.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
             bool ret = true;
-            if (var != null)
-                ret &= var.CheckRpn();
-            if (arg != null)
-                ret &= arg.CheckRpn();
+            if (this.var != null)
+            {
+                ret &= this.var.CheckRpn();
+            }
+
+            if (this.arg != null)
+            {
+                ret &= this.arg.CheckRpn();
+            }
+
             return true;
         }
     }

@@ -13,7 +13,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
 
         public override string ToString()
         {
-            return DefaultName;
+            return this.DefaultName;
         }
     }
 }

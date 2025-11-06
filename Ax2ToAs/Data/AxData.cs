@@ -1,21 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
     /// <summary>
-    /// AxData の概要の説明です。
+    /// AxData の概要の説明です。.
     /// </summary>
     internal class AxData
     {
         internal AxData()
         {
-            // 
             // TODO: コンストラクタ ロジックをここに追加してください。
-            //
         }
 
         private Header header;
@@ -34,17 +32,19 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal byte[] TokenData
         {
-            get { return tokenData; }
+            get { return this.tokenData; }
         }
 
         private byte[] stringData;
 
-        private void readData(Stream stream)
+        private void ReadData(Stream stream)
         {
             long startPosition = stream.Position;
             byte[] headerBuffer = new byte[80];
             if (stream.Read(headerBuffer, 0, 80) < 80)
+            {
                 throw new HspDecoderException("AxData", "ファイルヘッダーが見つかりません");
+            }
 
             int[] buffer = new int[20];
             for (int i = 0; i < 20; i++)
@@ -54,46 +54,48 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
             try
             {
-                header = Header.FromIntArray(buffer);
+                this.header = Header.FromIntArray(buffer);
             }
             catch (Exception e)
             {
                 throw new HspDecoderException("AxHeader", "ヘッダー解析中に想定外のエラー", e);
             }
 
-            if (header == null)
+            if (this.header == null)
+            {
                 throw new HspDecoderException("AxHeader", "ヘッダー解析に失敗");
+            }
 
             try
             {
-                Header head = header;
-                tokenData = new byte[head.ScriptByte];
+                Header head = this.header;
+                this.tokenData = new byte[head.ScriptByte];
                 stream.Seek(startPosition + head.ScriptOffset, SeekOrigin.Begin);
-                stream.Read(tokenData, 0, head.ScriptByte);
+                stream.Read(this.tokenData, 0, head.ScriptByte);
 
-                dllData = new byte[head.DllByte];
+                this.dllData = new byte[head.DllByte];
                 stream.Seek(startPosition + head.DllOffset, SeekOrigin.Begin);
-                stream.Read(dllData, 0, head.DllByte);
+                stream.Read(this.dllData, 0, head.DllByte);
 
-                funcData = new byte[head.FuncByte];
+                this.funcData = new byte[head.FuncByte];
                 stream.Seek(startPosition + head.FuncOffset, SeekOrigin.Begin);
-                stream.Read(funcData, 0, head.FuncByte);
+                stream.Read(this.funcData, 0, head.FuncByte);
 
-                deffuncData = new byte[head.DeffuncByte];
+                this.deffuncData = new byte[head.DeffuncByte];
                 stream.Seek(startPosition + head.DeffuncOffset, SeekOrigin.Begin);
-                stream.Read(deffuncData, 0, head.DeffuncByte);
+                stream.Read(this.deffuncData, 0, head.DeffuncByte);
 
-                moduleData = new byte[head.ModuleByte];
+                this.moduleData = new byte[head.ModuleByte];
                 stream.Seek(startPosition + head.ModuleOffset, SeekOrigin.Begin);
-                stream.Read(moduleData, 0, head.ModuleByte);
+                stream.Read(this.moduleData, 0, head.ModuleByte);
 
-                labelData = new byte[head.LabelByte];
+                this.labelData = new byte[head.LabelByte];
                 stream.Seek(startPosition + head.LabelOffset, SeekOrigin.Begin);
-                stream.Read(labelData, 0, head.LabelByte);
+                stream.Read(this.labelData, 0, head.LabelByte);
 
-                stringData = new byte[head.TextByte];
+                this.stringData = new byte[head.TextByte];
                 stream.Seek(startPosition + head.TextOffset, SeekOrigin.Begin);
-                stream.Read(stringData, 0, head.TextByte);
+                stream.Read(this.stringData, 0, head.TextByte);
             }
             catch (Exception e)
             {
@@ -103,26 +105,23 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
             stream.Seek(startPosition, SeekOrigin.Begin);
         }
 
-        #region create
         internal static AxData FromStream(Stream stream)
         {
             AxData data = new AxData();
 
-            data.readData(stream);
+            data.ReadData(stream);
 
             return data;
         }
-        #endregion
 
-        #region read
         internal string GetString(int offset)
         {
-            return ReadString(offset, stringData);
+            return this.ReadString(offset, this.stringData);
         }
 
         private string ReadString(int offset)
         {
-            return ReadString(offset, stringData);
+            return this.ReadString(offset, this.stringData);
         }
 
         private string ReadString(int offset, byte[] dumpData)
@@ -135,13 +134,17 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 token = dumpData[offset];
                 offset++;
                 if (token == 0)
+                {
                     break;
+                }
 
                 buffer.Add(token);
             }
 
             if (buffer.Count == 0)
-                return "";
+            {
+                return string.Empty;
+            }
 
             byte[] bytes = new byte[buffer.Count];
             buffer.CopyTo(bytes);
@@ -150,102 +153,106 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         private void ReadLabels()
         {
-            labels = new Label[header.LabelCount];
-            for (int i = 0; i < header.LabelCount; i++)
+            this.labels = new Label[this.header.LabelCount];
+            for (int i = 0; i < this.header.LabelCount; i++)
             {
                 int offset = i * 4;
-                labels[i] = new Label(i, BitConverter.ToInt32(labelData, offset));
+                this.labels[i] = new Label(i, BitConverter.ToInt32(this.labelData, offset));
             }
         }
 
         private void ReadDlls()
         {
-            dlls = new Dll[header.DllCount];
+            this.dlls = new Dll[this.header.DllCount];
 
-            for (int i = 0; i < header.DllCount; i++)
+            for (int i = 0; i < this.header.DllCount; i++)
             {
                 int offset = 4 + (i * 24);
-                dlls[i].Name = ReadString(offset, dllData);
+                this.dlls[i].Name = this.ReadString(offset, this.dllData);
             }
         }
 
         private void ReadFuncs()
         {
-            funcs = new Func[header.FuncCount];
-            for (int i = 0; i < header.FuncCount; i++)
+            this.funcs = new Func[this.header.FuncCount];
+            for (int i = 0; i < this.header.FuncCount; i++)
             {
                 int offset = i * 16;
-                funcs[i].DllIndex = BitConverter.ToInt16(funcData, offset);
+                this.funcs[i].DllIndex = BitConverter.ToInt16(this.funcData, offset);
                 offset += 4;
-                funcs[i].HikiType = BitConverter.ToInt16(funcData, offset);
+                this.funcs[i].HikiType = BitConverter.ToInt16(this.funcData, offset);
                 offset += 4;
-                int funcnameOffset = BitConverter.ToInt32(funcData, offset);
-                funcs[i].Name = ReadString(funcnameOffset);
+                int funcnameOffset = BitConverter.ToInt32(this.funcData, offset);
+                this.funcs[i].Name = this.ReadString(funcnameOffset);
             }
         }
 
         private void ReadModules()
         {
-            if (header.ModuleCount == 0)
+            if (this.header.ModuleCount == 0)
+            {
                 return;
+            }
 
-            modules = new Module[header.ModuleCount];
+            this.modules = new Module[this.header.ModuleCount];
 
-            for (int i = 0; i < header.ModuleCount; i++)
+            for (int i = 0; i < this.header.ModuleCount; i++)
             {
                 int offset = 4 + (i * 24);
-                modules[i].Name = ReadString(offset, dllData);
+                this.modules[i].Name = this.ReadString(offset, this.dllData);
             }
         }
 
         private void ReadDeffuncs()
         {
-            deffuncs = new Deffunc[header.DeffuncCount];
+            this.deffuncs = new Deffunc[this.header.DeffuncCount];
 
-            for (int i = 0; i < header.DeffuncCount; i++)
+            for (int i = 0; i < this.header.DeffuncCount; i++)
             {
                 int offset = i * 16;
-                int labelIndex = BitConverter.ToInt32(deffuncData, offset) - 0x1000;
-                labels[labelIndex].Deffunc = i;
+                int labelIndex = BitConverter.ToInt32(this.deffuncData, offset) - 0x1000;
+                this.labels[labelIndex].Deffunc = i;
 
                 offset += 4;
-                deffuncs[i].HikiType = BitConverter.ToInt16(deffuncData, offset);
+                this.deffuncs[i].HikiType = BitConverter.ToInt16(this.deffuncData, offset);
                 offset += 2;
-                deffuncs[i].HikiCount = BitConverter.ToInt16(deffuncData, offset);
+                this.deffuncs[i].HikiCount = BitConverter.ToInt16(this.deffuncData, offset);
                 offset += 2;
-                int deffuncnameOffset = BitConverter.ToInt32(deffuncData, offset);
-                deffuncs[i].Name = ReadString(deffuncnameOffset);
-                labels[labelIndex].Name = deffuncs[i].ToString();
+                int deffuncnameOffset = BitConverter.ToInt32(this.deffuncData, offset);
+                this.deffuncs[i].Name = this.ReadString(deffuncnameOffset);
+                this.labels[labelIndex].Name = this.deffuncs[i].ToString();
             }
         }
-        #endregion
 
-        List<string> lines = new List<string>();
+        private List<string> lines = new List<string>();
 
         internal void Decompile()
         {
             int startTime = Environment.TickCount;
             Token.CurrentData = this;
-            lines.Clear();
+            this.lines.Clear();
 
-            ReadLabels();
-            ReadDlls();
-            //ReadScript();
-            ReadFuncs();
-            ReadModules();
-            ReadDeffuncs();
+            this.ReadLabels();
+            this.ReadDlls();
 
-            if (dlls != null)
+            // ReadScript();
+            this.ReadFuncs();
+            this.ReadModules();
+            this.ReadDeffuncs();
+
+            if (this.dlls != null)
             {
-                for (int i = 0; i < dlls.Length; i++)
+                for (int i = 0; i < this.dlls.Length; i++)
                 {
-                    lines.Add(dlls[i].ToString());
-                    if (funcs != null)
+                    this.lines.Add(this.dlls[i].ToString());
+                    if (this.funcs != null)
                     {
-                        for (int j = 0; j < funcs.Length; j++)
+                        for (int j = 0; j < this.funcs.Length; j++)
                         {
-                            if (funcs[j].DllIndex == i)
-                                lines.Add(funcs[j].ToString());
+                            if (this.funcs[j].DllIndex == i)
+                            {
+                                this.lines.Add(this.funcs[j].ToString());
+                            }
                         }
                     }
                 }
@@ -253,13 +260,16 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
             Token.SetZero();
             Token token;
-            //ラベルが呼び出される回数を調べる
+
+            // ラベルが呼び出される回数を調べる
             try
             {
                 while ((token = Token.GetNext()) != null)
                 {
                     if (token.LabelIndex != -1)
-                        labels[token.LabelIndex].LoadCount += 1;
+                    {
+                        this.labels[token.LabelIndex].LoadCount += 1;
+                    }
                 }
             }
             catch (Exception e)
@@ -267,49 +277,58 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 throw new HspDecoderException("AxHeader", "ラベルの読み取り中に復帰できないエラー", e);
             }
 
-            enabledCount = 0;
-            for (int i = 0; i < labels.Length; i++)
+            this.enabledCount = 0;
+            for (int i = 0; i < this.labels.Length; i++)
             {
-                if (labels[i].LoadCount > 0)
-                    labels[i].Enabled = true;
+                if (this.labels[i].LoadCount > 0)
+                {
+                    this.labels[i].Enabled = true;
+                }
                 else
-                    labels[i].Enabled = false;
-                if (labels[i].Enabled)
-                    enabledCount++;
+                {
+                    this.labels[i].Enabled = false;
+                }
+
+                if (this.labels[i].Enabled)
+                {
+                    this.enabledCount++;
+                }
             }
 
             string line;
             Token.SetZero();
-            while ((line = GetLine()) != null)
+            while ((line = this.GetLine()) != null)
             {
-                lines.Add(line);
+                this.lines.Add(line);
             }
 
-            int scoopCount = tabNo - 1;
-            //if (scoopCount != 0)
-            //    MainProc.Process.WriteLog("※警告※ " + scoopCount.ToString() + "個の未解決スコープが残りました");
+            int scoopCount = this.tabNo - 1;
 
+            // if (scoopCount != 0)
+            //    MainProc.Process.WriteLog("※警告※ " + scoopCount.ToString() + "個の未解決スコープが残りました");
             return;
         }
 
         private void AddLabel()
         {
-            for (int i = 0; i < labels.Length; i++)
+            for (int i = 0; i < this.labels.Length; i++)
             {
-                if (!labels[i].Enabled)
-                    continue;
-
-                if (Token.Index >= labels[i].TokenIndex)
+                if (!this.labels[i].Enabled)
                 {
-                    lines.Add(labels[i].ToString());
-                    labels[i].Enabled = false;
+                    continue;
+                }
+
+                if (Token.Index >= this.labels[i].TokenIndex)
+                {
+                    this.lines.Add(this.labels[i].ToString());
+                    this.labels[i].Enabled = false;
                 }
             }
         }
 
         private string GetTab(int tab)
         {
-            string ret = "";
+            string ret = string.Empty;
             Debug.Assert(tab >= 0);
             for (int i = 0; i < tab; i++)
             {
@@ -327,32 +346,36 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         private string GetLine()
         {
-            string line = "";
+            string line = string.Empty;
             Token token = Token.GetNext();
             if (token == null)
-                return null;
-
-            for (int i = 0; i < ifEnd.Count; i++)
             {
-                if ((token.Id == (int)ifEnd[i]) || (token.IfJumpId == (int)ifEnd[i]))
+                return null;
+            }
+
+            for (int i = 0; i < this.ifEnd.Count; i++)
+            {
+                if ((token.Id == (int)this.ifEnd[i]) || (token.IfJumpId == (int)this.ifEnd[i]))
                 {
-                    tabNo--;
-                    lines.Add(GetTab(tabNo) + "}");
-                    ifEnd.RemoveAt(i);
+                    this.tabNo--;
+                    this.lines.Add(this.GetTab(this.tabNo) + "}");
+                    this.ifEnd.RemoveAt(i);
                     i--;
                 }
             }
 
-            for (int i = 0; i < labels.Length; i++)
+            for (int i = 0; i < this.labels.Length; i++)
             {
-                if (!labels[i].Enabled)
-                    continue;
-
-                if (token.Id == labels[i].TokenIndex)
+                if (!this.labels[i].Enabled)
                 {
-                    lines.Add(labels[i].Name);
-                    labels[i].Enabled = false;
-                    usedCount++;
+                    continue;
+                }
+
+                if (token.Id == this.labels[i].TokenIndex)
+                {
+                    this.lines.Add(this.labels[i].Name);
+                    this.labels[i].Enabled = false;
+                    this.usedCount++;
                 }
             }
 
@@ -360,45 +383,55 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
             int ifJumpTo = token.IfJumpTo;
             if (token.TabMinus)
             {
-                tabNo--;
+                this.tabNo--;
             }
 
-            line = GetTab(tabNo);
+            line = this.GetTab(this.tabNo);
             line += token.GetString();
 
-            if (!token.isKnown)
+            if (!token.IsKnown)
             {
-                //MainProc.Process.WriteLog("解釈できないコード: " + (lines.Count + 1).ToString() + "行目 :" + token.GetString());
-                unknownCount++;
+                // MainProc.Process.WriteLog("解釈できないコード: " + (lines.Count + 1).ToString() + "行目 :" + token.GetString());
+                this.unknownCount++;
             }
 
-            if (!token.isLineend)
+            if (!token.IsLineend)
             {
                 while ((token = Token.GetNext()) != null)
                 {
                     string add = token.GetString();
-                    if (token.isArg)
-                        line += ", ";
-                    else
-                        line += " ";
-                    line += add;
-                    if (!token.isKnown)
+                    if (token.IsArg)
                     {
-                        //MainProc.Process.WriteLog("解釈できないコード: " + (lines.Count + 1).ToString() + "行目 :" + token.GetString());
-                        unknownCount++;
+                        line += ", ";
+                    }
+                    else
+                    {
+                        line += " ";
                     }
 
-                    if (token.isLineend)
+                    line += add;
+                    if (!token.IsKnown)
+                    {
+                        // MainProc.Process.WriteLog("解釈できないコード: " + (lines.Count + 1).ToString() + "行目 :" + token.GetString());
+                        this.unknownCount++;
+                    }
+
+                    if (token.IsLineend)
+                    {
                         break;
+                    }
                 }
             }
 
             if (tabPlus)
-                tabNo++;
+            {
+                this.tabNo++;
+            }
+
             if (ifJumpTo >= 0)
             {
                 line += " {";
-                ifEnd.Add(ifJumpTo);
+                this.ifEnd.Add(ifJumpTo);
             }
 
             return line;
@@ -406,23 +439,27 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal string GetDeffuncName(int index)
         {
-            if ((index >= deffuncs.Length) || (index < 0))
+            if ((index >= this.deffuncs.Length) || (index < 0))
+            {
                 return null;
+            }
 
-            return deffuncs[index].Name;
+            return this.deffuncs[index].Name;
         }
 
         internal string GetFuncName(int index)
         {
-            if ((index >= funcs.Length) || (index < 0))
+            if ((index >= this.funcs.Length) || (index < 0))
+            {
                 return null;
+            }
 
-            return funcs[index].Name;
+            return this.funcs[index].Name;
         }
 
         internal List<string> GetLines()
         {
-            return lines;
+            return this.lines;
         }
     }
 }

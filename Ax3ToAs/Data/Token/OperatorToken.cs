@@ -3,7 +3,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
     /// <summary>
-    /// 演算子トークン
+    /// 演算子トークン.
     /// </summary>
     internal sealed class OperatorToken : ExpressionTermToken
     {
@@ -13,33 +13,39 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal OperatorToken(OperatorPrimitive source)
         {
-            primitive = source;
+            this.primitive = source;
         }
 
-        readonly OperatorPrimitive primitive;
+        private readonly OperatorPrimitive primitive;
 
         internal override int TokenOffset
         {
-            get { return primitive.TokenOffset; }
+            get { return this.primitive.TokenOffset; }
         }
 
         public override string ToString()
         {
-            return primitive.ToString();
+            return this.primitive.ToString();
         }
 
         internal string ToString(bool isAssignment, bool hasExpression)
         {
-            string ret = primitive.ToString();
-            if (primitive.CodeType != HspCodeType.Operator)
-                return primitive.ToString();
+            string ret = this.primitive.ToString();
+            if (this.primitive.CodeType != HspCodeType.Operator)
+            {
+                return this.primitive.ToString();
+            }
 
             if (isAssignment)
             {
                 if ((!hasExpression) && (ret == "+"))
+                {
                     return "++";
+                }
                 else if ((!hasExpression) && (ret == "-"))
+                {
                     return "--";
+                }
 
                 switch (ret)
                 {
@@ -64,7 +70,6 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             return ret;
         }
 
-
         internal override bool IsOperand
         {
             get { return false; }
@@ -77,7 +82,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal override int Priority
         {
-            get { return primitive.OperatorPriority; }
+            get { return this.primitive.OperatorPriority; }
         }
     }
 }

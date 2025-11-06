@@ -6,18 +6,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
     {
         internal HspDictionaryKey(HspDictionaryKey key)
         {
-            Type = key.Type;
-            Value = key.Value;
-            AllValue = key.AllValue;
+            this.Type = key.Type;
+            this.Value = key.Value;
+            this.AllValue = key.AllValue;
         }
 
         internal HspDictionaryKey(string theType, string theValue)
         {
-            Type = DicParser.StringToInt32(theType);
-            Value = DicParser.StringToInt32(theValue);
-            AllValue = false;
-            if (Value == -1)
-                AllValue = true;
+            this.Type = DicParser.StringToInt32(theType);
+            this.Value = DicParser.StringToInt32(theValue);
+            this.AllValue = false;
+            if (this.Value == -1)
+            {
+                this.AllValue = true;
+            }
         }
 
         internal int Type;
@@ -26,41 +28,43 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 
         public override string ToString()
         {
-            if (Value == -1)
-                return "Type:0x" + Type.ToString("X02") + "Value:0xFFFF";
+            if (this.Value == -1)
+            {
+                return "Type:0x" + this.Type.ToString("X02") + "Value:0xFFFF";
+            }
 
-            return "Type:0x" + Type.ToString("X02") + "Value:0x" + Value.ToString("X04");
+            return "Type:0x" + this.Type.ToString("X02") + "Value:0x" + this.Value.ToString("X04");
         }
 
         public override bool Equals(object obj)
         {
             if (obj.GetType() != typeof(HspDictionaryKey))
+            {
                 throw new Exception("サポート外");
+            }
 
-            return Equals((HspDictionaryKey)obj);
+            return this.Equals((HspDictionaryKey)obj);
         }
 
         public override int GetHashCode()
         {
-            return Type.GetHashCode() ^ Value.GetHashCode();
+            return this.Type.GetHashCode() ^ this.Value.GetHashCode();
         }
 
-        #region IEquatable<HspDictionaryKey> メンバ
         public bool Equals(HspDictionaryKey other)
         {
-            return Type.Equals(other.Type) && Value.Equals(other.Value);
+            return this.Type.Equals(other.Type) && this.Value.Equals(other.Value);
         }
-        #endregion
 
-        #region IComparable<HspDictionaryKey> メンバ
         public int CompareTo(HspDictionaryKey other)
         {
-            int ret = Type.CompareTo(other.Type);
+            int ret = this.Type.CompareTo(other.Type);
             if (ret != 0)
+            {
                 return ret;
+            }
 
-            return Value.CompareTo(other.Value);
+            return this.Value.CompareTo(other.Value);
         }
-        #endregion
     }
 }

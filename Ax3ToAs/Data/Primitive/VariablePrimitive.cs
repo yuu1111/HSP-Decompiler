@@ -16,7 +16,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
 
     internal sealed class GlobalVariablePrimitive : VariablePrimitive
     {
-        readonly string varName;
+        private readonly string varName;
 
         private GlobalVariablePrimitive()
         {
@@ -25,19 +25,22 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
         internal GlobalVariablePrimitive(PrimitiveTokenDataSet dataSet)
             : base(dataSet)
         {
-            varName = dataSet.Parent.GetVariableName(Value);
+            this.varName = dataSet.Parent.GetVariableName(this.Value);
         }
 
         public override string ToString()
         {
-            if (varName != null)
-                return varName;
+            if (this.varName != null)
+            {
+                return this.varName;
+            }
 
             StringBuilder bld = new StringBuilder("var");
             bld.Append("_");
-            bld.Append(Value.ToString());
+            bld.Append(this.Value.ToString());
             return bld.ToString();
         }
+
 #if DEBUG
         public static string ToString(int value)
         {
@@ -58,19 +61,23 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
         internal ParameterPrimitive(PrimitiveTokenDataSet dataSet)
             : base(dataSet)
         {
-            param = dataSet.Parent.GetParam(Value);
-            if (param != null)
-                param.ParamNameIsUsed = true;
+            this.param = dataSet.Parent.GetParam(this.Value);
+            if (this.param != null)
+            {
+                this.param.ParamNameIsUsed = true;
+            }
         }
 
         private readonly Param param;
 
         public override string ToString()
         {
-            if (param != null)
-                return param.ParamName;
+            if (this.param != null)
+            {
+                return this.param.ParamName;
+            }
 
-            return DefaultName;
+            return this.DefaultName;
         }
     }
 }

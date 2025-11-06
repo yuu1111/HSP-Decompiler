@@ -33,25 +33,29 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
         internal LabelPrimitive(PrimitiveTokenDataSet dataSet)
             : base(dataSet)
         {
-            label = dataSet.Parent.Labels[Value];
+            this.label = dataSet.Parent.Labels[this.Value];
         }
 
-        readonly Label label;
+        private readonly Label label;
 
         public override string ToString()
         {
-            if (label == null)
-                return DefaultName;
+            if (this.label == null)
+            {
+                return this.DefaultName;
+            }
 
-            return label.LabelName;
+            return this.label.LabelName;
         }
 
         internal void LabelIsUsed()
         {
-            if (label == null)
+            if (this.label == null)
+            {
                 return;
+            }
 
-            label.Visible = true;
+            this.label.Visible = true;
         }
     }
 
@@ -68,17 +72,17 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
 
         internal override bool IsNegativeNumber
         {
-            get { return (Value < 0); }
+            get { return this.Value < 0; }
         }
 
         internal override bool IsMinusOne
         {
-            get { return Value == -1; }
+            get { return this.Value == -1; }
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return this.Value.ToString();
         }
     }
 
@@ -94,25 +98,26 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             this.d = d;
         }
 
-        readonly double d;
+        private readonly double d;
 
         internal override bool IsNegativeNumber
         {
-            get { return (d < 0.0); }
+            get { return this.d < 0.0; }
         }
 
         public override string ToString()
         {
-            //みっともない。いい方法ないかな？
-            //指数表示はだめ。(3.73562892357e-12とかは認識されない。)
-            //たとえ整数でも.0をつけること(そうしないとint型リテラルと認識される。一律DまたはFのプレフィックスをつけてもよい)
-            //たとえ1未満でも0.をつけること(.001とかは認識してくれない。)
-            //たとえとっても小さくても0.0にしてはだめ。(0.000000000000000000000000001とか1e-300とかでも0にしてくれちゃ困る)
-            return d.ToString(
+            // みっともない。いい方法ないかな？
+            // 指数表示はだめ。(3.73562892357e-12とかは認識されない。)
+            // たとえ整数でも.0をつけること(そうしないとint型リテラルと認識される。一律DまたはFのプレフィックスをつけてもよい)
+            // たとえ1未満でも0.をつけること(.001とかは認識してくれない。)
+            // たとえとっても小さくても0.0にしてはだめ。(0.000000000000000000000000001とか1e-300とかでも0にしてくれちゃ困る)
+            return this.d.ToString(
                 "0.0#########################################################################################################################################################################################################################################################################################################################################################");
-            //         var_0 = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000999999999999997
 
-            //         var_0 = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000988131291682493		
+            // var_0 = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000999999999999997
+
+            // var_0 = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000988131291682493
         }
     }
 
@@ -128,13 +133,13 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             this.str = str;
         }
 
-        readonly string str;
+        private readonly string str;
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             builder.Append('"');
-            builder.Append(str);
+            builder.Append(this.str);
             builder.Append('"');
             return builder.ToString();
         }

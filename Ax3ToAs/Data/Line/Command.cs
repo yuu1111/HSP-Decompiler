@@ -11,18 +11,18 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
         internal Command(FunctionToken function)
         {
             this.function = function;
-
         }
 
-
-        readonly FunctionToken function;
+        private readonly FunctionToken function;
 
         internal override bool TabIncrement
         {
             get
             {
-                if ((function.Primitive.CodeExtraFlags & HspCodeExtraFlags.AddTab) == HspCodeExtraFlags.AddTab)
+                if ((this.function.Primitive.CodeExtraFlags & HspCodeExtraFlags.AddTab) == HspCodeExtraFlags.AddTab)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -32,8 +32,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
         {
             get
             {
-                if ((function.Primitive.CodeExtraFlags & HspCodeExtraFlags.RemoveTab) == HspCodeExtraFlags.RemoveTab)
+                if ((this.function.Primitive.CodeExtraFlags & HspCodeExtraFlags.RemoveTab) == HspCodeExtraFlags.RemoveTab)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -43,8 +45,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
         {
             get
             {
-                if ((function.Primitive.CodeExtraFlags & HspCodeExtraFlags.HasGhostGoto) == HspCodeExtraFlags.HasGhostGoto)
+                if ((this.function.Primitive.CodeExtraFlags & HspCodeExtraFlags.HasGhostGoto) == HspCodeExtraFlags.HasGhostGoto)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -54,8 +58,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
         {
             get
             {
-                if ((function.Primitive.CodeExtraFlags & HspCodeExtraFlags.IsGhost) == HspCodeExtraFlags.IsGhost)
+                if ((this.function.Primitive.CodeExtraFlags & HspCodeExtraFlags.IsGhost) == HspCodeExtraFlags.IsGhost)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -63,25 +69,28 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal override int TokenOffset
         {
-            get { return function.TokenOffset; }
+            get { return this.function.TokenOffset; }
         }
 
         public override string ToString()
         {
-            return function.ToString();
+            return this.function.ToString();
         }
-
 
         internal override void CheckLabel()
         {
-            if (function != null)
-                function.CheckLabel();
+            if (this.function != null)
+            {
+                this.function.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
-            if (function != null)
-                return function.CheckRpn();
+            if (this.function != null)
+            {
+                return this.function.CheckRpn();
+            }
 
             return true;
         }

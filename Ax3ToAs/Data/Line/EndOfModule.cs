@@ -1,7 +1,6 @@
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
-    class EndOfModule : LogicalLine
-
+    internal class EndOfModule : LogicalLine
     {
         internal override int TokenOffset
         {

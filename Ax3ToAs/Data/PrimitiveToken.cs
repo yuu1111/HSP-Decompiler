@@ -23,16 +23,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal PrimitiveToken(PrimitiveTokenDataSet dataSet)
         {
-            parent = dataSet.Parent;
-            codeType = dataSet.DicValue.Type;
-            codeExtraFlags = dataSet.DicValue.Extra;
-            dicValueName = dataSet.DicValue.Name;
-            oparatorPriority = dataSet.DicValue.OparatorPriority;
-            tokenOffset = dataSet.TokenOffset;
-            type = dataSet.Type;
-            flag = dataSet.Flag;
-            value = dataSet.Value;
-            name = dataSet.Name;
+            this.parent = dataSet.Parent;
+            this.codeType = dataSet.DicValue.Type;
+            this.codeExtraFlags = dataSet.DicValue.Extra;
+            this.dicValueName = dataSet.DicValue.Name;
+            this.oparatorPriority = dataSet.DicValue.OparatorPriority;
+            this.tokenOffset = dataSet.TokenOffset;
+            this.type = dataSet.Type;
+            this.flag = dataSet.Flag;
+            this.value = dataSet.Value;
+            this.name = dataSet.Name;
         }
 
         protected string dicValueName = "null";
@@ -44,25 +44,28 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal int Value
         {
-            get { return value; }
+            get { return this.value; }
         }
-
-
 
         private readonly HspCodeExtraFlags codeExtraFlags;
         private readonly AxData parent;
         private int oparatorPriority;
         private string name;
-        int tokenOffset;
+        private int tokenOffset;
 
         internal bool HasGhostLabel
         {
             get
             {
-                if (!IsLineHead)
+                if (!this.IsLineHead)
+                {
                     return false;
-                if ((codeExtraFlags & HspCodeExtraFlags.HasGhostLabel) == HspCodeExtraFlags.HasGhostLabel)
+                }
+
+                if ((this.codeExtraFlags & HspCodeExtraFlags.HasGhostLabel) == HspCodeExtraFlags.HasGhostLabel)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -70,68 +73,70 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal HspCodeType CodeType
         {
-            get { return codeType; }
+            get { return this.codeType; }
         }
 
         internal HspCodeExtraFlags CodeExtraFlags
         {
-            get { return codeExtraFlags; }
+            get { return this.codeExtraFlags; }
         }
 
         internal int OperatorPriority
         {
             get
             {
-                if (codeType != HspCodeType.Operator)
+                if (this.codeType != HspCodeType.Operator)
+                {
                     throw new InvalidOperationException("演算子でないプリミティブに優先度が要求されました");
+                }
 
-                return oparatorPriority;
+                return this.oparatorPriority;
             }
         }
 
         internal bool HasLongTypeValue
         {
-            get { return ((flag & 0x80) == 0x80); }
+            get { return (this.flag & 0x80) == 0x80; }
         }
 
         internal bool IsParamHead
         {
-            get { return ((flag & 0x40) == 0x40); }
+            get { return (this.flag & 0x40) == 0x40; }
         }
 
         internal bool IsLineHead
         {
-            get { return ((flag & 0x20) == 0x20); }
+            get { return (this.flag & 0x20) == 0x20; }
         }
 
         internal string Name
         {
-            get { return name; }
+            get { return this.name; }
         }
 
         internal int TokenOffset
         {
-            get { return tokenOffset; }
+            get { return this.tokenOffset; }
         }
 
         internal void SetName()
         {
-            switch (codeType)
+            switch (this.codeType)
             {
                 case HspCodeType.Label:
 
-                    name = dicValueName + value;
+                    this.name = this.dicValueName + this.value;
                     return;
 
                 case HspCodeType.Integer:
                 case HspCodeType.Param:
                 case HspCodeType.Variable:
-                    name = dicValueName + value;
+                    this.name = this.dicValueName + this.value;
                     return;
                 case HspCodeType.UserFunction:
                 case HspCodeType.DllFunction:
-                //defaultName = "not supported";
-                //break;
+                // defaultName = "not supported";
+                // break;
                 case HspCodeType.NONE:
                 default:
                     break;
@@ -140,7 +145,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         public override string ToString()
         {
-            return name;
+            return this.name;
         }
 
         internal virtual string DefaultName
@@ -149,14 +154,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             {
                 StringBuilder builder = new StringBuilder();
                 builder.Append("/*");
-                builder.Append(type.ToString("X02"));
+                builder.Append(this.type.ToString("X02"));
                 builder.Append(' ');
-                builder.Append(flag.ToString("X02"));
+                builder.Append(this.flag.ToString("X02"));
                 builder.Append(' ');
-                if (HasLongTypeValue)
-                    builder.Append(value.ToString("X08"));
+                if (this.HasLongTypeValue)
+                {
+                    builder.Append(this.value.ToString("X08"));
+                }
                 else
-                    builder.Append(value.ToString("X04"));
+                {
+                    builder.Append(this.value.ToString("X04"));
+                }
+
                 builder.Append("*/");
                 return builder.ToString();
             }

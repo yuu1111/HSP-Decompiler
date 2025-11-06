@@ -2,19 +2,16 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
     /// <summary>
-    /// Token の概要の説明です。
+    /// Token の概要の説明です。.
     /// </summary>
     internal class Token
     {
         private Token()
         {
-            // 
             // TODO: コンストラクタ ロジックをここに追加してください。
-            //
         }
 
         private Token(int offset)
@@ -32,10 +29,8 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         private int fValue;
         private int id;
         private int size;
-        internal bool isLineend;
+        internal bool IsLineend;
         internal int IfJumpTo = -1;
-
-        #region static
         private static int nextOffset;
         internal static int Index;
         private static Token nextToken;
@@ -50,7 +45,6 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal static Token GetNext()
         {
-
             Token ret = nextToken;
 
             nextToken = GetToken(nextOffset);
@@ -61,17 +55,23 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
             }
 
             Index = ret.id;
-            if ((nextToken == null) || (nextToken.isLinehead))
-                ret.isLineend = true;
+            if ((nextToken == null) || nextToken.IsLinehead)
+            {
+                ret.IsLineend = true;
+            }
+
             if (nextToken != null)
             {
                 nextOffset += nextToken.size;
                 if (ret.NextIsUnenableLabel)
                 {
-                    ret.isLineend = false;
-                    Token UnenableToken = GetNext(); //無効ラベル
-                    if ((nextToken == null) || (nextToken.isLinehead))
-                        ret.isLineend = true;
+                    ret.IsLineend = false;
+                    Token unenableToken = GetNext(); // 無効ラベル
+                    if ((nextToken == null) || nextToken.IsLinehead)
+                    {
+                        ret.IsLineend = true;
+                    }
+
                     return ret;
                 }
             }
@@ -82,7 +82,9 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         private static Token GetToken(int offset)
         {
             if ((offset < 0) || ((offset + 1) >= data.TokenData.Length))
+            {
                 return null;
+            }
 
             Token ret = new Token();
             ret.id = offset / 2;
@@ -105,7 +107,7 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 ret.IfJumpTo += ret.id + 2;
             }
 
-            if (((ret.fType & 0x80) != 0)) //&&(ret.fValue==0) )
+            if ((ret.fType & 0x80) != 0) // &&(ret.fValue==0) )
             {
                 ret.fType ^= 0x80;
                 ret.size += 4;
@@ -124,55 +126,58 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 return (int)ret;
             }
         }
-        #endregion
 
-        #region propaty
         private int Type
         {
-            get { return fType & 0x78; }
+            get { return this.fType & 0x78; }
         }
 
         private int Value
         {
-            get { return fValue; }
+            get { return this.fValue; }
         }
 
         private bool NextIsUnenableLabel
         {
             get
             {
-                if ((Type == 0x40) && ((fValue == 0x03) || (fValue == 0x11) || (fValue == 0x2b)))
+                if ((this.Type == 0x40) && ((this.fValue == 0x03) || (this.fValue == 0x11) || (this.fValue == 0x2b)))
+                {
                     return true;
+                }
 
                 return false;
             }
         }
 
-        internal bool isLinehead //このトークンは行頭にくるべきであり、直前に"\n"を入れる必要がある。
+        internal bool IsLinehead // このトークンは行頭にくるべきであり、直前に"\n"を入れる必要がある。
         {
-            get { return (fType & 2) != 0; }
+            get { return (this.fType & 2) != 0; }
         }
 
-
-        internal bool isArg //このトークンは引数のひとつであり、直前に','を入れる必要がある。
+        internal bool IsArg // このトークンは引数のひとつであり、直前に','を入れる必要がある。
         {
-            get { return (fType & 4) != 0; }
+            get { return (this.fType & 4) != 0; }
         }
 
         internal bool TabPlus
         {
             get
             {
-                if (Type == 0x40)
+                if (this.Type == 0x40)
                 {
-                    if (Value == 0x11) //repeat
+                    if (this.Value == 0x11) // repeat
+                    {
                         return true;
+                    }
                 }
 
-                if (Type == 0x58)
+                if (this.Type == 0x58)
                 {
-                    if ((Value == 0) || (Value == 1)) //if else
+                    if ((this.Value == 0) || (this.Value == 1)) // if else
+                    {
                         return true;
+                    }
                 }
 
                 return false;
@@ -183,63 +188,67 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         {
             get
             {
-                if (Type == 0x40)
+                if (this.Type == 0x40)
                 {
-                    if (Value == 0x12) //loop
+                    if (this.Value == 0x12) // loop
+                    {
                         return true;
+                    }
                 }
 
                 return false;
             }
         }
 
-
         internal int Id
         {
-            get { return id; }
+            get { return this.id; }
         }
 
         internal int IfJumpId
         {
             get
             {
-                if ((Type == 0x58) && (Value == 1))
+                if ((this.Type == 0x58) && (this.Value == 1))
                 {
-                    return id + 2;
+                    return this.id + 2;
                 }
 
-                return id;
+                return this.id;
             }
         }
 
-        internal bool isEmpty
+        internal bool IsEmpty
         {
-            get { return (fType == 0) && (fValue == 0); }
+            get { return (this.fType == 0) && (this.fValue == 0); }
         }
 
         internal int LabelIndex
         {
             get
             {
-                if (isLinehead)
+                if (this.IsLinehead)
+                {
                     return -1;
-                if (Type == 0x18)
-                    return Value;
+                }
+
+                if (this.Type == 0x18)
+                {
+                    return this.Value;
+                }
 
                 return -1;
             }
         }
-        #endregion
 
-        #region propaty for decompile
         internal string GetString()
         {
-            int type = Type;
-            string ret = null;
-            switch (Type)
+            int type = this.Type;
+            string? ret = null;
+            switch (this.Type)
             {
-                case 0x00: //token_value=文字コード
-                    switch (Value)
+                case 0x00: // token_value=文字コード
+                    switch (this.Value)
                     {
                         case 0x61:
                             return "<=";
@@ -252,124 +261,158 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                         default:
                             Encoding encode = Encoding.GetEncoding("SHIFT-JIS");
                             byte[] bytes = new byte[1];
-                            bytes[0] = (byte)Value;
+                            bytes[0] = (byte)this.Value;
                             return encode.GetString(bytes);
                     }
 
-                case 0x08: //token_value=整数値
-                    return Value.ToString();
-                case 0x10: //token_value=文字列を格納しているアドレス
-                    ret = data.GetString(Value);
-                    return "\"" + Escape(ret) + "\"";
-                case 0x18: //token_value=ラベルナンバー
-                    return "label_" + Value;
-                case 0x20: //token_value=変数ナンバー
-                    return "var_" + Value;
-                case 0x38: //hsp標準命令
-                    ret = GetStdFunc1Name(Value);
+                case 0x08: // token_value=整数値
+                    return this.Value.ToString();
+                case 0x10: // token_value=文字列を格納しているアドレス
+                    ret = data.GetString(this.Value);
+                    return "\"" + this.Escape(ret) + "\"";
+                case 0x18: // token_value=ラベルナンバー
+                    return "label_" + this.Value;
+                case 0x20: // token_value=変数ナンバー
+                    return "var_" + this.Value;
+                case 0x38: // hsp標準命令
+                    ret = this.GetStdFunc1Name(this.Value);
                     if (ret != null)
+                    {
                         return ret;
+                    }
 
                     break;
-                case 0x40: //hsp標準命令２
-                    ret = GetStdFunc2Name(Value);
+                case 0x40: // hsp標準命令２
+                    ret = this.GetStdFunc2Name(this.Value);
                     if (ret != null)
+                    {
                         return ret;
+                    }
 
                     break;
-                case 0x48: //hsp標準命令３
-                    ret = GetStdFunc3Name(Value);
+                case 0x48: // hsp標準命令３
+                    ret = this.GetStdFunc3Name(this.Value);
                     if (ret != null)
+                    {
                         return ret;
+                    }
 
                     break;
-                case 0x50: //func関数
-                    ret = data.GetFuncName(Value - 0x10);
+                case 0x50: // func関数
+                    ret = data.GetFuncName(this.Value - 0x10);
                     if (ret != null)
+                    {
                         return "func_" + ret;
+                    }
 
                     break;
-                case 0x58: //if系命令
-                    if (Value == 0)
+                case 0x58: // if系命令
+                    if (this.Value == 0)
+                    {
                         return "if";
-                    if (Value == 1)
+                    }
+
+                    if (this.Value == 1)
+                    {
                         return "else";
+                    }
 
                     break;
-                case 0x60: //deffunc関数
-                    ret = data.GetDeffuncName(Value - 0x10);
+                case 0x60: // deffunc関数
+                    ret = data.GetDeffuncName(this.Value - 0x10);
                     if (ret != null)
+                    {
                         return ret;
+                    }
 
                     break;
-                case 0x78: //end
-                    if (Value == 0)
+                case 0x78: // end
+                    if (this.Value == 0)
+                    {
                         return "end";
+                    }
 
                     break;
             }
 
-            return Type.ToString("x2") + Value.ToString("x2");
+            return this.Type.ToString("x2") + this.Value.ToString("x2");
         }
 
-        internal bool isKnown
+        internal bool IsKnown
         {
             get
             {
-                int type = Type;
-                string ret = null;
-                switch (Type)
+                int type = this.Type;
+                string? ret = null;
+                switch (this.Type)
                 {
-                    case 0x00: //token_value=文字コード
+                    case 0x00: // token_value=文字コード
                         return true;
-                    case 0x08: //token_value=整数値
+                    case 0x08: // token_value=整数値
                         return true;
-                    case 0x10: //token_value=文字列を格納しているアドレス
+                    case 0x10: // token_value=文字列を格納しているアドレス
                         return true;
-                    case 0x18: //token_value=ラベルナンバー
+                    case 0x18: // token_value=ラベルナンバー
                         return true;
-                    case 0x20: //token_value=変数ナンバー
+                    case 0x20: // token_value=変数ナンバー
                         return true;
-                    case 0x38: //hsp標準命令
-                        ret = GetStdFunc1Name(Value);
+                    case 0x38: // hsp標準命令
+                        ret = this.GetStdFunc1Name(this.Value);
                         if (ret != null)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x40: //hsp標準命令２
-                        ret = GetStdFunc2Name(Value);
+                    case 0x40: // hsp標準命令２
+                        ret = this.GetStdFunc2Name(this.Value);
                         if (ret != null)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x48: //hsp標準命令３
-                        ret = GetStdFunc3Name(Value);
+                    case 0x48: // hsp標準命令３
+                        ret = this.GetStdFunc3Name(this.Value);
                         if (ret != null)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x50: //func関数
-                        ret = data.GetFuncName(Value - 0x10);
+                    case 0x50: // func関数
+                        ret = data.GetFuncName(this.Value - 0x10);
                         if (ret != null)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x58: //if系命令
-                        if (Value == 0)
+                    case 0x58: // if系命令
+                        if (this.Value == 0)
+                        {
                             return true;
-                        if (Value == 1)
+                        }
+
+                        if (this.Value == 1)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x60: //deffunc関数
-                        ret = data.GetDeffuncName(Value - 0x10);
+                    case 0x60: // deffunc関数
+                        ret = data.GetDeffuncName(this.Value - 0x10);
                         if (ret != null)
+                        {
                             return true;
+                        }
 
                         break;
-                    case 0x78: //end
-                        if (Value == 0)
+                    case 0x78: // end
+                        if (this.Value == 0)
+                        {
                             return true;
+                        }
 
                         break;
                 }
@@ -382,14 +425,18 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         private string Escape(string str)
         {
-
             if (str == null)
+            {
                 return null;
+            }
+
             if (str.Length == 0)
+            {
                 return str;
+            }
 
             int i;
-            if ((i = str.IndexOfAny(escapeWord)) >= 0)
+            if ((i = str.IndexOfAny(this.escapeWord)) >= 0)
             {
                 char spliter = str[i];
                 string mid;
@@ -399,7 +446,7 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                         mid = @"\n";
                         break;
                     case '\r':
-                        mid = ""; //@"\r";\nが\r\nに翻訳される不具合の修正。HSPでは"\n"⇒"\r\n"にするようだ
+                        mid = string.Empty; // @"\r";\nが\r\nに翻訳される不具合の修正。HSPでは"\n"⇒"\r\n"にするようだ
                         break;
                     case '\t':
                         mid = @"\t";
@@ -412,20 +459,18 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                         break;
                     default:
                         Debug.Assert(false);
-                        mid = "";
+                        mid = string.Empty;
                         break;
                 }
 
-                string[] ret = str.Split(escapeWord, 2);
-                return ret[0] + mid + Escape(ret[1]);
+                string[] ret = str.Split(this.escapeWord, 2);
+                return ret[0] + mid + this.Escape(ret[1]);
             }
 
             return str;
-
         }
 
-        #region HSPfuncname
-        private string GetStdFunc1Name(int v) //0x38系命令
+        private string GetStdFunc1Name(int v) // 0x38系命令
         {
             switch (v)
             {
@@ -460,14 +505,12 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 case 0x62: return "curdir";
                 case 0x63: return "refstr";
                 case 0x64: return "exedir";
-
-
             }
 
             return null;
         }
 
-        private string GetStdFunc2Name(int v) //0x40系命令
+        private string GetStdFunc2Name(int v) // 0x40系命令
         {
             switch (v)
             {
@@ -522,14 +565,12 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                 case 0x36: return "noteload";
                 case 0x37: return "notesave";
                 case 0x38: return "memfile";
-
-
             }
 
             return null;
         }
 
-        private string GetStdFunc3Name(int v) //0x48系命令
+        private string GetStdFunc3Name(int v) // 0x48系命令
         {
             switch (v)
             {
@@ -622,7 +663,5 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
             return null;
         }
-        #endregion
-        #endregion
     }
 }

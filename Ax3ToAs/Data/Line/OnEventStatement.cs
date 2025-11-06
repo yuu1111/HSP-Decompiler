@@ -1,11 +1,11 @@
 using System.Text;
-using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
+using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// if, else構文
+    /// if, else構文.
     /// </summary>
     internal sealed class OnEventStatement : LogicalLine
     {
@@ -15,30 +15,30 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal OnEventStatement(OnEventFunctionPrimitive theToken, FunctionToken func)
         {
-            token = theToken;
+            this.token = theToken;
             this.func = func;
         }
 
-        private readonly OnEventFunctionPrimitive token; //on####
-        private readonly FunctionToken func; //goto/gosub ～
+        private readonly OnEventFunctionPrimitive token; // on####
+        private readonly FunctionToken func; // goto/gosub ～
 
         internal override int TokenOffset
         {
-            get { return token.TokenOffset; }
+            get { return this.token.TokenOffset; }
         }
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            if (token != null)
+            if (this.token != null)
             {
-                builder.Append(token);
+                builder.Append(this.token);
             }
 
-            if (func != null)
+            if (this.func != null)
             {
                 builder.Append(' ');
-                builder.Append(func);
+                builder.Append(this.func);
             }
 
             return builder.ToString();
@@ -46,14 +46,18 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal override void CheckLabel()
         {
-            if (func != null)
-                func.CheckLabel();
+            if (this.func != null)
+            {
+                this.func.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
-            if (func != null)
-                return func.CheckRpn();
+            if (this.func != null)
+            {
+                return this.func.CheckRpn();
+            }
 
             return true;
         }

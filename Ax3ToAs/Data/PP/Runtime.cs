@@ -2,7 +2,7 @@ using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
-    class Runtime : Preprocessor
+    internal class Runtime : Preprocessor
     {
         private Runtime()
         {
@@ -10,20 +10,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal Runtime(string theName)
         {
-            name = theName;
+            this.name = theName;
         }
 
-        string name;
+        private string name;
 
         public override string ToString()
         {
             StringBuilder strbd = new StringBuilder();
             strbd.Append("#runtime ");
             strbd.Append(@"""");
-            strbd.Append(name);
+            strbd.Append(this.name);
             strbd.Append(@"""");
             return strbd.ToString();
-
         }
     }
 }

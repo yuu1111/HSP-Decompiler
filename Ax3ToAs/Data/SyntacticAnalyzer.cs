@@ -5,96 +5,108 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Line;
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
     /// <summary>
-    /// TokenFactory
+    /// TokenFactory.
     /// </summary>
-    class SyntacticAnalyzer
+    internal class SyntacticAnalyzer
     {
-        int readingLine;
+        private int readingLine;
 
         internal List<LogicalLine> Analyze(TokenCollection stream, AxData data)
         {
             List<LogicalLine> ret = new List<LogicalLine>();
-            subAnalyzePreprocessor(ret, data);
-            readingLine = ret.Count;
-            //構文解析
+            this.SubAnalyzePreprocessor(ret, data);
+            this.readingLine = ret.Count;
+
+            // 構文解析
             while (!stream.NextIsEndOfStream)
             {
                 System.Windows.Forms.Application.DoEvents();
                 System.Threading.Thread.Sleep(0);
-                readingLine++;
+                this.readingLine++;
                 LogicalLine line = LogicalLineFactory.GetCodeToken(stream.GetLine());
                 if (line != null)
+                {
                     ret.Add(line);
+                }
             }
 
-            //ゴーストの削除 foreach2とかstopの後のgoto文とか。
-            //repeatなどの後に出るラベルは構文解析で削除
+            // ゴーストの削除 foreach2とかstopの後のgoto文とか。
+            // repeatなどの後に出るラベルは構文解析で削除
             for (int i = 0; i < ret.Count; i++)
             {
                 if (ret[i].HasFlagIsGhost)
+                {
                     ret[i].Visible = false;
-                if ((ret[i].HasFlagGhostGoto) && (i != (ret.Count - 1)))
+                }
+
+                if (ret[i].HasFlagGhostGoto && (i != (ret.Count - 1)))
+                {
                     ret[i + 1].Visible = false;
+                }
             }
 
-            ret = ret.FindAll(IsVisible);
+            ret = ret.FindAll(this.IsVisible);
             for (int i = 0; i < ret.Count; i++)
             {
                 if (!ret[i].CheckRpn())
+                {
                     ret[i].AddError("式：数式の変換に失敗");
+                }
             }
 
+            // subAnalyzeScoop、subAnalyzeLabelの順でやると
+            // if(value){
+            // ～～
+            // }
+            // *label
+            // else{
+            // ～～
+            // }
+            // となった時にエラー
+            // しかしながらsubAnalyzeLabel、subAnalyzeScoopの順でやると
+            // if(value){
+            // ～～
+            // *label
+            // }
+            // return
+            // となってみっともない。
+            // そこでsubAnalyzeScoop、subAnalyzeLabelの順で行い、subAnalyzeLabelの際に直後がelse節で直前がScoopEndなら一つ戻す処理を入れる。
+            this.SubAnalyzeScoop(ret);
+            this.SubAnalyzeLabel(ret, data);
 
-            //subAnalyzeScoop、subAnalyzeLabelの順でやると
-            //if(value){
-            //　～～
-            //}
-            //*label
-            //else{
-            //　～～
-            //}
-            //となった時にエラー
-            //しかしながらsubAnalyzeLabel、subAnalyzeScoopの順でやると
-            //if(value){
-            //　～～
-            //*label
-            //}
-            //return
-            //となってみっともない。
-            //そこでsubAnalyzeScoop、subAnalyzeLabelの順で行い、subAnalyzeLabelの際に直後がelse節で直前がScoopEndなら一つ戻す処理を入れる。
-
-            subAnalyzeScoop(ret);
-            subAnalyzeLabel(ret, data);
-
-
-            //タブ整形や余分な行の削除を行う
+            // タブ整形や余分な行の削除を行う
             int tabCount = 1;
             for (int i = 0; i < ret.Count; i++)
             {
                 if (ret[i].TabDecrement)
+                {
                     tabCount--;
+                }
+
                 ret[i].TabCount = tabCount;
                 if (ret[i].TabIncrement)
+                {
                     tabCount++;
+                }
             }
-
 
             for (int i = 0; i < ret.Count; i++)
             {
                 if (ret[i].GetErrorMes().Count != 0)
+                {
                     foreach (string errMes in ret[i].GetErrorMes())
+                    {
                         HspConsole.Warning(errMes, i + 1);
-
+                    }
+                }
             }
 
-            ret[ret.Count - 1].Visible = false; //末尾に自動生成されるstop文の削除
-            ret = ret.FindAll(IsVisible);
+            ret[ret.Count - 1].Visible = false; // 末尾に自動生成されるstop文の削除
+            ret = ret.FindAll(this.IsVisible);
             return ret;
-
-
         }
 
-        private void subAnalyzePreprocessor(List<LogicalLine> ret, AxData data)
+        private void SubAnalyzePreprocessor(List<LogicalLine> ret, AxData data)
         {
             if (data.Runtime != null)
             {
@@ -109,19 +121,23 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     LogicalLine line = new PreprocessorDeclaration(module);
                     line.AddError("deHSPの出力する#structはHSPの公開されている言語仕様には含まれません");
                     ret.Add(line);
-                    //ret.Add(new EndOfModule());//#globalイラネ
+
+                    // ret.Add(new EndOfModule());//#globalイラネ
                 }
-
             }
-
 
             foreach (Usedll dll in data.Usedlls)
             {
                 ret.Add(new PreprocessorDeclaration(dll));
                 List<Function> funcs = dll.GetFunctions();
                 if (funcs != null)
+                {
                     foreach (Function func in funcs)
+                    {
                         ret.Add(new PreprocessorDeclaration(func));
+                    }
+                }
+
                 ret.Add(new CommentLine());
             }
 
@@ -138,19 +154,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             }
         }
 
-
         /// <summary>
-        /// if,elseスコープの終点を決める。
+        /// if,elseスコープの終点を決める。.
         /// </summary>
         /// <param defaultName="ret"></param>
-        private void subAnalyzeScoop(List<LogicalLine> ret)
+        private void SubAnalyzeScoop(List<LogicalLine> ret)
         {
             for (int i = 0; i < ret.Count; i++)
             {
-                //ifelse以外は関係ない。
-                IfStatement scoopStart = ret[i] as IfStatement;
+                // ifelse以外は関係ない。
+                IfStatement? scoopStart = ret[i] as IfStatement;
                 if (scoopStart == null)
+                {
                     continue;
+                }
 
                 if (scoopStart.JumpToOffset < 0)
                 {
@@ -159,16 +176,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     continue;
                 }
 
-                //まず着地する行(Jumpのとび先)を探す。
-                //行の途中に着地してはならない。
-                //TokenOffsetが0xFFFFを超える場合、HSP3.0aはオバーフローを起こすが、コンパイルは通る。
-                //行の途中に着地するのはこのときぐらいか。
-                //<<2007/4/17追記>>
-                //if (～～){
-                //として、}を書かなかった場合、飛び先が0にセットされる。このときも行の途中（自分自身の途中になる）に着地するようだ
+                // まず着地する行(Jumpのとび先)を探す。
+                // 行の途中に着地してはならない。
+                // TokenOffsetが0xFFFFを超える場合、HSP3.0aはオバーフローを起こすが、コンパイルは通る。
+                // 行の途中に着地するのはこのときぐらいか。
+                // <<2007/4/17追記>>
+                // if (～～){
+                // として、}を書かなかった場合、飛び先が0にセットされる。このときも行の途中（自分自身の途中になる）に着地するようだ
                 int jumpToOffset = scoopStart.JumpToOffset;
                 int jumpToLineNo = -1;
-                for (int j = (i + 1); j < ret.Count; j++)
+                for (int j = i + 1; j < ret.Count; j++)
                 {
                     if (ret[j].TokenOffset == jumpToOffset)
                     {
@@ -176,7 +193,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                         break;
                     }
 
-                    //行き過ぎちゃったらおしまい。
+                    // 行き過ぎちゃったらおしまい。
                     if ((ret[j].TokenOffset != -1) && (ret[j].TokenOffset > jumpToOffset))
                     {
                         jumpToLineNo = -2;
@@ -198,56 +215,65 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     continue;
                 }
 
-                //通常は着地の直前にScoopEndを挿入する。
-                //ifからelseに飛ぶ場合、jump先はelseの直後の行になっているのでさらにひとつさかのぼる必要がある。
-                IfStatement elseStatement = ret[jumpToLineNo - 1] as IfStatement;
+                // 通常は着地の直前にScoopEndを挿入する。
+                // ifからelseに飛ぶ場合、jump先はelseの直後の行になっているのでさらにひとつさかのぼる必要がある。
+                IfStatement? elseStatement = ret[jumpToLineNo - 1] as IfStatement;
                 if (elseStatement != null)
-                    if ((scoopStart.isIfStatement) && (elseStatement.isElseStatement))
+                {
+                    if (scoopStart.IsIfStatement && elseStatement.IsElseStatement)
+                    {
                         jumpToLineNo--;
+                    }
+                }
+
                 ret.Insert(jumpToLineNo, new ScoopEnd());
                 scoopStart.ScoopEndIsDefined = true;
             }
         }
 
         /// <summary>
-        /// ラベル追加
+        /// ラベル追加.
         /// </summary>
         /// <param defaultName="ret"></param>
         /// <param defaultName="data"></param>
-        private void subAnalyzeLabel(List<LogicalLine> ret, AxData data)
+        private void SubAnalyzeLabel(List<LogicalLine> ret, AxData data)
         {
             foreach (LogicalLine line in ret)
+            {
                 line.CheckLabel();
+            }
+
             data.DeleteInvisibleLables();
             data.RenameLables();
             int i = 0;
             foreach (Label label in data.Labels)
             {
                 if (label.TokenOffset == -1)
+                {
                     continue;
+                }
 
                 while ((i < ret.Count) && ((ret[i].TokenOffset == -1) || (label.TokenOffset > ret[i].TokenOffset)))
                 {
                     i++;
                 }
 
-                //if(value){
-                //　～～
-                //}
-                //*label
-                //else{
-                //　～～
-                //}
-                //となるのを回避する処理。
-                //入れようとしている場所(i)がelse節の直前でScoopEndの直後ならScoopEndの前に移動。
+                // if(value){
+                // ～～
+                // }
+                // *label
+                // else{
+                // ～～
+                // }
+                // となるのを回避する処理。
+                // 入れようとしている場所(i)がelse節の直前でScoopEndの直後ならScoopEndの前に移動。
                 if ((i > 0) && (ret[i] is IfStatement))
                 {
-                    IfStatement ifStatement = ret[i] as IfStatement;
-                    if ((ret[i - 1] is ScoopEnd) && (ifStatement.isElseStatement))
+                    IfStatement? ifStatement = ret[i] as IfStatement;
+                    if ((ret[i - 1] is ScoopEnd) && ifStatement.IsElseStatement)
                     {
                         i--;
                     }
-
                 }
 
                 ret.Insert(i, new PreprocessorDeclaration(label));

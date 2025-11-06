@@ -1,7 +1,7 @@
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// if,elseスコープの終わりをあらわす　"}"だけの行
+    /// if,elseスコープの終わりをあらわす　"}"だけの行.
     /// </summary>
     internal sealed class ScoopEnd : LogicalLine
     {

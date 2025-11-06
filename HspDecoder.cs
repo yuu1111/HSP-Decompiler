@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Windows.Forms;
+using System.Text;
 using System.Threading;
-using KttK.HspDecompiler.DpmToAx;
+using System.Windows.Forms;
 using KttK.HspDecompiler.Ax2ToAs;
 using KttK.HspDecompiler.Ax3ToAs;
+using KttK.HspDecompiler.DpmToAx;
 
 namespace KttK.HspDecompiler
 {
     internal sealed class HspDecoder
     {
-        private const string dictionaryFileName = "Dictionary.csv";
+        private const string DictionaryFileName = "Dictionary.csv";
         private static Hsp3Dictionary dictionary;
 
         internal static bool Initialize()
         {
-            string dictionaryPath = Program.ExeDir + dictionaryFileName;
+            string dictionaryPath = Program.ExeDir + DictionaryFileName;
             try
             {
                 dictionary = Hsp3Dictionary.FromFile(dictionaryPath);
@@ -29,13 +29,13 @@ namespace KttK.HspDecompiler
 
             if (dictionary != null)
             {
-                HspConsole.WriteLog("load " + dictionaryFileName + ":succeeded");
+                HspConsole.WriteLog("load " + DictionaryFileName + ":succeeded");
                 return true;
             }
 
-            err:
-            HspConsole.WriteLog("load " + dictionaryFileName + ":failed");
-            MessageBox.Show(dictionaryFileName + "の読込に失敗しました");
+        err:
+            HspConsole.WriteLog("load " + DictionaryFileName + ":failed");
+            MessageBox.Show(DictionaryFileName + "の読込に失敗しました");
             dictionary = null;
             return false;
         }
@@ -43,17 +43,27 @@ namespace KttK.HspDecompiler
         internal void DecompressDpm(BinaryReader reader, ListView dpmFileListView, string outputDir)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException();
+            }
+
             if (dpmFileListView == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             dpmFileListView.Items.Clear();
             HspConsole.Write("DPMヘッダーの開始位置を検索中...");
             Undpm undpm = Undpm.FromBinaryReader(reader);
             if (undpm == null)
+            {
                 throw new HspDecoderException("DPMヘッダーが見つかりません(HSPの実行ファイルではありません)");
+            }
+
             if ((undpm.FileList == null) || (undpm.FileList.Count == 0))
+            {
                 throw new HspDecoderException("DPMにファイルが含まれていません");
+            }
 
             int encryptCount = 0;
             int fileCount = undpm.FileList.Count;
@@ -65,13 +75,15 @@ namespace KttK.HspDecompiler
                 {
                     itemParams[1] = "有";
 #if AllowDecryption
-                    //deHSP100 start.axは暗号ファイルに数えないことにする
+                    // deHSP100 start.axは暗号ファイルに数えないことにする
                     if (!file.FileName.Equals("start.ax", StringComparison.OrdinalIgnoreCase))
 #endif
                         encryptCount++;
                 }
                 else
+                {
                     itemParams[1] = "－";
+                }
 
                 itemParams[2] = string.Format("0x{0:X08}", file.FileOffset);
                 itemParams[3] = string.Format("0x{0:X08}", file.FileSize);
@@ -88,7 +100,8 @@ namespace KttK.HspDecompiler
 
             if (encryptCount > 0)
             {
-                DialogResult result = MessageBox.Show("暗号化されたファイルがあります。" + Environment.NewLine + "暗号化されたファイルを無視して展開を続けますか？",
+                DialogResult result = MessageBox.Show(
+                    "暗号化されたファイルがあります。" + Environment.NewLine + "暗号化されたファイルを無視して展開を続けますか？",
                     fileCount + "ファイル中、" + encryptCount + "ファイルが暗号化されています。", MessageBoxButtons.YesNo);
                 if (result != DialogResult.Yes)
                 {
@@ -106,12 +119,11 @@ namespace KttK.HspDecompiler
                 catch
                 {
                     throw new HspDecoderException("ディレクトリ" + outputDir + "の作成に失敗しました");
-
                 }
             }
 
-            byte[] buffer = null;
-            FileStream saveStream = null;
+            byte[]? buffer = null;
+            FileStream? saveStream = null;
             foreach (DpmFileState file in undpm.FileList)
             {
                 if (file.IsEncrypted)
@@ -168,9 +180,10 @@ namespace KttK.HspDecompiler
                 finally
                 {
                     if (saveStream != null)
+                    {
                         saveStream.Close();
+                    }
                 }
-
             }
 
             HspConsole.Write("展開終了");
@@ -179,37 +192,47 @@ namespace KttK.HspDecompiler
         internal void Decode(BinaryReader reader, string outputPath)
         {
             if (reader == null)
+            {
                 throw new ArgumentNullException();
+            }
+
             if (dictionary == null)
+            {
                 throw new InvalidOperationException();
+            }
 
             HspConsole.StartParagraph();
-            List<string> lines = null;
+            List<string>? lines = null;
             HspConsole.Write("逆コンパイル中...");
             HspConsole.StartParagraph();
-            lines = getDecoder(reader).Decode(reader);
+            lines = this.GetDecoder(reader).Decode(reader);
 
             HspConsole.EndParagraph();
             HspConsole.Write("逆コンパイル終了");
             HspConsole.EndParagraph();
             HspConsole.Write(Path.GetFileName(outputPath) + "に出力");
 
-            StreamWriter writer = null;
+            StreamWriter? writer = null;
             try
             {
                 writer = new StreamWriter(outputPath, false, Encoding.GetEncoding("SHIFT-JIS"));
                 foreach (string line in lines)
+                {
                     writer.WriteLine(line);
+                }
+
                 HspConsole.Write("解析終了");
             }
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
         }
 
-        AbstractAxDecoder getDecoder(BinaryReader reader)
+        private AbstractAxDecoder GetDecoder(BinaryReader reader)
         {
             long startPosition = reader.BaseStream.Position;
             char[] buffer = reader.ReadChars(4);
@@ -227,8 +250,6 @@ namespace KttK.HspDecompiler
             }
 
             throw new HspDecoderException("HSP2でもHSP3でもない形式");
-
-
         }
     }
 }

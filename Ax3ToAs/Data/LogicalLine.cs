@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
-    //internal enum LineType
-    //{
+    // internal enum LineType
+    // {
     //    NONE = 0,
     //    Function = 1,
     //    Assignment = 2,
@@ -12,9 +12,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
     //    Preprocessor = 5,
     //    Label = 6,
     //    Unknown = 7,
-    //}
-
-    abstract class LogicalLine
+    // }
+    internal abstract class LogicalLine
     {
         internal abstract int TokenOffset { get; }
 
@@ -22,20 +21,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal virtual int TabCount
         {
-            get { return tabCount; }
-            set { tabCount = value; }
+            get { return this.tabCount; }
+            set { this.tabCount = value; }
         }
 
         protected List<string> errorMes = new List<string>();
 
         internal List<string> GetErrorMes()
         {
-            return errorMes;
+            return this.errorMes;
         }
 
         internal void AddError(string error)
         {
-            errorMes.Add(error);
+            this.errorMes.Add(error);
         }
 
         public override abstract string ToString();
@@ -44,8 +43,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal bool Visible
         {
-            get { return visible; }
-            set { visible = value; }
+            get { return this.visible; }
+            set { this.visible = value; }
         }
 
         internal virtual bool TabIncrement

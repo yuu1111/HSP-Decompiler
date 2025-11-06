@@ -9,53 +9,64 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 
         internal List<PrimitiveToken> Primitives
         {
-            get { return primitives; }
+            get { return this.primitives; }
         }
 
         private int position;
 
         internal int Position
         {
-            get { return position; }
+            get
+            {
+                return this.position;
+            }
+
             set
             {
-                if (position < 0)
+                if (this.position < 0)
+                {
                     throw new ArgumentOutOfRangeException();
-                if (position > primitives.Count)
-                    throw new ArgumentOutOfRangeException();
+                }
 
-                position = value;
+                if (this.position > this.primitives.Count)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                this.position = value;
             }
         }
 
         /// <summary>
         /// 抜け道なので出来るだけ使わないように。
-        /// 変更とか絶対ダメ。
+        /// 変更とか絶対ダメ。.
         /// </summary>
         /// <returns></returns>
         internal List<PrimitiveToken> GetPrimives()
         {
-            return primitives;
+            return this.primitives;
         }
 
         internal PrimitiveToken this[int i]
         {
-            get { return primitives[i]; }
+            get { return this.primitives[i]; }
         }
 
         internal int Count
         {
-            get { return primitives.Count; }
+            get { return this.primitives.Count; }
         }
 
         internal PrimitiveToken NextToken
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return null;
+                }
 
-                return primitives[position];
+                return this.primitives[this.position];
             }
         }
 
@@ -63,63 +74,77 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return false;
-                if ((position + 1) >= primitives.Count)
-                    return false;
+                }
 
-                PrimitiveToken token = primitives[position + 1];
-                return ((token.CodeExtraFlags & HspCodeExtraFlags.GotoFunction) == HspCodeExtraFlags.GotoFunction);
+                if ((this.position + 1) >= this.primitives.Count)
+                {
+                    return false;
+                }
+
+                PrimitiveToken token = this.primitives[this.position + 1];
+                return (token.CodeExtraFlags & HspCodeExtraFlags.GotoFunction) == HspCodeExtraFlags.GotoFunction;
             }
         }
 
-
         internal TokenCollection GetLine()
         {
-            if (NextIsEndOfStream)
+            if (this.NextIsEndOfStream)
+            {
                 return null;
+            }
 
             List<PrimitiveToken> list = new List<PrimitiveToken>();
-            list.Add(primitives[position]);
-            position++;
-            while (position < primitives.Count)
+            list.Add(this.primitives[this.position]);
+            this.position++;
+            while (this.position < this.primitives.Count)
             {
-                if (primitives[position].IsLineHead)
+                if (this.primitives[this.position].IsLineHead)
+                {
                     break;
+                }
 
-                list.Add(primitives[position]);
-                position++;
+                list.Add(this.primitives[this.position]);
+                this.position++;
             }
 
             TokenCollection ret = new TokenCollection();
             ret.primitives = list;
             return ret;
-
         }
 
         internal PrimitiveToken GetNextToken()
         {
-            if (position >= primitives.Count)
+            if (this.position >= this.primitives.Count)
+            {
                 return null;
+            }
 
-            PrimitiveToken ret = primitives[position];
-            position++;
+            PrimitiveToken ret = this.primitives[this.position];
+            this.position++;
             return ret;
         }
 
         internal bool NextIsEndOfStream
         {
-            get { return (position >= primitives.Count); }
+            get { return this.position >= this.primitives.Count; }
         }
 
         internal bool NextIsEndOfLine
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return true;
-                if (primitives[position].IsLineHead)
+                }
+
+                if (this.primitives[this.position].IsLineHead)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -129,12 +154,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return true;
-                if (primitives[position].IsLineHead)
+                }
+
+                if (this.primitives[this.position].IsLineHead)
+                {
                     return true;
-                if (primitives[position].IsParamHead)
+                }
+
+                if (this.primitives[this.position].IsParamHead)
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -144,15 +177,18 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return false;
+                }
 
-                PrimitiveToken token = primitives[position];
+                PrimitiveToken token = this.primitives[this.position];
                 if ((token.CodeExtraFlags & HspCodeExtraFlags.BracketStart) == HspCodeExtraFlags.BracketStart)
+                {
                     return true;
+                }
 
                 return false;
-
             }
         }
 
@@ -160,33 +196,36 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (NextIsEndOfStream)
+                if (this.NextIsEndOfStream)
+                {
                     return false;
+                }
 
-                PrimitiveToken token = primitives[position];
+                PrimitiveToken token = this.primitives[this.position];
                 if ((token.CodeExtraFlags & HspCodeExtraFlags.BracketEnd) == HspCodeExtraFlags.BracketEnd)
+                {
                     return true;
+                }
 
                 return false;
-
             }
         }
-        //internal bool StartOfStream
-        //{
+
+        // internal bool StartOfStream
+        // {
         //    get
         //    {
         //        return (position <= 0);
         //    }
-        //}
+        // }
 
-        //internal void Unget()
-        //{
+        // internal void Unget()
+        // {
         //    position--;
-        //}
-
+        // }
         internal void Add(PrimitiveToken token)
         {
-            primitives.Add(token);
+            this.primitives.Add(token);
         }
     }
 }

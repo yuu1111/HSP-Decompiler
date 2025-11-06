@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace KttK.HspDecompiler
@@ -12,6 +13,9 @@ namespace KttK.HspDecompiler
         [STAThread]
         private static void Main(string[] args)
         {
+            // Shift-JISサポートのためにCodePagesエンコーディングプロバイダーを登録
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             HspConsole.Initialize();
@@ -54,24 +58,10 @@ namespace KttK.HspDecompiler
             HspConsole.Close();
         }
 
-        private static readonly string ExeDirValue = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
-        private static readonly string ExeNameValue = Path.GetFileName(Application.ExecutablePath);
-        private static readonly System.Diagnostics.FileVersionInfo ExeVerValue =
-            System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath);
+        internal static string ExeName { get; } = Path.GetFileName(Application.ExecutablePath);
 
-        internal static string ExeName
-        {
-            get { return ExeNameValue; }
-        }
+        internal static System.Diagnostics.FileVersionInfo ExeVer { get; } = System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath);
 
-        internal static System.Diagnostics.FileVersionInfo ExeVer
-        {
-            get { return ExeVerValue; }
-        }
-
-        internal static string ExeDir
-        {
-            get { return ExeDirValue; }
-        }
+        internal static string ExeDir { get; } = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
     }
 }

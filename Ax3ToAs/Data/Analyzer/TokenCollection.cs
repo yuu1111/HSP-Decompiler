@@ -31,8 +31,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 		}
 
 		/// <summary>
-		/// ”²‚¯“¹‚È‚Ì‚Åo—ˆ‚é‚¾‚¯g‚í‚È‚¢‚æ‚¤‚ÉB
-		/// •ÏX‚Æ‚©â‘Îƒ_ƒB
+		/// æŠœã‘é“ãªã®ã§å‡ºæ¥ã‚‹ã ã‘ä½¿ã‚ãªã„ã‚ˆã†ã«ã€‚
+		/// å¤‰æ›´ã¨ã‹çµ¶å¯¾ãƒ€ãƒ¡ã€‚
 		/// </summary>
 		/// <returns></returns>
 		internal List<PrimitiveToken> GetPrimives()

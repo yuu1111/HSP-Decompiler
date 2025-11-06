@@ -34,7 +34,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			}
 			catch (Exception e)
 			{
-				throw new HspDecoderException("AxHeader","�t�@�C���`�����Ⴂ�܂�", e);
+				throw new HspDecoderException("AxHeader","ファイル形式が違います", e);
 			}
 			header.checkHeader(reader.BaseStream.Length - seekOrigin);
 			return header;
@@ -43,42 +43,42 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		private void checkHeader(long fileSize)
 		{
 			if (fileType.Equals("HSP2", StringComparison.Ordinal))
-				throw HSPDecoderException("HSP2�ȑO�ŃR���p�C�����ꂽ�t�@�C���ł�");
+				throw HSPDecoderException("HSP2以前でコンパイルされたファイルです");
 			if (!fileType.Equals("HSP3", StringComparison.Ordinal))
-				throw HSPDecoderException("�t�@�C���`�����Ⴂ�܂�");
+				throw HSPDecoderException("ファイル形式が違います");
 			if (AllDataSize > fileSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�w�b�_�ɋL�ڂ���Ă���t�@�C���T�C�Y�����ۂ̃t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(ヘッダに記載されているファイルサイズが実際のファイル長を超えています)");
 
 
 			if (CodeStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�R�[�h�̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(コード領域の開始位置がファイル長を超えています)");
 			if (LiteralStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���e�����̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(リテラル領域の開始位置がファイル長を超えています)");
 			if (LabelStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���x����`�̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(ラベル定義領域の開始位置がファイル長を超えています)");
 			if (DllStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(DLL��`�̈�J�n�̈ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(DLL定義領域開始の位置がファイル長を超えています)");
 			if (FunctionStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���[�U��`�֐��̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(ユーザ定義関数領域の開始位置がファイル長を超えています)");
 			if (PluginStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�v���O�C����`�̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(プラグイン定義領域の開始位置がファイル長を超えています)");
 			if (ParameterStart > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�֐��p�����[�^��`�̈�̊J�n�ʒu���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(関数パラメータ定義領域の開始位置がファイル長を超えています)");
 
 			if (CodeEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�R�[�h�̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(コード領域の終端がファイル長を超えています)");
 			if (LiteralEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���e�����̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(リテラル領域の終端がファイル長を超えています)");
 			if (LabelEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���x����`�̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(ラベル定義領域の終端がファイル長を超えています)");
 			if (DllEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(DLL��`�̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(DLL定義領域の終端がファイル長を超えています)");
 			if (FunctionEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(���[�U��`�֐��̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(ユーザ定義関数領域の終端がファイル長を超えています)");
 			if (PluginEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�v���O�C����`�̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(プラグイン定義領域の終端がファイル長を超えています)");
 			if (ParameterEnd > AllDataSize)
-				throw HSPDecoderException("�w�b�_�̏�񂪈ُ�ł�(�֐��p�����[�^��`�̈�̏I�[���t�@�C�����𒴂��Ă��܂�)");
+				throw HSPDecoderException("ヘッダの情報が異常です(関数パラメータ定義領域の終端がファイル長を超えています)");
 		}
 
 		private static HspDecoderException HSPDecoderException(string str)

@@ -29,12 +29,12 @@ namespace KttK.HspDecompiler
 		#region drag & drop
 		private void Form1_DragEnter(object sender, DragEventArgs e)
 		{
-			//ƒRƒ“ƒgƒ[ƒ‹“à‚Éƒhƒ‰ƒbƒO‚³‚ê‚½‚Æ‚«Às‚³‚ê‚é
+			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«å†…ã«ãƒ‰ãƒ©ãƒƒã‚°ã•ã‚ŒãŸã¨ãå®Ÿè¡Œã•ã‚Œã‚‹
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				//ƒhƒ‰ƒbƒO‚³‚ê‚½ƒf[ƒ^Œ`®‚ğ’²‚×Aƒtƒ@ƒCƒ‹‚Ì‚Æ‚«‚ÍƒRƒs[‚Æ‚·‚é
+				//ãƒ‰ãƒ©ãƒƒã‚°ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿å½¢å¼ã‚’èª¿ã¹ã€ãƒ•ã‚¡ã‚¤ãƒ«ã®ã¨ãã¯ã‚³ãƒ”ãƒ¼ã¨ã™ã‚‹
 				e.Effect = DragDropEffects.Copy;
 			else
-				//ƒtƒ@ƒCƒ‹ˆÈŠO‚Íó‚¯•t‚¯‚È‚¢
+				//ãƒ•ã‚¡ã‚¤ãƒ«ä»¥å¤–ã¯å—ã‘ä»˜ã‘ãªã„
 				e.Effect = DragDropEffects.None;
 			
 
@@ -42,8 +42,8 @@ namespace KttK.HspDecompiler
 
 		private void Form1_DragDrop(object sender, DragEventArgs e)
 		{
-			//ƒRƒ“ƒgƒ[ƒ‹“à‚Éƒhƒƒbƒv‚³‚ê‚½‚Æ‚«Às‚³‚ê‚é
-			//ƒhƒƒbƒv‚³‚ê‚½‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹–¼‚ğæ“¾‚·‚é
+			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«å†…ã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã¨ãå®Ÿè¡Œã•ã‚Œã‚‹
+			//ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—ã™ã‚‹
 			string[] fileName =
 				(string[])e.Data.GetData(DataFormats.FileDrop, false);
 			if((fileName == null) ||(fileName.Length == 0))
@@ -69,7 +69,7 @@ namespace KttK.HspDecompiler
 			StreamWriter errorlog = null;
 			try
 			{
-				global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(filePath) + "‚ğ“Ç‚İ‚İ");
+				global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(filePath) + "ã‚’èª­ã¿è¾¼ã¿");
 				stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 				reader = new BinaryReader(stream, Encoding.GetEncoding("SHIFT-JIS"));
 
@@ -110,11 +110,11 @@ namespace KttK.HspDecompiler
 
 				}
 				else
-					throw new HspDecoderException("ˆ—‚Å‚«‚È‚¢ƒtƒ@ƒCƒ‹Œ`®‚Å‚·");
+					throw new HspDecoderException("å‡¦ç†ã§ããªã„ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã§ã™");
 				int warCount = global::KttK.HspDecompiler.HspConsole.Warnings.Count;
 				if (warCount != 0)
 				{
-					MessageBox.Show(Path.GetFileName(errorPath) + "‚ÉƒGƒ‰[‚ğo—Í‚µ‚Ü‚·", "ƒR[ƒh‚ğŠ®‘S‚É‚Í•œŒ³‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½");
+					MessageBox.Show(Path.GetFileName(errorPath) + "ã«ã‚¨ãƒ©ãƒ¼ã‚’å‡ºåŠ›ã—ã¾ã™", "ã‚³ãƒ¼ãƒ‰ã‚’å®Œå…¨ã«ã¯å¾©å…ƒã§ãã¾ã›ã‚“ã§ã—ãŸ");
 					errorlog = new StreamWriter(errorPath, false, Encoding.GetEncoding("SHIFT-JIS"));
 					foreach (string line in global::KttK.HspDecompiler.HspConsole.Warnings)
 						errorlog.WriteLine(line);

@@ -8,7 +8,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// if, elseç\ï∂
+	/// if, elseÊßãÊñá
 	/// </summary>
 	internal sealed class OnEventStatement : LogicalLine
 	{
@@ -20,7 +20,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 		}
 
 		private readonly OnEventFunctionPrimitive token = null;//on####
-		private readonly FunctionToken func = null;//goto/gosub Å`
+		private readonly FunctionToken func = null;//goto/gosub ÔΩû
 		internal override int TokenOffset
 		{
 			get {return token.TokenOffset; }

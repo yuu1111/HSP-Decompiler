@@ -8,7 +8,7 @@ using System.Reflection;
 namespace KttK.HspDecompiler
 {
 	/// <summary>
-	/// AboutDialog ‚ÌŠT—v‚Ìà–¾‚Å‚·B
+	/// AboutDialog ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
 	/// </summary>
 	internal sealed class AboutDialog : System.Windows.Forms.Form
 	{
@@ -16,14 +16,14 @@ namespace KttK.HspDecompiler
 		private System.Windows.Forms.Label LB_Title;
 		private Label LB_Copyright;
 		/// <summary>
-		/// •K—v‚ÈƒfƒUƒCƒi•Ï”‚Å‚·B
+		/// å¿…è¦ãªãƒ‡ã‚¶ã‚¤ãƒŠå¤‰æ•°ã§ã™ã€‚
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		internal AboutDialog()
 		{
 			//
-			// Windows ƒtƒH[ƒ€ ƒfƒUƒCƒi ƒTƒ|[ƒg‚É•K—v‚Å‚·B
+			// Windows ãƒ•ã‚©ãƒ¼ãƒ  ãƒ‡ã‚¶ã‚¤ãƒŠ ã‚µãƒãƒ¼ãƒˆã«å¿…è¦ã§ã™ã€‚
 			//
 			InitializeComponent();
 			Assembly mainAssembly = Assembly.GetEntryAssembly();
@@ -38,12 +38,12 @@ namespace KttK.HspDecompiler
 			}
 			LB_Copyright.Text = appCopyright;
 			//
-			// TODO: InitializeComponent ŒÄ‚Ño‚µ‚ÌŒã‚ÉAƒRƒ“ƒXƒgƒ‰ƒNƒ^ ƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+			// TODO: InitializeComponent å‘¼ã³å‡ºã—ã®å¾Œã«ã€ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 			//
 		}
 
 		/// <summary>
-		/// g—p‚³‚ê‚Ä‚¢‚éƒŠƒ\[ƒX‚ÉŒãˆ—‚ğÀs‚µ‚Ü‚·B
+		/// ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã«å¾Œå‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -57,10 +57,10 @@ namespace KttK.HspDecompiler
 			base.Dispose( disposing );
 		}
 
-		#region Windows ƒtƒH[ƒ€ ƒfƒUƒCƒi‚Å¶¬‚³‚ê‚½ƒR[ƒh 
+		#region Windows ãƒ•ã‚©ãƒ¼ãƒ  ãƒ‡ã‚¶ã‚¤ãƒŠã§ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ¼ãƒ‰ 
 		/// <summary>
-		/// ƒfƒUƒCƒi ƒTƒ|[ƒg‚É•K—v‚Èƒƒ\ƒbƒh‚Å‚·B‚±‚Ìƒƒ\ƒbƒh‚Ì“à—e‚ğ
-		/// ƒR[ƒh ƒGƒfƒBƒ^‚Å•ÏX‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+		/// ãƒ‡ã‚¶ã‚¤ãƒŠ ã‚µãƒãƒ¼ãƒˆã«å¿…è¦ãªãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã®å†…å®¹ã‚’
+		/// ã‚³ãƒ¼ãƒ‰ ã‚¨ãƒ‡ã‚£ã‚¿ã§å¤‰æ›´ã—ãªã„ã§ãã ã•ã„ã€‚
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -87,7 +87,7 @@ namespace KttK.HspDecompiler
 			this.LB_Title.Name = "LB_Title";
 			this.LB_Title.Size = new System.Drawing.Size(172, 16);
 			this.LB_Title.TabIndex = 5;
-			this.LB_Title.Text = "ƒtƒŠ[ HSP‹tƒRƒ“ƒpƒCƒ‰@Ver 1.20";
+			this.LB_Title.Text = "ãƒ•ãƒªãƒ¼ HSPé€†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ã€€Ver 1.20";
 			// 
 			// LB_Copyright
 			// 
@@ -114,7 +114,7 @@ namespace KttK.HspDecompiler
 			this.Name = "AboutDialog";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.Text = "ƒo[ƒWƒ‡ƒ“î•ñ";
+			this.Text = "ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±";
 			this.TopMost = true;
 			this.Load += new System.EventHandler(this.RegistDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

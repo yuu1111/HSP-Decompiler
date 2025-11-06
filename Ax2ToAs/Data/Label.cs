@@ -3,14 +3,14 @@ using System;
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
 	/// <summary>
-	/// Label ‚ÌŠT—v‚Ìà–¾‚Å‚·B
+	/// Label ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
 	/// </summary>
 internal class Label
 {
 	private Label()
 	{
 		// 
-		// TODO: ƒRƒ“ƒXƒgƒ‰ƒNƒ^ ƒƒWƒbƒN‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 		//
 	}
 	internal Label(int p_index, int p_tokenIndex)

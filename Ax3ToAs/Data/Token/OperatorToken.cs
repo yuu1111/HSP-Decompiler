@@ -6,7 +6,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
 	/// <summary>
-	/// 演算子トークン
+	/// 貍皮ｮ怜ｭ舌ヨ繝ｼ繧ｯ繝ｳ
 	/// </summary>
 	internal sealed class OperatorToken : ExpressionTermToken
 	{
@@ -42,7 +42,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 				{
 					case "=":
 					case ">":
-					case "<":// a <= bは a = (a<=b)と解釈される
+					case "<":// a <= b縺ｯ a = (a<=b)縺ｨ隗｣驥医＆繧後ｋ
 						return ret;
 					default:
 						return ret + "=";

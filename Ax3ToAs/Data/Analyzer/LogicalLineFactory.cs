@@ -10,9 +10,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 
 	partial class LogicalLineFactory
 	{
-		//ŠO‚©‚çŒ©‚¦‚é‚Ì‚Í‚±‚±‚¾‚¯
+		//å¤–ã‹ã‚‰è¦‹ãˆã‚‹ã®ã¯ã“ã“ã ã‘
 		/// <summary>
-		/// ˆês•ª‚ÌTokenCollection‚©‚çLogicalLine‚ğì¬‚·‚é
+		/// ä¸€è¡Œåˆ†ã®TokenCollectionã‹ã‚‰LogicalLineã‚’ä½œæˆã™ã‚‹
 		/// </summary>
 		/// <param defaultName="parser"></param>
 		/// <returns></returns>
@@ -27,25 +27,25 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 			LogicalLine line = null;
 			try
 			{
-				if (stream.NextToken is IfStatementPrimitive) //if, elses
+				if (stream.NextToken is IfStatementPrimitive) //if, elseè¡Œ
 					return (LogicalLine)readIf(stream);
-				if (stream.NextToken is McallFunctionPrimitive) //ons
+				if (stream.NextToken is McallFunctionPrimitive) //onè¡Œ
 					return (LogicalLine)readMcall(stream);
 				if (stream.NextToken is OnEventFunctionPrimitive)
-				{ //on###s
-					if(stream.NextNextTokenIsGotoFunction)//goto/gosub‚ª‚È‚¢‚È‚ç
+				{ //on###è¡Œ
+					if(stream.NextNextTokenIsGotoFunction)//goto/gosubãŒãªã„ãªã‚‰
 						return (LogicalLine)readOnEvent(stream);
 					else
 						return (LogicalLine)readCommand(stream);
 				}
-				if (stream.NextToken is OnFunctionPrimitive) //ons
+				if (stream.NextToken is OnFunctionPrimitive) //onè¡Œ
 					return (LogicalLine)readOn(stream);
-				if (stream.NextToken is FunctionPrimitive)//‚»‚Ì‘¼‚ÌŠÖ”
+				if (stream.NextToken is FunctionPrimitive)//ãã®ä»–ã®é–¢æ•°
 					return (LogicalLine)readCommand(stream);
-				if (stream.NextToken is VariablePrimitive)//‘ã“üs
+				if (stream.NextToken is VariablePrimitive)//ä»£å…¥è¡Œ
 					return (LogicalLine)readAssignment(stream);
 			}
-			//‚±‚±‚ÅHspLogicalLineException‚ğcatch‚·‚éB‘¼‚Ì‚Æ‚±‚ë‚Å‚Ís‚Á‚Ä‚Í‚È‚ç‚È‚¢
+			//ã“ã“ã§HspLogicalLineExceptionã‚’catchã™ã‚‹ã€‚ä»–ã®ã¨ã“ã‚ã§ã¯è¡Œã£ã¦ã¯ãªã‚‰ãªã„
 			catch (HspLogicalLineException e)
 			{
 
@@ -54,7 +54,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 				return line;
 			}
 			line = new UnknownLine(stream.Primitives);
-			line.AddError("HsFæ“ª‚Ì’PŒê‚ª‰ğß‚Å‚«‚È‚¢");
+			line.AddError("ï¼Ÿè¡Œï¼šå…ˆé ­ã®å˜èªãŒè§£é‡ˆã§ããªã„");
 			return line;
 		}
 
@@ -63,14 +63,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 			int start = stream.Position;
 			McallFunctionPrimitive mcall = stream.GetNextToken() as McallFunctionPrimitive;
 			if (mcall == null)
-				throw new HspLogicalLineException("mcallFmcallƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
+				throw new HspLogicalLineException("mcallï¼šmcallãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
 			if (stream.NextIsEndOfLine)
 			{
 				stream.Position = start;
 				return (LogicalLine)readCommand(stream);
 			}
 			ExpressionToken exp = CodeTokenFactory.ReadExpression(stream);
-			if (exp.CanRpnConvert)//RPN•ÏŠ·‚ª‚Å‚«‚é‚È‚ç•’Ê‚ÌŠÖ”‚Æ‚µ‚Äˆµ‚¤B
+			if (exp.CanRpnConvert)//RPNå¤‰æ›ãŒã§ãã‚‹ãªã‚‰æ™®é€šã®é–¢æ•°ã¨ã—ã¦æ‰±ã†ã€‚
 			{
 				stream.Position = start;
 				return (LogicalLine)readCommand(stream);
@@ -80,39 +80,39 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 			stream.GetNextToken();
 			VariablePrimitive var = stream.GetNextToken() as VariablePrimitive;
 			if (var == null)
-				throw new HspLogicalLineException("mcallsF•ÏŠ·•s”\‚ÈŒ`®");
-			if (stream.NextIsBracketStart)//mcall ‚Ì‹L–@‚Í”z—ñ•Ï”‚ğ”F‚ß‚È‚¢
-				throw new HspLogicalLineException("mcallsF•ÏŠ·•s”\‚ÈŒ`®");
+				throw new HspLogicalLineException("mcallè¡Œï¼šå¤‰æ›ä¸èƒ½ãªå½¢å¼");
+			if (stream.NextIsBracketStart)//mcall ã®è¨˜æ³•ã¯é…åˆ—å¤‰æ•°ã‚’èªã‚ãªã„
+				throw new HspLogicalLineException("mcallè¡Œï¼šå¤‰æ›ä¸èƒ½ãªå½¢å¼");
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("mcallsF•ÏŠ·•s”\‚ÈŒ`®");
+				throw new HspLogicalLineException("mcallè¡Œï¼šå¤‰æ›ä¸èƒ½ãªå½¢å¼");
 			exp = CodeTokenFactory.ReadExpression(stream);
 			if (stream.NextIsEndOfLine)
 				return new McallStatement(mcall, var, exp, null);
 			ArgumentToken arg = CodeTokenFactory.ReadArgument(stream);
 			if (stream.NextIsEndOfLine)
 				return new McallStatement(mcall, var, exp, arg);
-			throw new HspLogicalLineException("mcallsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			throw new HspLogicalLineException("mcallè¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 		}
 
 		private static OnStatement readOn(TokenCollection stream)
 		{
 			OnFunctionPrimitive token = stream.GetNextToken() as OnFunctionPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("onğŒ•ªŠòsFğŒ•ªŠòƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
-			//®‚ª‚È‚¢‚±‚Æ‚à‚ ‚é‚©‚à‚µ‚ê‚È‚¢(ÀsƒGƒ‰[)
+				throw new HspLogicalLineException("onæ¡ä»¶åˆ†å²è¡Œï¼šæ¡ä»¶åˆ†å²ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
+			//å¼ãŒãªã„ã“ã¨ã‚‚ã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„(å®Ÿè¡Œæ™‚ã‚¨ãƒ©ãƒ¼)
 			if (stream.NextIsEndOfLine)
 				return new OnStatement(token,null, null);
-			//®‚ğ“Ç‚ŞBgoto/gosub‚ª‚È‚¢‚±‚Æ‚à‚ ‚é‚©‚à‚µ‚ê‚È‚¢(ÀsƒGƒ‰[)
+			//å¼ã‚’èª­ã‚€ã€‚goto/gosubãŒãªã„ã“ã¨ã‚‚ã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„(å®Ÿè¡Œæ™‚ã‚¨ãƒ©ãƒ¼)
 			ExpressionToken exp = CodeTokenFactory.ReadExpression(stream);
 			if (stream.NextIsEndOfLine)
 				return new OnStatement(token, exp,null);
-			//goto/gosubŠÖ”‚ğ“Ç‚ŞBgoto/gosubˆÈŠO‚Å‚àƒRƒ“ƒpƒCƒ‹‚Í’Ê‚é(ÀsƒGƒ‰[)
-			//‚±‚ÌŠÖ”‚É‚Í()‚ª‚Â‚©‚È‚¢B
+			//goto/gosubé–¢æ•°ã‚’èª­ã‚€ã€‚goto/gosubä»¥å¤–ã§ã‚‚ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã¯é€šã‚‹(å®Ÿè¡Œæ™‚ã‚¨ãƒ©ãƒ¼)
+			//ã“ã®é–¢æ•°ã«ã¯()ãŒã¤ã‹ãªã„ã€‚
 			FunctionToken func = CodeTokenFactory.ReadFunction(stream, false);
 			if (stream.NextIsEndOfLine)
 				return new OnStatement(token, exp, func);
-			//‚Ü‚¾‚ ‚Ü‚Á‚Ä‚½‚çƒGƒ‰[‚ËB
-			throw new HspLogicalLineException("onğŒ•ªŠòsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			//ã¾ã ã‚ã¾ã£ã¦ãŸã‚‰ã‚¨ãƒ©ãƒ¼ã­ã€‚
+			throw new HspLogicalLineException("onæ¡ä»¶åˆ†å²è¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 
 		}
 
@@ -120,48 +120,48 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 		{
 			OnEventFunctionPrimitive token = stream.GetNextToken() as OnEventFunctionPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("onğŒ•ªŠòsFğŒ•ªŠòƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
-			//goto/gosub‚ª‚È‚¢‚±‚Æ‚à‚ ‚é‚©‚à‚µ‚ê‚È‚¢(ÀsƒGƒ‰[)
+				throw new HspLogicalLineException("onæ¡ä»¶åˆ†å²è¡Œï¼šæ¡ä»¶åˆ†å²ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
+			//goto/gosubãŒãªã„ã“ã¨ã‚‚ã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„(å®Ÿè¡Œæ™‚ã‚¨ãƒ©ãƒ¼)
 			if (stream.NextIsEndOfLine)
 				return new OnEventStatement(token, null);
-			//goto/gosubŠÖ”‚ğ“Ç‚ŞBgoto/gosubˆÈŠO‚Å‚àƒRƒ“ƒpƒCƒ‹‚Í’Ê‚é(ÀsƒGƒ‰[)
-			//‚±‚ÌŠÖ”‚É‚Í()‚ª‚Â‚©‚È‚¢B
+			//goto/gosubé–¢æ•°ã‚’èª­ã‚€ã€‚goto/gosubä»¥å¤–ã§ã‚‚ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã¯é€šã‚‹(å®Ÿè¡Œæ™‚ã‚¨ãƒ©ãƒ¼)
+			//ã“ã®é–¢æ•°ã«ã¯()ãŒã¤ã‹ãªã„ã€‚
 			FunctionToken func = CodeTokenFactory.ReadFunction(stream, false);
 			if (stream.NextIsEndOfLine)
 				return new OnEventStatement(token, func);
-			//‚Ü‚¾‚ ‚Ü‚Á‚Ä‚½‚çƒGƒ‰[‚ËB
-			throw new HspLogicalLineException("onğŒ•ªŠòsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			//ã¾ã ã‚ã¾ã£ã¦ãŸã‚‰ã‚¨ãƒ©ãƒ¼ã­ã€‚
+			throw new HspLogicalLineException("onæ¡ä»¶åˆ†å²è¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 		}
 
 		/// <summary>
-		/// ‘ã“üs
+		/// ä»£å…¥è¡Œ
 		/// </summary>
 		/// <param defaultName="primitives"></param>
 		/// <returns></returns>
 		private static Assignment readAssignment(TokenCollection stream)
 		{
-			//•Ï”‚ğ“Ç‚ŞB¸”s‚µ‚½‚ç‘ã“üs‚¶‚á‚È‚¢B
+			//å¤‰æ•°ã‚’èª­ã‚€ã€‚å¤±æ•—ã—ãŸã‚‰ä»£å…¥è¡Œã˜ã‚ƒãªã„ã€‚
 			VariableToken token = CodeTokenFactory.ReadVariable(stream);
-			//‰‰Zq‚ğ“Ç‚ŞB¸”s‚·‚é‚È‚ç‘ã“üs‚¶‚á‚È‚¢B
+			//æ¼”ç®—å­ã‚’èª­ã‚€ã€‚å¤±æ•—ã™ã‚‹ãªã‚‰ä»£å…¥è¡Œã˜ã‚ƒãªã„ã€‚
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("‘ã“üsF‰‰Zq‚È‚µ");
+				throw new HspLogicalLineException("ä»£å…¥è¡Œï¼šæ¼”ç®—å­ãªã—");
 			OperatorToken op = CodeTokenFactory.ReadOperator(stream);
-			//®‚ª‘±‚©‚È‚¢‚±‚Æ‚à‚ ‚éB"x++"‚Æ‚©
+			//å¼ãŒç¶šã‹ãªã„ã“ã¨ã‚‚ã‚ã‚‹ã€‚"x++"ã¨ã‹
 			if (stream.NextIsEndOfLine)
 				return new Assignment(token, op);
 			else
 			{
-				//ˆø”‚ğ“Ç‚ŞB‚ ‚Ü‚è‚ªo‚È‚¯‚ê‚ÎOK
+				//å¼•æ•°ã‚’èª­ã‚€ã€‚ã‚ã¾ã‚ŠãŒå‡ºãªã‘ã‚Œã°OK
 				ArgumentToken arg = CodeTokenFactory.ReadArgument(stream);
 				if (stream.NextIsEndOfLine)
 					return new Assignment(token, op, arg);
 			}
-			throw new HspLogicalLineException("‘ã“üsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			throw new HspLogicalLineException("ä»£å…¥è¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 
 		}
 
 		/// <summary>
-		/// If,elseƒXƒe[ƒgƒƒ“ƒg‚ÌŠJn
+		/// If,elseã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã®é–‹å§‹
 		/// </summary>
 		/// <param defaultName="primitives"></param>
 		/// <returns></returns>
@@ -169,34 +169,34 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 		{
 			IfStatementPrimitive token = stream.GetNextToken() as IfStatementPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("ğŒ•ªŠòsFğŒ•ªŠòƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
+				throw new HspLogicalLineException("æ¡ä»¶åˆ†å²è¡Œï¼šæ¡ä»¶åˆ†å²ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
 
-			//else‚É‚Í®‚ª‚È‚¢B
+			//elseã«ã¯å¼ãŒãªã„ã€‚
 			if (stream.NextIsEndOfLine)
 				return new IfStatement(token);
 			else
 			{
-				//®‚ğ“Ç‚ŞB‚ ‚Ü‚è‚ªo‚È‚¯‚ê‚ÎOK
+				//å¼ã‚’èª­ã‚€ã€‚ã‚ã¾ã‚ŠãŒå‡ºãªã‘ã‚Œã°OK
 				ArgumentToken arg = CodeTokenFactory.ReadArgument(stream);
 				if (stream.NextIsEndOfLine)
 					return new IfStatement(token, arg);
 			}
-			throw new HspLogicalLineException("ğŒ•ªŠòsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			throw new HspLogicalLineException("æ¡ä»¶åˆ†å²è¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 		}
 
 		/// <summary>
-		/// –½—ßs
+		/// å‘½ä»¤è¡Œ
 		/// </summary>
 		/// <param defaultName="primitives"></param>
 		/// <returns></returns>
 		private static Command readCommand(TokenCollection stream)
 		{
-			//À‘Ô‚ÍCodeTokenFactory‚É”C‚¹‚é
-			//–½—ß‚É‚ÍiŠÖ”‚Æˆá‚Á‚ÄjŠ‡ŒÊ‚Í‚¢‚ç‚È‚¢
+			//å®Ÿæ…‹ã¯CodeTokenFactoryã«ä»»ã›ã‚‹
+			//å‘½ä»¤ã«ã¯ï¼ˆé–¢æ•°ã¨é•ã£ã¦ï¼‰æ‹¬å¼§ã¯ã„ã‚‰ãªã„
 			FunctionToken func = CodeTokenFactory.ReadFunction(stream, false);
 			if (stream.NextIsEndOfLine)
 				return new Command(func);
-			throw new HspLogicalLineException("–½—ßsF—]•ª‚Èƒg[ƒNƒ“‚ª‚ ‚é");
+			throw new HspLogicalLineException("å‘½ä»¤è¡Œï¼šä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚‹");
 		}
 
 	}

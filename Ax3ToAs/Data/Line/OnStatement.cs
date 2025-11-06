@@ -8,7 +8,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// on Å` goto/gosub labelç\ï∂
+	/// on ÔΩû goto/gosub labelÊßãÊñá
 	/// </summary>
 	internal sealed class OnStatement : LogicalLine
 	{
@@ -21,8 +21,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 		}
 
 		private readonly OnFunctionPrimitive token = null;//on
-		private readonly ExpressionToken exp = null;//èåè
-		private readonly FunctionToken func = null;//goto/gosub Å`
+		private readonly ExpressionToken exp = null;//Êù°‰ª∂
+		private readonly FunctionToken func = null;//goto/gosub ÔΩû
 		internal override int TokenOffset
 		{
 			get {return token.TokenOffset; }

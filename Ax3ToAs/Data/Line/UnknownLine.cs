@@ -7,7 +7,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Analyzer;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// ë„ì¸éÆ
+	/// ‰ª£ÂÖ•Âºè
 	/// </summary>
 	internal sealed class UnknownLine : LogicalLine
 	{
@@ -33,7 +33,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 		public override string ToString()
 		{
 			if ((tokens == null) || (tokens.Length == 0))
-				return "//ãÛ";
+				return "//Á©∫";
 			StringBuilder builder = new StringBuilder("//");
 			foreach (PrimitiveToken token in tokens)
 			{

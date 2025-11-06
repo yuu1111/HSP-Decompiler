@@ -5,7 +5,7 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// ƒvƒŠƒvƒƒZƒbƒTAƒ‰ƒxƒ‹éŒ¾s
+	/// ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã€ãƒ©ãƒ™ãƒ«å®£è¨€è¡Œ
 	/// </summary>
 	internal sealed class PreprocessorDeclaration : LogicalLine
 	{

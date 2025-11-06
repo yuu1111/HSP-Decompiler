@@ -10,8 +10,8 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 	{
 		internal byte XorByte;
 		internal byte AddByte;
-		//deHSP 100 HSP3.3‚ÅXOR‚ÆSUM‚Ì“K—p‡˜‚ª•Ï‚í‚Á‚½H
-		internal bool XorSum;//XOR‚ğæ‚É“K—p‚·‚éƒ^ƒCƒvB‹Œ®B
+		//deHSP 100 HSP3.3ã§XORã¨SUMã®é©ç”¨é †åºãŒå¤‰ã‚ã£ãŸï¼Ÿ
+		internal bool XorSum;//XORã‚’å…ˆã«é©ç”¨ã™ã‚‹ã‚¿ã‚¤ãƒ—ã€‚æ—§å¼ã€‚
 		public override string ToString()
 		{
 			return "xor:0x" + XorByte.ToString("X02") + "    " + "add:0x" + AddByte.ToString("X02") + "    " + "Farst xor:" + XorSum.ToString();

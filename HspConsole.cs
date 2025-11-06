@@ -25,7 +25,7 @@ namespace KttK.HspDecompiler
 			if (logStream != null)
 			{
 				logStream.Close();
-				MessageBox.Show("—áŠO‚ğ“KØ‚Écatch‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½BÚ×‚ğlog.dat‚Éo—Í‚µI—¹‚µ‚Ü‚·B", "’v–½“I‚ÈƒGƒ‰[");
+				MessageBox.Show("ä¾‹å¤–ã‚’é©åˆ‡ã«catchã§ãã¾ã›ã‚“ã§ã—ãŸã€‚è©³ç´°ã‚’log.datã«å‡ºåŠ›ã—çµ‚äº†ã—ã¾ã™ã€‚", "è‡´å‘½çš„ãªã‚¨ãƒ©ãƒ¼");
 			}
 			logStream = null;
 		}
@@ -51,9 +51,9 @@ namespace KttK.HspDecompiler
 			warnings.Clear();
 
 			StringBuilder builder = new StringBuilder();
-			builder.Append("Œo‰ß(ms)");
+			builder.Append("çµŒé(ms)");
 			builder.Append(':');
-			builder.Append("ˆ—“à—e");
+			builder.Append("å‡¦ç†å†…å®¹");
 			newLine = builder.ToString();
 			Flush();
 
@@ -90,7 +90,7 @@ namespace KttK.HspDecompiler
 		}
 		internal static void Warning(string errMsg, int lineNo)
 		{
-			string warning = string.Format("{0:D06}s:{1}", lineNo, errMsg);
+			string warning = string.Format("{0:D06}è¡Œ:{1}", lineNo, errMsg);
 			warnings.Add(warning);
 			//newLine = warning;
 			//Flush();

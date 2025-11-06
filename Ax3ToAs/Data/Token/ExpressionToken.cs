@@ -6,7 +6,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
 	/// <summary>
-	/// éÆ
+	/// Âºè
 	/// </summary>
 	internal sealed class ExpressionToken : CodeToken
 	{

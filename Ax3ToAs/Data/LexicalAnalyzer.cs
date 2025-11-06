@@ -46,13 +46,13 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 				if (variablesCount[i] == 1)
 				{
 					string errMsg = GlobalVariablePrimitive.ToString(i);
-					errMsg += ":���̕ϐ��͈�x�����g���Ă��܂���";
+					errMsg += ":この変数は一度しか使われていません";
 					global::KttK.HspDecompiler.HspConsole.Warning(errMsg);
 				}
 				if (variablesCount[i] == 0)
 				{
 					string errMsg = GlobalVariablePrimitive.ToString(i);
-					errMsg += ":���̕ϐ��͎g���Ă��܂���";
+					errMsg += ":この変数は使われていません";
 					global::KttK.HspDecompiler.HspConsole.Warning(errMsg);
 				}
 			}
@@ -112,7 +112,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			{
 				if ((dicValue.Extra & HspCodeExtraFlags.HasExtraInt16) == HspCodeExtraFlags.HasExtraInt16)
 				{
-					//HSP3.0a�̎d�l�ł͍s���ɂȂ�if,else�̓W�����v��A�h���X�������Ȃ��B
+					//HSP3.0aの仕様では行頭にないif,elseはジャンプ先アドレスを持たない。
 					if ((flag & 0x20) == 0x20)
 					{
 						extraValue = reader.ReadUInt16();

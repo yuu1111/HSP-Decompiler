@@ -8,14 +8,14 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
 	/// <summary>
-	/// Token ‚ÌŠT—v‚Ìà–¾‚Å‚·B
+	/// Token ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
 	/// </summary>
 internal class Token
 {
 	private Token()
 	{
 		// 
-		// TODO: ƒRƒ“ƒXƒgƒ‰ƒNƒ^ ƒƒWƒbƒN‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 		//
 	}
 	private Token(int offset)
@@ -69,7 +69,7 @@ internal class Token
 			if (ret.NextIsUnenableLabel)
 			{
 				ret.isLineend = false;
-				Token UnenableToken = GetNext();//–³Œøƒ‰ƒxƒ‹
+				Token UnenableToken = GetNext();//ç„¡åŠ¹ãƒ©ãƒ™ãƒ«
 				if ((nextToken == null) || (nextToken.isLinehead))
 					ret.isLineend = true;
 				return ret;
@@ -143,7 +143,7 @@ internal class Token
 		}
 	}
 
-	internal bool isLinehead//‚±‚Ìƒg[ƒNƒ“‚Ís“ª‚É‚­‚é‚×‚«‚Å‚ ‚èA’¼‘O‚É"\n"‚ğ“ü‚ê‚é•K—v‚ª‚ ‚éB
+	internal bool isLinehead//ã“ã®ãƒˆãƒ¼ã‚¯ãƒ³ã¯è¡Œé ­ã«ãã‚‹ã¹ãã§ã‚ã‚Šã€ç›´å‰ã«"\n"ã‚’å…¥ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 	{
 		get
 		{
@@ -152,7 +152,7 @@ internal class Token
 	}
 
 
-	internal bool isArg//‚±‚Ìƒg[ƒNƒ“‚Íˆø”‚Ì‚Ğ‚Æ‚Â‚Å‚ ‚èA’¼‘O‚É','‚ğ“ü‚ê‚é•K—v‚ª‚ ‚éB
+	internal bool isArg//ã“ã®ãƒˆãƒ¼ã‚¯ãƒ³ã¯å¼•æ•°ã®ã²ã¨ã¤ã§ã‚ã‚Šã€ç›´å‰ã«','ã‚’å…¥ã‚Œã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 	{
 		get
 		{
@@ -239,7 +239,7 @@ internal class Token
 		string ret = null;
 		switch(Type)
 		{
-			case 0x00://token_value=•¶šƒR[ƒh
+			case 0x00://token_value=æ–‡å­—ã‚³ãƒ¼ãƒ‰
 			switch(Value)
 			{
 				case 0x61:
@@ -256,42 +256,42 @@ internal class Token
 					bytes[0] = (byte)Value;
 					return encode.GetString(bytes);
 			}
-			case 0x08://token_value=®”’l
+			case 0x08://token_value=æ•´æ•°å€¤
 				return Value.ToString();
-			case 0x10://token_value=•¶š—ñ‚ğŠi”[‚µ‚Ä‚¢‚éƒAƒhƒŒƒX
+			case 0x10://token_value=æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ã¦ã„ã‚‹ã‚¢ãƒ‰ãƒ¬ã‚¹
 				ret = data.GetString(Value);
 				return "\"" + Escape(ret) + "\"";
-			case 0x18://token_value=ƒ‰ƒxƒ‹ƒiƒ“ƒo[
+			case 0x18://token_value=ãƒ©ãƒ™ãƒ«ãƒŠãƒ³ãƒãƒ¼
 				return "label_"+Value.ToString();
-			case 0x20://token_value=•Ï”ƒiƒ“ƒo[
+			case 0x20://token_value=å¤‰æ•°ãƒŠãƒ³ãƒãƒ¼
 				return "var_"+Value.ToString();
-			case 0x38://hsp•W€–½—ß
+			case 0x38://hspæ¨™æº–å‘½ä»¤
 				ret = GetStdFunc1Name(Value);
 				if (ret!= null)
 					return ret;
 				break;
-			case 0x40://hsp•W€–½—ß‚Q
+			case 0x40://hspæ¨™æº–å‘½ä»¤ï¼’
 				ret = GetStdFunc2Name(Value);
 				if (ret!= null)
 					return ret;
 				break;
-			case 0x48://hsp•W€–½—ß‚R
+			case 0x48://hspæ¨™æº–å‘½ä»¤ï¼“
 				ret = GetStdFunc3Name(Value);
 				if (ret!= null)
 					return ret;
 				break;
-			case 0x50://funcŠÖ”
+			case 0x50://funcé–¢æ•°
 				ret = data.GetFuncName(Value - 0x10);
 				if (ret != null)
 					return "func_" + ret;
 				break;
-			case 0x58://ifŒn–½—ß
+			case 0x58://ifç³»å‘½ä»¤
 				if (Value == 0)
 					return "if";
 				if (Value == 1)
 					return "else";
 				break;
-			case 0x60://deffuncŠÖ”
+			case 0x60://deffuncé–¢æ•°
 				ret = data.GetDeffuncName(Value - 0x10);
 				if (ret != null)
 					return ret;
@@ -312,43 +312,43 @@ internal class Token
 			string ret = null;
 			switch(Type)
 			{
-				case 0x00://token_value=•¶šƒR[ƒh
+				case 0x00://token_value=æ–‡å­—ã‚³ãƒ¼ãƒ‰
 					return true;
-				case 0x08://token_value=®”’l
+				case 0x08://token_value=æ•´æ•°å€¤
 					return true;
-				case 0x10://token_value=•¶š—ñ‚ğŠi”[‚µ‚Ä‚¢‚éƒAƒhƒŒƒX
+				case 0x10://token_value=æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ã¦ã„ã‚‹ã‚¢ãƒ‰ãƒ¬ã‚¹
 					return true;
-				case 0x18://token_value=ƒ‰ƒxƒ‹ƒiƒ“ƒo[
+				case 0x18://token_value=ãƒ©ãƒ™ãƒ«ãƒŠãƒ³ãƒãƒ¼
 					return true;
-				case 0x20://token_value=•Ï”ƒiƒ“ƒo[
+				case 0x20://token_value=å¤‰æ•°ãƒŠãƒ³ãƒãƒ¼
 					return true;
-				case 0x38://hsp•W€–½—ß
+				case 0x38://hspæ¨™æº–å‘½ä»¤
 					ret = GetStdFunc1Name(Value);
 					if (ret!= null)
 						return true;
 					break;
-				case 0x40://hsp•W€–½—ß‚Q
+				case 0x40://hspæ¨™æº–å‘½ä»¤ï¼’
 					ret = GetStdFunc2Name(Value);
 					if (ret!= null)
 						return true;
 					break;
-				case 0x48://hsp•W€–½—ß‚R
+				case 0x48://hspæ¨™æº–å‘½ä»¤ï¼“
 					ret = GetStdFunc3Name(Value);
 					if (ret!= null)
 						return true;
 					break;
-				case 0x50://funcŠÖ”
+				case 0x50://funcé–¢æ•°
 					ret = data.GetFuncName(Value - 0x10);
 					if (ret != null)
 						return true;
 					break;
-				case 0x58://ifŒn–½—ß
+				case 0x58://ifç³»å‘½ä»¤
 					if (Value == 0)
 						return true;
 					if (Value == 1)
 						return true;
 					break;
-				case 0x60://deffuncŠÖ”
+				case 0x60://deffuncé–¢æ•°
 					ret = data.GetDeffuncName(Value - 0x10);
 					if (ret != null)
 						return true;
@@ -381,7 +381,7 @@ internal class Token
 					mid = @"\n";
 					break;
 				case '\r':
-					mid = "";//@"\r";\n‚ª\r\n‚É–|–ó‚³‚ê‚é•s‹ï‡‚ÌC³BHSP‚Å‚Í"\n"Ë"\r\n"‚É‚·‚é‚æ‚¤‚¾
+					mid = "";//@"\r";\nãŒ\r\nã«ç¿»è¨³ã•ã‚Œã‚‹ä¸å…·åˆã®ä¿®æ­£ã€‚HSPã§ã¯"\n"â‡’"\r\n"ã«ã™ã‚‹ã‚ˆã†ã 
 					break;
 				case '\t':
 					mid = @"\t";
@@ -404,7 +404,7 @@ internal class Token
 		
 	}
 	#region HSPfuncname
-	private string GetStdFunc1Name(int v)//0x38Œn–½—ß
+	private string GetStdFunc1Name(int v)//0x38ç³»å‘½ä»¤
 	{
 		switch(v)
 		{
@@ -448,7 +448,7 @@ internal class Token
 		return null;
 	}
 
-	private string GetStdFunc2Name(int v)//0x40Œn–½—ß
+	private string GetStdFunc2Name(int v)//0x40ç³»å‘½ä»¤
 	{
 		switch(v)
 		{
@@ -509,7 +509,7 @@ internal class Token
 		return null;
 	}
 
-	private string GetStdFunc3Name(int v)//0x48Œn–½—ß
+	private string GetStdFunc3Name(int v)//0x48ç³»å‘½ä»¤
 	{
 		switch(v)
 		{

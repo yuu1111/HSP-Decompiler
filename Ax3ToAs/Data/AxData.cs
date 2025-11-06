@@ -233,9 +233,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		internal void LoadStart(BinaryReader theReader, Hsp3Dictionary theDictionary)
 		{
 			if (theReader == null)
-				throw new ArgumentNullException("reader‚Énull’l‚ğw’è‚Å‚«‚Ü‚¹‚ñ");
+				throw new ArgumentNullException("readerã«nullå€¤ã‚’æŒ‡å®šã§ãã¾ã›ã‚“");
 			if (theDictionary == null)
-				throw new ArgumentNullException("dictionary‚Énull’l‚ğw’è‚Å‚«‚Ü‚¹‚ñ");
+				throw new ArgumentNullException("dictionaryã«nullå€¤ã‚’æŒ‡å®šã§ãã¾ã›ã‚“");
 			seekOrigin = theReader.BaseStream.Position;
 			reader = theReader;
 			dictionary = theDictionary;
@@ -278,26 +278,26 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		internal void ReadHeader()
 		{
 			if (!isStarted)
-				throw new InvalidOperationException("LoadStart‚ªŒÄ‚Ño‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+				throw new InvalidOperationException("LoadStartãŒå‘¼ã³å‡ºã•ã‚Œã¦ã„ã¾ã›ã‚“");
 			long streamSize = reader.BaseStream.Length - seekOrigin;
 			if (streamSize < 0x60)
-				throw new HspDecoderException("AxData", "ƒtƒ@ƒCƒ‹ƒwƒbƒ_[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+				throw new HspDecoderException("AxData", "ãƒ•ã‚¡ã‚¤ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
 			try
 			{
 				header = AxHeader.FromBinaryReader(reader);
 			}
 			catch (SystemException e)
 			{
-				throw new HspDecoderException("AxHeader", "ƒwƒbƒ_[‰ğÍ’†‚É‘z’èŠO‚ÌƒGƒ‰[", e);
+				throw new HspDecoderException("AxHeader", "ãƒ˜ãƒƒãƒ€ãƒ¼è§£æä¸­ã«æƒ³å®šå¤–ã®ã‚¨ãƒ©ãƒ¼", e);
 			}
 			return;
 		}
 		internal void ReadPreprocessor(Hsp3Dictionary dictionary)
 		{
 			if (!isStarted)
-				throw new InvalidOperationException("LoadStart‚ªŒÄ‚Ño‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+				throw new InvalidOperationException("LoadStartãŒå‘¼ã³å‡ºã•ã‚Œã¦ã„ã¾ã›ã‚“");
 			if (header == null)
-				throw new InvalidOperationException("ƒwƒbƒ_[‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+				throw new InvalidOperationException("ãƒ˜ãƒƒãƒ€ãƒ¼ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“");
 			if (header.RuntimeStart != 0)
 			{
 				string runtimeName = ReadString((int)header.RuntimeStart, (int)(header.CodeStart - header.RuntimeStart));
@@ -371,12 +371,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
 		private void RenameFunctions(Hsp3Dictionary dictionary)
 		{
-			//#func‚È‚Ç‚Ì–¼‘O‚©‚Ô‚è‘Îô
+			//#funcãªã©ã®åå‰ã‹ã¶ã‚Šå¯¾ç­–
 			List<string> functionNames = new List<string>();
 			List<Function> initializer = new List<Function>();
 			List<Function> comfuncs = new List<Function>();
 			List<Function> dllfuncs = new List<Function>();
-			//ver1.20@•W€–½—ß‚ğ”ğ‚¯‚é‚æ‚¤‚É
+			//ver1.20ã€€æ¨™æº–å‘½ä»¤ã‚’é¿ã‘ã‚‹ã‚ˆã†ã«
 			functionNames.AddRange(dictionary.GetAllFuncName());
 			foreach (Function func in functions)
 			{

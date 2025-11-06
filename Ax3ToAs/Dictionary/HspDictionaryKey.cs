@@ -36,7 +36,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 		public override bool Equals(object obj)
 		{
 			if (obj.GetType() != typeof(HspDictionaryKey))
-				throw new Exception("ƒTƒ|[ƒgŠO");
+				throw new Exception("ã‚µãƒãƒ¼ãƒˆå¤–");
 
 			return Equals((HspDictionaryKey)obj);
 		}
@@ -46,7 +46,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 			return Type.GetHashCode() ^ Value.GetHashCode();
 		}
 
-		#region IEquatable<HspDictionaryKey> ƒƒ“ƒo
+		#region IEquatable<HspDictionaryKey> ãƒ¡ãƒ³ãƒ
 
 		public bool Equals(HspDictionaryKey other)
 		{
@@ -55,7 +55,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 
 		#endregion
 
-		#region IComparable<HspDictionaryKey> ƒƒ“ƒo
+		#region IComparable<HspDictionaryKey> ãƒ¡ãƒ³ãƒ
 
 		public int CompareTo(HspDictionaryKey other)
 		{

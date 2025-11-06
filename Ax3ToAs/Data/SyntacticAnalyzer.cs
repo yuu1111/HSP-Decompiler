@@ -16,7 +16,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			List<LogicalLine> ret = new List<LogicalLine>();
 			subAnalyzePreprocessor(ret, data);
 			readingLine = ret.Count;
-			//\•¶‰ğÍ
+			//æ§‹æ–‡è§£æ
 			while (!stream.NextIsEndOfStream)
 			{
 				System.Windows.Forms.Application.DoEvents();
@@ -27,8 +27,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 					ret.Add(line);
 			}
 
-			//ƒS[ƒXƒg‚Ìíœ foreach2‚Æ‚©stop‚ÌŒã‚Ìgoto•¶‚Æ‚©B
-			//repeat‚È‚Ç‚ÌŒã‚Éo‚éƒ‰ƒxƒ‹‚Í\•¶‰ğÍ‚Åíœ
+			//ã‚´ãƒ¼ã‚¹ãƒˆã®å‰Šé™¤ foreach2ã¨ã‹stopã®å¾Œã®gotoæ–‡ã¨ã‹ã€‚
+			//repeatãªã©ã®å¾Œã«å‡ºã‚‹ãƒ©ãƒ™ãƒ«ã¯æ§‹æ–‡è§£æã§å‰Šé™¤
 			for (int i = 0; i < ret.Count; i++)
 			{
 				if (ret[i].HasFlagIsGhost)
@@ -40,33 +40,33 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			for (int i = 0; i < ret.Count; i++)
 			{
 				if(!ret[i].CheckRpn())
-					ret[i].AddError("®F”®‚Ì•ÏŠ·‚É¸”s");
+					ret[i].AddError("å¼ï¼šæ•°å¼ã®å¤‰æ›ã«å¤±æ•—");
 			}
 
 
-			//subAnalyzeScoopAsubAnalyzeLabel‚Ì‡‚Å‚â‚é‚Æ
+			//subAnalyzeScoopã€subAnalyzeLabelã®é †ã§ã‚„ã‚‹ã¨
 			//if(value){
-			//@``
+			//ã€€ï½ï½
 			//}
 			//*label
 			//else{
-			//@``
+			//ã€€ï½ï½
 			//}
-			//‚Æ‚È‚Á‚½‚ÉƒGƒ‰[
-			//‚µ‚©‚µ‚È‚ª‚çsubAnalyzeLabelAsubAnalyzeScoop‚Ì‡‚Å‚â‚é‚Æ
+			//ã¨ãªã£ãŸæ™‚ã«ã‚¨ãƒ©ãƒ¼
+			//ã—ã‹ã—ãªãŒã‚‰subAnalyzeLabelã€subAnalyzeScoopã®é †ã§ã‚„ã‚‹ã¨
 			//if(value){
-			//@``
+			//ã€€ï½ï½
 			//*label
 			//}
 			//return
-			//‚Æ‚È‚Á‚Ä‚İ‚Á‚Æ‚à‚È‚¢B
-			//‚»‚±‚ÅsubAnalyzeScoopAsubAnalyzeLabel‚Ì‡‚Ås‚¢AsubAnalyzeLabel‚ÌÛ‚É’¼Œã‚ªelseß‚Å’¼‘O‚ªScoopEnd‚È‚çˆê‚Â–ß‚·ˆ—‚ğ“ü‚ê‚éB
+			//ã¨ãªã£ã¦ã¿ã£ã¨ã‚‚ãªã„ã€‚
+			//ãã“ã§subAnalyzeScoopã€subAnalyzeLabelã®é †ã§è¡Œã„ã€subAnalyzeLabelã®éš›ã«ç›´å¾ŒãŒelseç¯€ã§ç›´å‰ãŒScoopEndãªã‚‰ä¸€ã¤æˆ»ã™å‡¦ç†ã‚’å…¥ã‚Œã‚‹ã€‚
 
 			subAnalyzeScoop(ret);
 			subAnalyzeLabel(ret,data);
 			
 
-			//ƒ^ƒu®Œ`‚â—]•ª‚Ès‚Ìíœ‚ğs‚¤
+			//ã‚¿ãƒ–æ•´å½¢ã‚„ä½™åˆ†ãªè¡Œã®å‰Šé™¤ã‚’è¡Œã†
 			int tabCount = 1;
 			for (int i = 0; i < ret.Count; i++)
 			{
@@ -85,7 +85,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 						global::KttK.HspDecompiler.HspConsole.Warning(errMes, i + 1);
 
 			}
-			ret[ret.Count - 1].Visible = false;//––”ö‚É©“®¶¬‚³‚ê‚éstop•¶‚Ìíœ
+			ret[ret.Count - 1].Visible = false;//æœ«å°¾ã«è‡ªå‹•ç”Ÿæˆã•ã‚Œã‚‹stopæ–‡ã®å‰Šé™¤
 			ret = ret.FindAll(IsVisible);
 			return ret;
 
@@ -104,9 +104,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 				foreach (Function module in data.Modules)
 				{
 					LogicalLine line = new PreprocessorDeclaration(module);
-					line.AddError("deHSP‚Ìo—Í‚·‚é#struct‚ÍHSP‚ÌŒöŠJ‚³‚ê‚Ä‚¢‚éŒ¾Œêd—l‚É‚ÍŠÜ‚Ü‚ê‚Ü‚¹‚ñ");
+					line.AddError("deHSPã®å‡ºåŠ›ã™ã‚‹#structã¯HSPã®å…¬é–‹ã•ã‚Œã¦ã„ã‚‹è¨€èªä»•æ§˜ã«ã¯å«ã¾ã‚Œã¾ã›ã‚“");
 					ret.Add(line);
-					//ret.Add(new EndOfModule());//#globalƒCƒ‰ƒl
+					//ret.Add(new EndOfModule());//#globalã‚¤ãƒ©ãƒ
 				}
 
 			}
@@ -136,30 +136,30 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
 
 		/// <summary>
-		/// if,elseƒXƒR[ƒv‚ÌI“_‚ğŒˆ‚ß‚éB
+		/// if,elseã‚¹ã‚³ãƒ¼ãƒ—ã®çµ‚ç‚¹ã‚’æ±ºã‚ã‚‹ã€‚
 		/// </summary>
 		/// <param defaultName="ret"></param>
 		private void subAnalyzeScoop(List<LogicalLine> ret)
 		{			
 			for (int i = 0; i < ret.Count; i++)
 			{
-				//ifelseˆÈŠO‚ÍŠÖŒW‚È‚¢B
+				//ifelseä»¥å¤–ã¯é–¢ä¿‚ãªã„ã€‚
 				IfStatement scoopStart = ret[i] as IfStatement;
 				if (scoopStart == null)
 					continue;
 				if (scoopStart.JumpToOffset < 0)
 				{
 					scoopStart.ScoopEndIsDefined = false;
-					scoopStart.AddError("ğŒ•ªŠòs:I“_‚ª³‚µ‚­•Û‘¶‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+					scoopStart.AddError("æ¡ä»¶åˆ†å²è¡Œ:çµ‚ç‚¹ãŒæ­£ã—ãä¿å­˜ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 					continue;
 				}
-				//‚Ü‚¸’…’n‚·‚és(Jump‚Ì‚Æ‚Ñæ)‚ğ’T‚·B
-				//s‚Ì“r’†‚É’…’n‚µ‚Ä‚Í‚È‚ç‚È‚¢B
-				//TokenOffset‚ª0xFFFF‚ğ’´‚¦‚éê‡AHSP3.0a‚ÍƒIƒo[ƒtƒ[‚ğ‹N‚±‚·‚ªAƒRƒ“ƒpƒCƒ‹‚Í’Ê‚éB
-				//s‚Ì“r’†‚É’…’n‚·‚é‚Ì‚Í‚±‚Ì‚Æ‚«‚®‚ç‚¢‚©B
-				//<<2007/4/17’Ç‹L>>
-				//if (``){
-				//‚Æ‚µ‚ÄA}‚ğ‘‚©‚È‚©‚Á‚½ê‡A”ò‚Ñæ‚ª0‚ÉƒZƒbƒg‚³‚ê‚éB‚±‚Ì‚Æ‚«‚às‚Ì“r’†i©•ª©g‚Ì“r’†‚É‚È‚éj‚É’…’n‚·‚é‚æ‚¤‚¾
+				//ã¾ãšç€åœ°ã™ã‚‹è¡Œ(Jumpã®ã¨ã³å…ˆ)ã‚’æ¢ã™ã€‚
+				//è¡Œã®é€”ä¸­ã«ç€åœ°ã—ã¦ã¯ãªã‚‰ãªã„ã€‚
+				//TokenOffsetãŒ0xFFFFã‚’è¶…ãˆã‚‹å ´åˆã€HSP3.0aã¯ã‚ªãƒãƒ¼ãƒ•ãƒ­ãƒ¼ã‚’èµ·ã“ã™ãŒã€ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã¯é€šã‚‹ã€‚
+				//è¡Œã®é€”ä¸­ã«ç€åœ°ã™ã‚‹ã®ã¯ã“ã®ã¨ããã‚‰ã„ã‹ã€‚
+				//<<2007/4/17è¿½è¨˜>>
+				//if (ï½ï½){
+				//ã¨ã—ã¦ã€}ã‚’æ›¸ã‹ãªã‹ã£ãŸå ´åˆã€é£›ã³å…ˆãŒ0ã«ã‚»ãƒƒãƒˆã•ã‚Œã‚‹ã€‚ã“ã®ã¨ãã‚‚è¡Œã®é€”ä¸­ï¼ˆè‡ªåˆ†è‡ªèº«ã®é€”ä¸­ã«ãªã‚‹ï¼‰ã«ç€åœ°ã™ã‚‹ã‚ˆã†ã 
 				int jumpToOffset = scoopStart.JumpToOffset;
 				int jumpToLineNo = -1;
 				for (int j = (i + 1); j < ret.Count; j++)
@@ -169,7 +169,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 						jumpToLineNo = j;
 						break;
 					}
-					//s‚«‰ß‚¬‚¿‚á‚Á‚½‚ç‚¨‚µ‚Ü‚¢B
+					//è¡Œãéãã¡ã‚ƒã£ãŸã‚‰ãŠã—ã¾ã„ã€‚
 					if ((ret[j].TokenOffset != -1) && (ret[j].TokenOffset > jumpToOffset))
 					{
 						jumpToLineNo = -2;
@@ -179,17 +179,17 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 				if (jumpToLineNo == -1)
 				{
 					scoopStart.ScoopEndIsDefined = false;
-					scoopStart.AddError(string.Format("ğŒ•ªŠòs:{0:X08}:ƒXƒR[ƒv‚ÌI‚í‚è‚ªƒR[ƒhI’[‚ğ’´‚¦‚Ä‚¢‚Ü‚·",jumpToOffset));
+					scoopStart.AddError(string.Format("æ¡ä»¶åˆ†å²è¡Œ:{0:X08}:ã‚¹ã‚³ãƒ¼ãƒ—ã®çµ‚ã‚ã‚ŠãŒã‚³ãƒ¼ãƒ‰çµ‚ç«¯ã‚’è¶…ãˆã¦ã„ã¾ã™",jumpToOffset));
 					continue;
 				}
 				if (jumpToLineNo == -2)
 				{
 					scoopStart.ScoopEndIsDefined = false;
-					scoopStart.AddError(string.Format("ğŒ•ªŠòs:{0:X08}:ƒXƒR[ƒv‚ÌI‚í‚è‚ªs‚Ì“r’†‚Å‚·", jumpToOffset));
+					scoopStart.AddError(string.Format("æ¡ä»¶åˆ†å²è¡Œ:{0:X08}:ã‚¹ã‚³ãƒ¼ãƒ—ã®çµ‚ã‚ã‚ŠãŒè¡Œã®é€”ä¸­ã§ã™", jumpToOffset));
 					continue;
 				}
-				//’Êí‚Í’…’n‚Ì’¼‘O‚ÉScoopEnd‚ğ‘}“ü‚·‚éB
-				//if‚©‚çelse‚É”ò‚Ôê‡Ajumpæ‚Íelse‚Ì’¼Œã‚Ìs‚É‚È‚Á‚Ä‚¢‚é‚Ì‚Å‚³‚ç‚É‚Ğ‚Æ‚Â‚³‚©‚Ì‚Ú‚é•K—v‚ª‚ ‚éB
+				//é€šå¸¸ã¯ç€åœ°ã®ç›´å‰ã«ScoopEndã‚’æŒ¿å…¥ã™ã‚‹ã€‚
+				//ifã‹ã‚‰elseã«é£›ã¶å ´åˆã€jumpå…ˆã¯elseã®ç›´å¾Œã®è¡Œã«ãªã£ã¦ã„ã‚‹ã®ã§ã•ã‚‰ã«ã²ã¨ã¤ã•ã‹ã®ã¼ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 				IfStatement elseStatement = ret[jumpToLineNo - 1] as IfStatement;
 				if (elseStatement != null)
 					if ((scoopStart.isIfStatement) && (elseStatement.isElseStatement))
@@ -200,7 +200,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		}
 
 		/// <summary>
-		/// ƒ‰ƒxƒ‹’Ç‰Á
+		/// ãƒ©ãƒ™ãƒ«è¿½åŠ 
 		/// </summary>
 		/// <param defaultName="ret"></param>
 		/// <param defaultName="data"></param>
@@ -221,14 +221,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 				}
 
 				//if(value){
-				//@``
+				//ã€€ï½ï½
 				//}
 				//*label
 				//else{
-				//@``
+				//ã€€ï½ï½
 				//}
-				//‚Æ‚È‚é‚Ì‚ğ‰ñ”ğ‚·‚éˆ—B
-				//“ü‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚éêŠ(i)‚ªelseß‚Ì’¼‘O‚ÅScoopEnd‚Ì’¼Œã‚È‚çScoopEnd‚Ì‘O‚ÉˆÚ“®B
+				//ã¨ãªã‚‹ã®ã‚’å›é¿ã™ã‚‹å‡¦ç†ã€‚
+				//å…¥ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã‚‹å ´æ‰€(i)ãŒelseç¯€ã®ç›´å‰ã§ScoopEndã®ç›´å¾Œãªã‚‰ScoopEndã®å‰ã«ç§»å‹•ã€‚
 				if ((i> 0) &&(ret[i] is IfStatement))
 				{
 					IfStatement ifStatement = ret[i] as IfStatement;

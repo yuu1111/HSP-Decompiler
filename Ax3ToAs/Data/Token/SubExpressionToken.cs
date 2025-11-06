@@ -6,7 +6,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
 	/// <summary>
-	/// RPN‰ğÍ—p
+	/// RPNè§£æç”¨
 	/// </summary>
 	internal sealed class SubExpressionToken : OperandToken
 	{
@@ -18,15 +18,15 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 			op = opToken;
 		}
 		/// <summary>
-		/// ¶ƒIƒyƒ‰ƒ“ƒh
+		/// å·¦ã‚ªãƒšãƒ©ãƒ³ãƒ‰
 		/// </summary>
 		private readonly OperandToken p1;
 		/// <summary>
-		/// ‰EƒIƒyƒ‰ƒ“ƒh
+		/// å³ã‚ªãƒšãƒ©ãƒ³ãƒ‰
 		/// </summary>
 		private readonly OperandToken p2;
 		/// <summary>
-		/// ‰‰Zq
+		/// æ¼”ç®—å­
 		/// </summary>
 		private readonly OperatorToken op;
 		internal override int TokenOffset

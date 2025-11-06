@@ -3,14 +3,14 @@ using System;
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
 	/// <summary>
-	/// Header ‚ÌŠT—v‚Ìà–¾‚Å‚·B
+	/// Header ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
 	/// </summary>
 internal class Header
 {
 	private Header()
 	{
 		// 
-		// TODO: ƒRƒ“ƒXƒgƒ‰ƒNƒ^ ƒƒWƒbƒN‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 		//
 	}
 

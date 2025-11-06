@@ -1,4 +1,4 @@
-﻿namespace KttK.HspDecompiler
+namespace KttK.HspDecompiler
 {
 	partial class deHspDialog
 	{

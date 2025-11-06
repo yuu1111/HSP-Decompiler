@@ -12,11 +12,11 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		private Param(int paramIndex):base(paramIndex){}
 		string paramTypeName = "NULL";
 		/// <summary>
-		/// struct‚ÌindexB
+		/// structã®indexã€‚
 		/// </summary>
 		short deffuncIndex;
 		/// <summary>
-		/// ƒpƒ‰ƒ[ƒ^[‚ÌŠJnƒTƒCƒY‚Ü‚½‚ÍmodinitŠÖ”‚Ìindex
+		/// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®é–‹å§‹ã‚µã‚¤ã‚ºã¾ãŸã¯modinité–¢æ•°ã®index
 		/// </summary>
 		int paramStartByte;
 		internal static Param FromBinaryReader(BinaryReader reader, AxData parent, int index)
@@ -89,7 +89,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			{
 				if (paramTypeName == "NULL")
 				{
-					strbd.Append("/*•s–¾‚ÈŒ^ ");
+					strbd.Append("/*ä¸æ˜ãªå‹ ");
 					strbd.Append(paramType.ToString("X04"));
 					strbd.Append("*/");
 				}

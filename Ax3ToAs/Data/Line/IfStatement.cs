@@ -8,7 +8,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// if, elseç\ï∂
+	/// if, elseÊßãÊñá
 	/// </summary>
 	internal sealed class IfStatement : LogicalLine
 	{

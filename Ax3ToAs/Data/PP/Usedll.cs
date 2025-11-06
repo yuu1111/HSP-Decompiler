@@ -60,7 +60,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		public override string ToString()
 		{
 			if (name == null)
-				return @"//#uselib? //dll–¼•s–¾";
+				return @"//#uselib? //dllåä¸æ˜";
 			StringBuilder strBld = new StringBuilder();
 			switch (this.Type)
 			{
@@ -79,7 +79,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 					else
 					{
 						strBld.Append(' ');
-						strBld.Append("/*ŠÖ”‚È‚µ*/");
+						strBld.Append("/*é–¢æ•°ãªã—*/");
 					}
 
 					strBld.Append(' ');
@@ -92,7 +92,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 					strBld.Append('"');
 					break;
 				default:
-					return @"//#uselib? //–¢‘Î‰‚ÌŒ`®";
+					return @"//#uselib? //æœªå¯¾å¿œã®å½¢å¼";
 			}
 			return strBld.ToString();
 		}

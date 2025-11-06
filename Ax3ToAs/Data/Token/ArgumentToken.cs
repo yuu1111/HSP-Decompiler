@@ -6,7 +6,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
 	/// <summary>
-	/// ˆø”
+	/// å¼•æ•°
 	/// </summary>
 	internal sealed class ArgumentToken : CodeToken
 	{

@@ -23,9 +23,9 @@ namespace KttK.HspDecompiler.DpmToAx
 		internal byte[] GetFile()
 		{
 			if (IsEncrypted)
-				throw new Exception("ˆÃ†‰»ƒtƒ@ƒCƒ‹‚É‚Í‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ");
+				throw new Exception("æš—å·åŒ–ãƒ•ã‚¡ã‚¤ãƒ«ã«ã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“");
 			if (Parent == null)
-				throw new Exception("eƒtƒ@ƒCƒ‹–¢İ’è");
+				throw new Exception("è¦ªãƒ•ã‚¡ã‚¤ãƒ«æœªè¨­å®š");
 			return Parent.GetFile(FileOffset, FileSize);
 		}
 

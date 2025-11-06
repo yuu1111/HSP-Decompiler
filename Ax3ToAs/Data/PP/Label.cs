@@ -54,7 +54,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
 
 
-		#region IComparable<Label> ƒƒ“ƒo
+		#region IComparable<Label> ãƒ¡ãƒ³ãƒ
 
 		public int CompareTo(Label other)
 		{

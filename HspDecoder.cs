@@ -31,7 +31,7 @@ namespace KttK.HspDecompiler
 			}
 		err:
 			HspConsole.WriteLog("load " + dictionaryFileName + ":failed");
-			System.Windows.Forms.MessageBox.Show(dictionaryFileName + "‚Ì“Ç‚É¸”s‚µ‚Ü‚µ‚½");
+			System.Windows.Forms.MessageBox.Show(dictionaryFileName + "ã®èª­è¾¼ã«å¤±æ•—ã—ã¾ã—ãŸ");
 			dictionary = null;
 			return false;
 		}
@@ -43,12 +43,12 @@ namespace KttK.HspDecompiler
 			if (dpmFileListView == null)
 				throw new ArgumentNullException();
 			dpmFileListView.Items.Clear();
-			global::KttK.HspDecompiler.HspConsole.Write("DPMƒwƒbƒ_[‚ÌŠJnˆÊ’u‚ğŒŸõ’†...");
+			global::KttK.HspDecompiler.HspConsole.Write("DPMãƒ˜ãƒƒãƒ€ãƒ¼ã®é–‹å§‹ä½ç½®ã‚’æ¤œç´¢ä¸­...");
 			Undpm undpm = Undpm.FromBinaryReader(reader);
 			if (undpm == null)
-				throw new HspDecoderException("DPMƒwƒbƒ_[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ(HSP‚ÌÀsƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñ)");
+				throw new HspDecoderException("DPMãƒ˜ãƒƒãƒ€ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“(HSPã®å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ã‚ã‚Šã¾ã›ã‚“)");
 			if ((undpm.FileList == null) || (undpm.FileList.Count == 0))
-				throw new HspDecoderException("DPM‚Éƒtƒ@ƒCƒ‹‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+				throw new HspDecoderException("DPMã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒå«ã¾ã‚Œã¦ã„ã¾ã›ã‚“");
 			
 			int encryptCount = 0;
 			int fileCount = undpm.FileList.Count;
@@ -58,15 +58,15 @@ namespace KttK.HspDecompiler
 				itemParams[0] = file.FileName;
 				if (file.IsEncrypted)
 				{
-					itemParams[1] = "—L";
+					itemParams[1] = "æœ‰";
 #if AllowDecryption
-					//deHSP100 start.ax‚ÍˆÃ†ƒtƒ@ƒCƒ‹‚É”‚¦‚È‚¢‚±‚Æ‚É‚·‚é
+					//deHSP100 start.axã¯æš—å·ãƒ•ã‚¡ã‚¤ãƒ«ã«æ•°ãˆãªã„ã“ã¨ã«ã™ã‚‹
 					if (!file.FileName.Equals("start.ax", StringComparison.OrdinalIgnoreCase))
 #endif
 						encryptCount++;
 				}
 				else
-					itemParams[1] = "|";
+					itemParams[1] = "ï¼";
 				itemParams[2] = string.Format("0x{0:X08}",file.FileOffset);
 				itemParams[3] = string.Format("0x{0:X08}",file.FileSize);
 				dpmFileListView.Items.Add(new ListViewItem(itemParams));
@@ -74,16 +74,16 @@ namespace KttK.HspDecompiler
 			Thread.Sleep(0);
 			if ((fileCount - encryptCount) <= 0)
 			{
-				MessageBox.Show("‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹‚ªˆÃ†‰»‚³‚ê‚Ä‚¢‚Ü‚·", fileCount.ToString() + "ƒtƒ@ƒCƒ‹’†A" + encryptCount.ToString() + "ƒtƒ@ƒCƒ‹‚ªˆÃ†‰»‚³‚ê‚Ä‚¢‚Ü‚·B", MessageBoxButtons.OK);
-				global::KttK.HspDecompiler.HspConsole.Write("“WŠJ’†’f");
+				MessageBox.Show("ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæš—å·åŒ–ã•ã‚Œã¦ã„ã¾ã™", fileCount.ToString() + "ãƒ•ã‚¡ã‚¤ãƒ«ä¸­ã€" + encryptCount.ToString() + "ãƒ•ã‚¡ã‚¤ãƒ«ãŒæš—å·åŒ–ã•ã‚Œã¦ã„ã¾ã™ã€‚", MessageBoxButtons.OK);
+				global::KttK.HspDecompiler.HspConsole.Write("å±•é–‹ä¸­æ–­");
 				return;
 			}
 			if (encryptCount > 0)
 			{
-				DialogResult result = MessageBox.Show("ˆÃ†‰»‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚·B" + Environment.NewLine + "ˆÃ†‰»‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ğ–³‹‚µ‚Ä“WŠJ‚ğ‘±‚¯‚Ü‚·‚©H", fileCount.ToString() + "ƒtƒ@ƒCƒ‹’†A" + encryptCount.ToString() + "ƒtƒ@ƒCƒ‹‚ªˆÃ†‰»‚³‚ê‚Ä‚¢‚Ü‚·B", MessageBoxButtons.YesNo);
+				DialogResult result = MessageBox.Show("æš—å·åŒ–ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã™ã€‚" + Environment.NewLine + "æš—å·åŒ–ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç„¡è¦–ã—ã¦å±•é–‹ã‚’ç¶šã‘ã¾ã™ã‹ï¼Ÿ", fileCount.ToString() + "ãƒ•ã‚¡ã‚¤ãƒ«ä¸­ã€" + encryptCount.ToString() + "ãƒ•ã‚¡ã‚¤ãƒ«ãŒæš—å·åŒ–ã•ã‚Œã¦ã„ã¾ã™ã€‚", MessageBoxButtons.YesNo);
 				if (result != DialogResult.Yes)
 				{
-					global::KttK.HspDecompiler.HspConsole.Write("“WŠJ’†’f");
+					global::KttK.HspDecompiler.HspConsole.Write("å±•é–‹ä¸­æ–­");
 					return;
 				}
 			}
@@ -95,7 +95,7 @@ namespace KttK.HspDecompiler
 				}
 				catch
 				{
-					throw new HspDecoderException("ƒfƒBƒŒƒNƒgƒŠ" + outputDir + "‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½");
+					throw new HspDecoderException("ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª" + outputDir + "ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ");
 
 				}
 			}
@@ -109,30 +109,30 @@ namespace KttK.HspDecompiler
 					if (!file.FileName.Equals("start.ax", StringComparison.OrdinalIgnoreCase))
 #endif
 					{
-						global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "‚ÍˆÃ†‰»‚³‚ê‚Ä‚¢‚Ü‚·");
+						global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "ã¯æš—å·åŒ–ã•ã‚Œã¦ã„ã¾ã™");
 						continue;
 					}
 				}
 				string outputPath = outputDir + file.FileName;
 				if (File.Exists(outputPath))
 				{
-					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "‚Æ“¯–¼‚Ìƒtƒ@ƒCƒ‹‚ªŠù‚É‘¶İ‚µ‚Ü‚·");
+					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "ã¨åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™");
 					continue;
 				}
 				if (!undpm.Seek(file))
 				{
-					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "‚ÌŠJnˆÊ’u‚ÉˆÚ“®‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½");
+					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "ã®é–‹å§‹ä½ç½®ã«ç§»å‹•ã§ãã¾ã›ã‚“ã§ã—ãŸ");
 					continue;
 				}
 				buffer = reader.ReadBytes(file.FileSize);
 #if AllowDecryption
 				if (file.IsEncrypted)
 				{
-					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "‚Ì•œ†’†...");
+					global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "ã®å¾©å·ä¸­...");
 
-					KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform decrypter = KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform.CrackEncryption(buffer, dictionary, outputPath); // •ÏX
+					KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform decrypter = KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform.CrackEncryption(buffer, dictionary, outputPath); // å¤‰æ›´
 					if (decrypter == null){
-						global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "‚Ì•œ†‚É¸”s‚µ‚Ü‚µ‚½");
+						global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "ã®å¾©å·ã«å¤±æ•—ã—ã¾ã—ãŸ");
 						
 						continue;
 					}
@@ -145,7 +145,7 @@ namespace KttK.HspDecompiler
 				}
 				catch
 				{
-					global::KttK.HspDecompiler.HspConsole.Warning(file.FileName + "‚Ì•Û‘¶‚É¸”s‚µ‚Ü‚µ‚½");
+					global::KttK.HspDecompiler.HspConsole.Warning(file.FileName + "ã®ä¿å­˜ã«å¤±æ•—ã—ã¾ã—ãŸ");
 				}
 				finally{
 					if(saveStream != null)
@@ -153,7 +153,7 @@ namespace KttK.HspDecompiler
 				}
 					
 			}
-			global::KttK.HspDecompiler.HspConsole.Write("“WŠJI—¹");
+			global::KttK.HspDecompiler.HspConsole.Write("å±•é–‹çµ‚äº†");
 		}
 
 		internal void Decode(BinaryReader reader,string outputPath)
@@ -164,14 +164,14 @@ namespace KttK.HspDecompiler
 				throw new InvalidOperationException();
 			global::KttK.HspDecompiler.HspConsole.StartParagraph();
 			List<string> lines = null;
-			global::KttK.HspDecompiler.HspConsole.Write("‹tƒRƒ“ƒpƒCƒ‹’†...");
+			global::KttK.HspDecompiler.HspConsole.Write("é€†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ä¸­...");
 			global::KttK.HspDecompiler.HspConsole.StartParagraph();
 			lines = getDecoder(reader).Decode(reader);
 
 			global::KttK.HspDecompiler.HspConsole.EndParagraph();
-			global::KttK.HspDecompiler.HspConsole.Write("‹tƒRƒ“ƒpƒCƒ‹I—¹");
+			global::KttK.HspDecompiler.HspConsole.Write("é€†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«çµ‚äº†");
 			global::KttK.HspDecompiler.HspConsole.EndParagraph();
-			global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(outputPath) + "‚Éo—Í");
+			global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(outputPath) + "ã«å‡ºåŠ›");
 
 			StreamWriter writer = null;
 			try
@@ -179,7 +179,7 @@ namespace KttK.HspDecompiler
 				writer = new StreamWriter(outputPath, false, Encoding.GetEncoding("SHIFT-JIS"));
 				foreach (string line in lines)
 					writer.WriteLine(line);
-				global::KttK.HspDecompiler.HspConsole.Write("‰ğÍI—¹");
+				global::KttK.HspDecompiler.HspConsole.Write("è§£æçµ‚äº†");
 			}
 			finally
 			{
@@ -204,7 +204,7 @@ namespace KttK.HspDecompiler
 				decoder.Dictionary = dictionary;
 				return decoder;
 			}
-			throw new HspDecoderException("HSP2‚Å‚àHSP3‚Å‚à‚È‚¢Œ`®");
+			throw new HspDecoderException("HSP2ã§ã‚‚HSP3ã§ã‚‚ãªã„å½¢å¼");
 			
 
 

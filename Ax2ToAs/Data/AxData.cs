@@ -6,14 +6,14 @@ using System.Collections.Generic;
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
 	/// <summary>
-	/// AxData ‚ÌŠT—v‚Ìà–¾‚Å‚·B
+	/// AxData ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
 	/// </summary>
 internal class AxData
 {
 	internal AxData()
 	{
 		// 
-		// TODO: ƒRƒ“ƒXƒgƒ‰ƒNƒ^ ƒƒWƒbƒN‚ğ‚±‚±‚É’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ãƒ­ã‚¸ãƒƒã‚¯ã‚’ã“ã“ã«è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 		//
 	}
 
@@ -44,7 +44,7 @@ internal class AxData
 		long startPosition = stream.Position;
 		byte[] headerBuffer = new byte[80];
 		if (stream.Read(headerBuffer, 0, 80) < 80)
-			throw new HspDecoderException("AxData", "ƒtƒ@ƒCƒ‹ƒwƒbƒ_[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+			throw new HspDecoderException("AxData", "ãƒ•ã‚¡ã‚¤ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
 		int[] buffer = new int[20];
 		for (int i = 0; i< 20; i++)
 		{
@@ -56,10 +56,10 @@ internal class AxData
 		}
 		catch(Exception e)
 		{
-			throw new HspDecoderException("AxHeader", "ƒwƒbƒ_[‰ğÍ’†‚É‘z’èŠO‚ÌƒGƒ‰[",e);
+			throw new HspDecoderException("AxHeader", "ãƒ˜ãƒƒãƒ€ãƒ¼è§£æä¸­ã«æƒ³å®šå¤–ã®ã‚¨ãƒ©ãƒ¼",e);
 		}
 		if (this.header == null)
-			throw new HspDecoderException("AxHeader", "ƒwƒbƒ_[‰ğÍ‚É¸”s");
+			throw new HspDecoderException("AxHeader", "ãƒ˜ãƒƒãƒ€ãƒ¼è§£æã«å¤±æ•—");
 		try
 		{
 			Header head = this.header;
@@ -93,7 +93,7 @@ internal class AxData
 		}
 		catch(Exception e)
 		{
-			throw new HspDecoderException("AxHeader", "ƒXƒgƒŠ[ƒ€‚Ì“Ç‚İæ‚è’†‚É‘z’èŠO‚ÌƒGƒ‰[",e);
+			throw new HspDecoderException("AxHeader", "ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®èª­ã¿å–ã‚Šä¸­ã«æƒ³å®šå¤–ã®ã‚¨ãƒ©ãƒ¼",e);
 		}
 		stream.Seek(startPosition, SeekOrigin.Begin);
 	}
@@ -243,7 +243,7 @@ internal class AxData
 
 		Token.SetZero();
 		Token token;
-		//ƒ‰ƒxƒ‹‚ªŒÄ‚Ño‚³‚ê‚é‰ñ”‚ğ’²‚×‚é
+		//ãƒ©ãƒ™ãƒ«ãŒå‘¼ã³å‡ºã•ã‚Œã‚‹å›æ•°ã‚’èª¿ã¹ã‚‹
 		try
 		{
 			while((token = Token.GetNext())!=null)
@@ -254,7 +254,7 @@ internal class AxData
 		}
 		catch(Exception e)
 		{
-			throw new HspDecoderException("AxHeader", "ƒ‰ƒxƒ‹‚Ì“Ç‚İæ‚è’†‚É•œ‹A‚Å‚«‚È‚¢ƒGƒ‰[", e);
+			throw new HspDecoderException("AxHeader", "ãƒ©ãƒ™ãƒ«ã®èª­ã¿å–ã‚Šä¸­ã«å¾©å¸°ã§ããªã„ã‚¨ãƒ©ãƒ¼", e);
 		}
 
 		enabledCount = 0;
@@ -276,7 +276,7 @@ internal class AxData
 		}
 		int scoopCount = tabNo - 1;
 		//if (scoopCount != 0)
-		//    MainProc.Process.WriteLog("¦Œx¦ " + scoopCount.ToString() + "ŒÂ‚Ì–¢‰ğŒˆƒXƒR[ƒv‚ªc‚è‚Ü‚µ‚½");
+		//    MainProc.Process.WriteLog("â€»è­¦å‘Šâ€» " + scoopCount.ToString() + "å€‹ã®æœªè§£æ±ºã‚¹ã‚³ãƒ¼ãƒ—ãŒæ®‹ã‚Šã¾ã—ãŸ");
 		
 		return;
 	}
@@ -349,7 +349,7 @@ internal class AxData
 
 		if (!token.isKnown)
 		{
-			//MainProc.Process.WriteLog("‰ğß‚Å‚«‚È‚¢ƒR[ƒh: " + (lines.Count + 1).ToString() + "s–Ú :" + token.GetString());
+			//MainProc.Process.WriteLog("è§£é‡ˆã§ããªã„ã‚³ãƒ¼ãƒ‰: " + (lines.Count + 1).ToString() + "è¡Œç›® :" + token.GetString());
 			unknownCount++;
 		}
 		if ( !token.isLineend )
@@ -364,7 +364,7 @@ internal class AxData
 				line += add;
 				if (!token.isKnown)
 				{
-					//MainProc.Process.WriteLog("‰ğß‚Å‚«‚È‚¢ƒR[ƒh: " + (lines.Count + 1).ToString() + "s–Ú :" + token.GetString());
+					//MainProc.Process.WriteLog("è§£é‡ˆã§ããªã„ã‚³ãƒ¼ãƒ‰: " + (lines.Count + 1).ToString() + "è¡Œç›® :" + token.GetString());
 					unknownCount++;
 				}
 				if ( token.isLineend )

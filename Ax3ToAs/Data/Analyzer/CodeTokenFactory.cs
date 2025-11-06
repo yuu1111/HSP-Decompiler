@@ -6,8 +6,8 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
 using KttK.HspDecompiler.Ax3ToAs.Data;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 {
-	//CodeTokenFactory‚ÍLogicalLineFactory‚Ìˆê•”‚Å‚ ‚éB
-	//‰º¿‚¯HêH
+	//CodeTokenFactoryã¯LogicalLineFactoryã®ä¸€éƒ¨ã§ã‚ã‚‹ã€‚
+	//ä¸‹è«‹ã‘å·¥å ´ï¼Ÿ
 partial class LogicalLineFactory
 {
 	private static class CodeTokenFactory
@@ -15,10 +15,10 @@ partial class LogicalLineFactory
 		internal static ExpressionToken ReadExpression(TokenCollection stream)
 		{
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("®F“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
+				throw new HspLogicalLineException("å¼ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
 			ExpressionTermToken elem = null;
 			List<ExpressionTermToken> elements = new List<ExpressionTermToken>();
-			do//Å’áˆê‚Â‚Íƒpƒ‰ƒ[ƒ^‚ª‚ ‚é‚Í‚¸B
+			do//æœ€ä½ä¸€ã¤ã¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒã‚ã‚‹ã¯ãšã€‚
 			{
 				if (stream.NextIsBracketEnd)
 					break;
@@ -31,7 +31,7 @@ partial class LogicalLineFactory
 				else if (stream.NextToken is VariablePrimitive)
 					elem = (ExpressionTermToken)(ReadVariable(stream));
 				else
-					throw new HspLogicalLineException("®F•s“KØ‚È—v‘f‚ğŒŸo");
+					throw new HspLogicalLineException("å¼ï¼šä¸é©åˆ‡ãªè¦ç´ ã‚’æ¤œå‡º");
 				elements.Add(elem);
 			} while (!stream.NextIsEndOfParam);
 			ExpressionToken ret = new ExpressionToken(elements);
@@ -42,30 +42,30 @@ partial class LogicalLineFactory
 		private static object ReadLiteral(TokenCollection stream)
 		{
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("ƒŠƒeƒ‰ƒ‹F“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
-			//ƒŠƒeƒ‰ƒ‹ƒvƒŠƒeƒBƒu“Ç‚İ‚İ
+				throw new HspLogicalLineException("ãƒªãƒ†ãƒ©ãƒ«ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
+			//ãƒªãƒ†ãƒ©ãƒ«ãƒ—ãƒªãƒ†ã‚£ãƒ–èª­ã¿è¾¼ã¿
 			LiteralPrimitive token = stream.GetNextToken() as LiteralPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("ƒŠƒeƒ‰ƒ‹F•s“KØ‚È—v‘f‚ğŒŸo");
+				throw new HspLogicalLineException("ãƒªãƒ†ãƒ©ãƒ«ï¼šä¸é©åˆ‡ãªè¦ç´ ã‚’æ¤œå‡º");
 			return new LiteralToken(token);
 		}
 
 		internal static ArgumentToken ReadArgument(TokenCollection stream)
 		{
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("ˆø”F“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
+				throw new HspLogicalLineException("å¼•æ•°ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
 			bool hasBracket = stream.NextIsBracketStart;
-			//Š‡ŒÊ“Ç‚İÌ‚ÄB
+			//æ‹¬å¼§èª­ã¿æ¨ã¦ã€‚
 			if (hasBracket)
 				stream.GetNextToken();
 			List<ExpressionToken> exps = new List<ExpressionToken>();
 			bool firstArgIsNull = stream.NextIsEndOfParam;
-			//ˆê“xˆø”‚ğ“Ç‚İn‚ß‚½‚çs––‚©')'‚Ü‚Å“Ç‚İ‚«‚é
+			//ä¸€åº¦å¼•æ•°ã‚’èª­ã¿å§‹ã‚ãŸã‚‰è¡Œæœ«ã‹')'ã¾ã§èª­ã¿ãã‚‹
 			while (!stream.NextIsEndOfLine)
 			{
 				if (hasBracket & stream.NextIsBracketEnd)
 				{
-					//Š‡ŒÊ“Ç‚İÌ‚Ä & ˆø”I—¹
+					//æ‹¬å¼§èª­ã¿æ¨ã¦ & å¼•æ•°çµ‚äº†
 					stream.GetNextToken();
 					break;
 				}
@@ -77,14 +77,14 @@ partial class LogicalLineFactory
 		internal static FunctionToken ReadFunction(TokenCollection stream, bool hasBracket)
 		{
 			if (stream.NextIsEndOfStream)
-				throw new HspLogicalLineException("ŠÖ”F“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
+				throw new HspLogicalLineException("é–¢æ•°ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
 			FunctionPrimitive token = stream.GetNextToken() as FunctionPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("ŠÖ”FŠÖ”ƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
-			//s––‚È‚ç‹­§“I‚ÉI—¹
+				throw new HspLogicalLineException("é–¢æ•°ï¼šé–¢æ•°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
+			//è¡Œæœ«ãªã‚‰å¼·åˆ¶çš„ã«çµ‚äº†
 			if (stream.NextIsEndOfLine)
 				return new FunctionToken(token);
-			//ƒS[ƒXƒgƒ‰ƒxƒ‹ˆ—
+			//ã‚´ãƒ¼ã‚¹ãƒˆãƒ©ãƒ™ãƒ«å‡¦ç†
 			if (token.HasGhostLabel	&& (stream.NextToken.CodeType == HspCodeType.Label))
 			{
 				stream.GetNextToken();
@@ -92,11 +92,11 @@ partial class LogicalLineFactory
 					return new FunctionToken(token);
 			}
 
-			//Ÿ‚ª'('‚È‚çˆø”“Ç‚İ‚İ
+			//æ¬¡ãŒ'('ãªã‚‰å¼•æ•°èª­ã¿è¾¼ã¿
 			if (stream.NextIsBracketStart)
 				return new FunctionToken(token, ReadArgument(stream));
-			//‚Ç‚¿‚ç‚Å‚à‚È‚¢‚È‚çAhasBracket‚Å•ªŠò
-			//hasBracket@=false‚È‚ç‹­§“I‚Éˆø”‚ ‚è‚ÉB
+			//ã©ã¡ã‚‰ã§ã‚‚ãªã„ãªã‚‰ã€hasBracketã§åˆ†å²
+			//hasBracketã€€=falseãªã‚‰å¼·åˆ¶çš„ã«å¼•æ•°ã‚ã‚Šã«ã€‚
 			if (hasBracket)
 				return new FunctionToken(token);
 			else
@@ -106,17 +106,17 @@ partial class LogicalLineFactory
 		internal static VariableToken ReadVariable(TokenCollection stream)
 		{
 			if (stream.NextIsEndOfStream)
-				throw new HspLogicalLineException("•Ï”F“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
-			//•Ï”ƒvƒŠƒeƒBƒu“Ç‚İ‚İ
+				throw new HspLogicalLineException("å¤‰æ•°ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
+			//å¤‰æ•°ãƒ—ãƒªãƒ†ã‚£ãƒ–èª­ã¿è¾¼ã¿
 			VariablePrimitive token = stream.GetNextToken() as VariablePrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("•Ï”F•Ï”ƒvƒŠƒ~ƒeƒBƒuˆÈŠO‚©‚çƒXƒ^[ƒg");
+				throw new HspLogicalLineException("å¤‰æ•°ï¼šå¤‰æ•°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä»¥å¤–ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ");
 
-			//Ÿ‚ªŠ‡ŒÊ‚È‚ç‚Î”z—ñ•Ï”
+			//æ¬¡ãŒæ‹¬å¼§ãªã‚‰ã°é…åˆ—å¤‰æ•°
 			if (stream.NextIsBracketStart){
 				return new VariableToken(token, ReadArgument(stream));
 			}
-			//‚»‚¤‚Å‚È‚¯‚ê‚Î•’Ê‚Ì•Ï”
+			//ãã†ã§ãªã‘ã‚Œã°æ™®é€šã®å¤‰æ•°
 			return new VariableToken(token);
 			//if (parser.NextIsEndOfLine)
 			//    return VariableToken(token);
@@ -125,11 +125,11 @@ partial class LogicalLineFactory
 		internal static OperatorToken ReadOperator(TokenCollection stream)
 		{
 			if (stream.NextIsEndOfLine)
-				throw new HspLogicalLineException("‰‰ZqF“Ç‚İ‚İ’†‚ÉƒXƒ^ƒbƒN‚ª‹ó‚É‚È‚Á‚½");
-			//•Ï”ƒvƒŠƒeƒBƒu“Ç‚İ‚İ
+				throw new HspLogicalLineException("æ¼”ç®—å­ï¼šèª­ã¿è¾¼ã¿ä¸­ã«ã‚¹ã‚¿ãƒƒã‚¯ãŒç©ºã«ãªã£ãŸ");
+			//å¤‰æ•°ãƒ—ãƒªãƒ†ã‚£ãƒ–èª­ã¿è¾¼ã¿
 			OperatorPrimitive token = stream.GetNextToken() as OperatorPrimitive;
 			if (token == null)
-				throw new HspLogicalLineException("‰‰ZqF•s“KØ‚È—v‘f‚ğŒŸo");
+				throw new HspLogicalLineException("æ¼”ç®—å­ï¼šä¸é©åˆ‡ãªè¦ç´ ã‚’æ¤œå‡º");
 			return new OperatorToken(token);
 
 		}

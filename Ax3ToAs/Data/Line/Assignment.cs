@@ -7,7 +7,7 @@ using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// ‘ã“ü®
+	/// ä»£å…¥å¼
 	/// </summary>
 	internal sealed class Assignment : LogicalLine
 	{
@@ -27,7 +27,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 		readonly VariableToken var = null;
 		readonly OperatorToken op = null;
 
-		//•’Ê‚Í‚Ğ‚Æ‚Â‚Ì®‚¾‚ªA”z—ñ•Ï”‚É‚Í‚½‚­‚³‚ñ‘ã“ü‚·‚é‚±‚Æ‚à‚ ‚éB
+		//æ™®é€šã¯ã²ã¨ã¤ã®å¼ã ãŒã€é…åˆ—å¤‰æ•°ã«ã¯ãŸãã•ã‚“ä»£å…¥ã™ã‚‹ã“ã¨ã‚‚ã‚ã‚‹ã€‚
 		readonly ArgumentToken arg = null;
 
 		internal override int TokenOffset
@@ -51,7 +51,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 			}
 			else
 			{
-				builder.Append(op.ToString(true, arg != null));//a++‚Æ‚©BHSP‚Å‚Í‚±‚Ì•Ó‚Ì‘®‚Í‚¢‚¢‰ÁŒ¸‚İ‚½‚¢B
+				builder.Append(op.ToString(true, arg != null));//a++ã¨ã‹ã€‚HSPã§ã¯ã“ã®è¾ºã®æ›¸å¼ã¯ã„ã„åŠ æ¸›ã¿ãŸã„ã€‚
 			}
 			return builder.ToString();
 		}

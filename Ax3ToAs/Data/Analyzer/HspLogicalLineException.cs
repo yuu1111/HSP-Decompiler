@@ -5,9 +5,9 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
 {
 	/// <summary>
-	/// LogicalLine‰ğÍ’†‚Ì—áŠO
-	/// “Š‚°‚Ä‚æ‚¢‚Ì‚Í‚Q‚Â‚ÌFactory‚Ì’†‚¾‚¯
-	/// ó‚¯~‚ß‚ç‚ê‚é‚Ì‚ÍLogicalLine‚Ìinternalƒƒ\ƒbƒh‚¾‚¯
+	/// LogicalLineè§£æä¸­ã®ä¾‹å¤–
+	/// æŠ•ã’ã¦ã‚ˆã„ã®ã¯ï¼’ã¤ã®Factoryã®ä¸­ã ã‘
+	/// å—ã‘æ­¢ã‚ã‚‰ã‚Œã‚‹ã®ã¯LogicalLineã®internalãƒ¡ã‚½ãƒƒãƒ‰ã ã‘
 	/// </summary>
 	class HspLogicalLineException : ApplicationException
 	{

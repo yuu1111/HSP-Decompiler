@@ -5,7 +5,7 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
 	/// <summary>
-	/// if,elseƒXƒR[ƒv‚ÌI‚í‚è‚ğ‚ ‚ç‚í‚·@"}"‚¾‚¯‚Ìs
+	/// if,elseã‚¹ã‚³ãƒ¼ãƒ—ã®çµ‚ã‚ã‚Šã‚’ã‚ã‚‰ã‚ã™ã€€"}"ã ã‘ã®è¡Œ
 	/// </summary>
 	internal sealed class ScoopEnd : LogicalLine
 	{

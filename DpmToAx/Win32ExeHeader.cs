@@ -8,12 +8,12 @@ using DWORD = System.UInt32;
 namespace KttK.HspDecompiler.DpmToAx
 {
 	/// <summary>
-	/// "PE\0\0"で始まるやつ
+	/// "PE\0\0"縺ｧ蟋九∪繧九ｄ縺､
 	/// </summary>
 	internal sealed class IMAGE_NT_HEADERS
 	{
 		/// <summary>
-		/// リトルエンディアンでPE(50 45)
+		/// 繝ｪ繝医Ν繧ｨ繝ｳ繝�繧｣繧｢繝ｳ縺ｧPE(50 45)
 		/// </summary>
 		const int IMAGE_NT_SIGNATURE = 0x4550;
 		internal DWORD Signature;
@@ -204,7 +204,7 @@ namespace KttK.HspDecompiler.DpmToAx
 	{      // DOS .EXE header
 
 		/// <summary>
-		/// リトルエンディアンでMZ(4D 5A)
+		/// 繝ｪ繝医Ν繧ｨ繝ｳ繝�繧｣繧｢繝ｳ縺ｧMZ(4D 5A)
 		/// </summary>
 		const int IMAGE_DOS_SIGNATURE = 0x5A4D;
 		internal WORD e_magic;                     // Magic number

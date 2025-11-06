@@ -78,7 +78,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 			get
 			{
 				if (codeType != HspCodeType.Operator)
-					throw new InvalidOperationException("演算子でないプリミティブに優先度が要求されました");
+					throw new InvalidOperationException("貍皮ｮ怜ｭ舌〒縺ｪ縺�繝励Μ繝溘ユ繧｣繝悶↓蜆ｪ蜈亥ｺｦ縺瑚ｦ∵ｱゅ＆繧後∪縺励◆");
 				return oparatorPriority;
 			}
 		}

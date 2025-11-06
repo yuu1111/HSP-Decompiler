@@ -13,15 +13,15 @@ namespace KttK.HspDecompiler.Ax2ToAs
 			AxData data = null; AxData.FromStream(reader.BaseStream);
 			try
 			{
-				global::KttK.HspDecompiler.HspConsole.Write("ヘッダー解析中...");
+				global::KttK.HspDecompiler.HspConsole.Write("繝倥ャ繝繝ｼ隗｣譫蝉ｸｭ...");
 				data = AxData.FromStream(reader.BaseStream);
 
-				global::KttK.HspDecompiler.HspConsole.Write("解析中...");
+				global::KttK.HspDecompiler.HspConsole.Write("隗｣譫蝉ｸｭ...");
 				data.Decompile();
 			}
 			catch (SystemException e)
 			{
-				throw new HspDecoderException("AxData", "想定外のエラー", e);
+				throw new HspDecoderException("AxData", "諠ｳ螳壼､悶�ｮ繧ｨ繝ｩ繝ｼ", e);
 			}
 			List<string> lines = data.GetLines();
 

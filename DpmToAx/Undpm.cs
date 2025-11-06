@@ -149,7 +149,7 @@ namespace KttK.HspDecompiler.DpmToAx
 			return true;
 		}
 
-		#region IDisposable ƒƒ“ƒo
+		#region IDisposable ãƒ¡ãƒ³ãƒ
 
 		public void Dispose()
 		{

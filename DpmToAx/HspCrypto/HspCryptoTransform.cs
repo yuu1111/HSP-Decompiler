@@ -1,12 +1,12 @@
 #if AllowDecryption
 
 using System;
-using System.IO; // í«â¡
+using System.IO; // ËøΩÂä†
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
-using KttK.HspDecompiler.Ax2ToAs;  // í«â¡
-using KttK.HspDecompiler.Ax3ToAs;  // í«â¡
+using KttK.HspDecompiler.Ax2ToAs;  // ËøΩÂä†
+using KttK.HspDecompiler.Ax3ToAs;  // ËøΩÂä†
 namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 {
 	class HspCryptoTransform
@@ -75,7 +75,7 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 		{
 			int count = Math.Min(plain.Length, encrypted.Length);
 			if (count < 2)
-				throw new Exception("èÓïÒÉTÉCÉYÇ™ïsë´");
+				throw new Exception("ÊÉÖÂ†±„Çµ„Ç§„Ç∫„Åå‰∏çË∂≥");
 			byte[] difBuffer = new byte[count];
 			//byte baseXor = plain[0];
 			byte prevByte = 0;
@@ -90,10 +90,10 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 				orByte |= difBuffer[i];
 			}
 			if ((andByte != 0x00) || (orByte != 0xFF))
-				throw new Exception("ïΩï∂ÇÃèÓïÒÇ™ë´ÇËÇ‹ÇπÇÒ");
+				throw new Exception("Âπ≥Êñá„ÅÆÊÉÖÂ†±„ÅåË∂≥„Çä„Åæ„Åõ„Çì");
 
 			List<XorAddTransform> transformList = new List<XorAddTransform>();
-			//deHSP100Å@ëçìñÇËÉeÉXÉgÅB
+			//deHSP100„ÄÄÁ∑èÂΩì„Çä„ÉÜ„Çπ„Éà„ÄÇ
 			for (int i = 0; i < 0x100; i++)
 			{
 				XorAddTransform xoradd;
@@ -102,7 +102,7 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 				xoradd.XorSum = (i >= 0x80);
 				xoradd.AddByte = add;
 				xoradd.XorByte = XorAddTransform.GetXorByte(add, difBuffer[0], encrypted[0], xoradd.XorSum);
-				//É`ÉFÉbÉN
+				//„ÉÅ„Çß„ÉÉ„ÇØ
 				for (int index = 1; index < count; index++)
 				{
 					if (encrypted[index] != xoradd.Encode(difBuffer[index]))
@@ -123,7 +123,7 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 					BinaryReader reader = new BinaryReader(stream, Encoding.GetEncoding("SHIFT-JIS"));
 					HspDecoder decoder = new HspDecoder();
 
-					/* ÉtÉ@ÉCÉãñºÇÃåàíË */
+					/* „Éï„Ç°„Ç§„É´Âêç„ÅÆÊ±∫ÂÆö */
 					string outputFileExtention = null;
 					if (plain[3] == 0x32)
 					{

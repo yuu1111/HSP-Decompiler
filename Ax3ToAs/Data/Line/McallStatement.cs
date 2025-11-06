@@ -18,7 +18,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 			this.arg = arg;
 		}
 		private readonly McallFunctionPrimitive token = null;
-		private readonly VariablePrimitive var = null;//”z—ñ•Ï”‚àó‚¯•t‚¯‚È‚¢B
+		private readonly VariablePrimitive var = null;//é…åˆ—å¤‰æ•°ã‚‚å—ã‘ä»˜ã‘ãªã„ã€‚
 		private readonly ExpressionToken exp = null;
 		private readonly ArgumentToken arg = null;
 
@@ -65,7 +65,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 			builder.Append(var.ToString());
 			builder.Append("->");
 			builder.Append(exp.ToString());
-			//deHSP1.20‚ÌƒoƒOC³Bexp‚Æarg‚ÌŠÔ‚ÉƒJƒ“ƒ}‚ğ“ü‚ê‚È‚¢‚æ‚¤‚ÉC³B
+			//deHSP1.20ã®ãƒã‚°ä¿®æ­£ã€‚expã¨argã®é–“ã«ã‚«ãƒ³ãƒã‚’å…¥ã‚Œãªã„ã‚ˆã†ã«ä¿®æ­£ã€‚
 			if(arg != null)
 				builder.Append(arg.ToString(true));
 

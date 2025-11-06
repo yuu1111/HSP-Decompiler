@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace KttK.HspDecompiler
@@ -16,7 +16,6 @@ namespace KttK.HspDecompiler
         internal static void Initialize()
         {
         }
-
 
         internal static void ExceptionHandlingClose(Exception e)
         {
@@ -35,7 +34,10 @@ namespace KttK.HspDecompiler
         {
             WriteLog("exit");
             if (logStream != null)
+            {
                 logStream.Close();
+            }
+
             logStream = null;
         }
 
@@ -57,7 +59,6 @@ namespace KttK.HspDecompiler
             builder.Append("処理内容");
             newLine = builder.ToString();
             Flush();
-
 
             WriteLog("decompile " + Path.GetFileName(filePath));
         }
@@ -95,17 +96,18 @@ namespace KttK.HspDecompiler
         {
             string warning = string.Format("{0:D06}行:{1}", lineNo, errMsg);
             warnings.Add(warning);
-            //newLine = warning;
-            //Flush();
+
+            // newLine = warning;
+            // Flush();
         }
 
         internal static void Warning(string errMsg)
         {
             warnings.Add(errMsg);
-            //newLine = warning;
-            //Flush();
-        }
 
+            // newLine = warning;
+            // Flush();
+        }
 
         private static List<string> warnings = new List<string>();
 
@@ -127,7 +129,6 @@ namespace KttK.HspDecompiler
 
         internal static void FatalError(Exception e)
         {
-
             int time = Environment.TickCount - startTime;
             StringBuilder builder = new StringBuilder();
             StringBuilder logBuilder = new StringBuilder();
@@ -164,9 +165,14 @@ namespace KttK.HspDecompiler
         internal static void WriteLog(string line)
         {
             if (string.IsNullOrEmpty(line))
+            {
                 return;
+            }
+
             if (logStream == null)
+            {
                 return;
+            }
 
             logStream.WriteLine(DateTime.Now + ":" + line);
             logStream.Flush();

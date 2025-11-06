@@ -1,8 +1,9 @@
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
-    abstract class ExpressionTermToken : CodeToken
+    internal abstract class ExpressionTermToken : CodeToken
     {
         internal abstract bool IsOperand { get; }
+
         internal abstract bool IsOperator { get; }
 
         internal virtual bool IsLabel

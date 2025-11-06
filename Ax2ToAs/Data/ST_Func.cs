@@ -8,25 +8,25 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         internal int HikiType
         {
-            get { return hikiType; }
-            set { hikiType = value; }
+            get { return this.hikiType; }
+            set { this.hikiType = value; }
         }
 
         internal int DllIndex
         {
-            get { return dllIndex; }
-            set { dllIndex = value; }
+            get { return this.dllIndex; }
+            set { this.dllIndex = value; }
         }
 
         public override string ToString()
         {
-            return "#func func_" + name + " " + name + " $" + hikiType.ToString("x4");
+            return "#func func_" + this.name + " " + this.name + " $" + this.hikiType.ToString("x4");
         }
     }
 }

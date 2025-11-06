@@ -5,38 +5,44 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
     {
         internal byte XorByte;
         internal byte AddByte;
-        //deHSP 100 HSP3.3でXORとSUMの適用順序が変わった？
-        internal bool XorSum; //XORを先に適用するタイプ。旧式。
+
+        // deHSP 100 HSP3.3でXORとSUMの適用順序が変わった？
+        internal bool XorSum; // XORを先に適用するタイプ。旧式。
 
         public override string ToString()
         {
-            return "xor:0x" + XorByte.ToString("X02") + "    " + "add:0x" + AddByte.ToString("X02") + "    " + "Farst xor:" + XorSum;
+            return "xor:0x" + this.XorByte.ToString("X02") + "    " + "add:0x" + this.AddByte.ToString("X02") + "    " + "Farst xor:" + this.XorSum;
         }
 
         internal byte Encode(byte b)
         {
-            if (XorSum)
-                return Sum(Xor(b, XorByte), AddByte);
+            if (this.XorSum)
+            {
+                return Sum(Xor(b, this.XorByte), this.AddByte);
+            }
 
-            return Xor(Sum(b, AddByte), XorByte);
+            return Xor(Sum(b, this.AddByte), this.XorByte);
         }
 
         internal byte Decode(byte b)
         {
-            if (XorSum)
-                return Xor(Dif(b, AddByte), XorByte);
+            if (this.XorSum)
+            {
+                return Xor(Dif(b, this.AddByte), this.XorByte);
+            }
 
-            return Dif(Xor(b, XorByte), AddByte);
+            return Dif(Xor(b, this.XorByte), this.AddByte);
         }
 
-        internal static byte GetXorByte(byte add, byte plain, byte encrypted, bool XorSum)
+        internal static byte GetXorByte(byte add, byte plain, byte encrypted, bool xorSum)
         {
-            if (XorSum)
+            if (xorSum)
+            {
                 return (byte)(Dif(encrypted, add) ^ plain);
+            }
 
             return Xor(encrypted, Sum(plain, add));
         }
-
 
         internal static byte Xor(byte b1, byte b2)
         {

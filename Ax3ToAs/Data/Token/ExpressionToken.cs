@@ -5,7 +5,7 @@ using System.Text;
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 {
     /// <summary>
-    /// 式
+    /// 式.
     /// </summary>
     internal sealed class ExpressionToken : CodeToken
     {
@@ -15,21 +15,26 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal ExpressionToken(List<ExpressionTermToken> elements)
         {
-            tokens = elements;
+            this.tokens = elements;
         }
 
         private readonly List<ExpressionTermToken> tokens;
-        ExpressionTermToken convertedToken;
+        private ExpressionTermToken convertedToken;
         private bool tryConvert;
 
         internal bool CanRpnConvert
         {
             get
             {
-                if (convertedToken != null)
+                if (this.convertedToken != null)
+                {
                     return true;
-                if (!tryConvert)
-                    return RpnConvert();
+                }
+
+                if (!this.tryConvert)
+                {
+                    return this.RpnConvert();
+                }
 
                 return false;
             }
@@ -37,15 +42,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal bool RpnConvert()
         {
-            if (convertedToken != null)
-                return true;
-            if (tokens.Count == 0)
-                return false;
-
-            tryConvert = true;
-            if (tokens.Count == 1)
+            if (this.convertedToken != null)
             {
-                convertedToken = tokens[0];
+                return true;
+            }
+
+            if (this.tokens.Count == 0)
+            {
+                return false;
+            }
+
+            this.tryConvert = true;
+            if (this.tokens.Count == 1)
+            {
+                this.convertedToken = this.tokens[0];
                 return true;
             }
 
@@ -53,7 +63,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             List<ExpressionTermToken> source = new List<ExpressionTermToken>();
             try
             {
-                source.AddRange(tokens);
+                source.AddRange(this.tokens);
                 while (source.Count != 0)
                 {
                     ExpressionTermToken token = source[0];
@@ -64,7 +74,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
                         stack.RemoveAt(stack.Count - 1);
                         OperandToken left = (OperandToken)stack[stack.Count - 1];
                         stack.RemoveAt(stack.Count - 1);
-                        stack.Add((ExpressionTermToken)(new SubExpressionToken(left, right, (OperatorToken)token)));
+                        stack.Add((ExpressionTermToken)new SubExpressionToken(left, right, (OperatorToken)token));
                     }
                     else
                     {
@@ -78,9 +88,11 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             }
 
             if (stack.Count != 1)
+            {
                 return false;
+            }
 
-            convertedToken = stack[0];
+            this.convertedToken = stack[0];
             return true;
         }
 
@@ -88,12 +100,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
         {
             get
             {
-                if ((tokens == null) || (tokens.Count == 0))
+                if ((this.tokens == null) || (this.tokens.Count == 0))
+                {
                     return -1;
+                }
 
-                CodeToken token = tokens[0] as CodeToken;
+                CodeToken token = this.tokens[0] as CodeToken;
                 if (token == null)
+                {
                     return -1;
+                }
 
                 return token.TokenOffset;
             }
@@ -101,15 +117,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal string ToString(bool getRpnConverted)
         {
-            if (getRpnConverted && (convertedToken != null))
-                return convertedToken.ToString();
+            if (getRpnConverted && (this.convertedToken != null))
+            {
+                return this.convertedToken.ToString();
+            }
 
             StringBuilder builder = new StringBuilder();
             int i = 0;
-            foreach (ExpressionTermToken token in tokens)
+            foreach (ExpressionTermToken token in this.tokens)
             {
                 if (i != 0)
+                {
                     builder.Append(' ');
+                }
+
                 builder.Append(token);
                 i++;
             }
@@ -119,19 +140,20 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         public override string ToString()
         {
-            return ToString(true);
+            return this.ToString(true);
         }
-
 
         internal override void CheckLabel()
         {
-            foreach (CodeToken token in tokens)
+            foreach (CodeToken token in this.tokens)
+            {
                 token.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
-            return CanRpnConvert;
+            return this.CanRpnConvert;
         }
     }
 }

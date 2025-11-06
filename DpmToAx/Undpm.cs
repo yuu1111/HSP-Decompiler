@@ -16,8 +16,10 @@ namespace KttK.HspDecompiler.DpmToAx
             try
             {
                 ret.reader = reader;
-                if (ret.readHeader())
+                if (ret.ReadHeader())
+                {
                     return ret;
+                }
             }
             catch (Exception)
             {
@@ -25,37 +27,39 @@ namespace KttK.HspDecompiler.DpmToAx
             }
 
             return null;
-
-
         }
 
-        long startPosition;
-        long streamLength;
-        long fileOffsetStart;
+        private long startPosition;
+        private long streamLength;
+        private long fileOffsetStart;
 
-        private bool readHeader()
+        private bool ReadHeader()
         {
-            startPosition = reader.BaseStream.Position;
-            streamLength = reader.BaseStream.Length - startPosition;
-            char[] identifier = reader.ReadChars(4);
+            this.startPosition = this.reader.BaseStream.Position;
+            this.streamLength = this.reader.BaseStream.Length - this.startPosition;
+            char[] identifier = this.reader.ReadChars(4);
             if (identifier.Length < 4)
+            {
                 return false;
+            }
 
-            reader.BaseStream.Seek(startPosition, SeekOrigin.Begin);
+            this.reader.BaseStream.Seek(this.startPosition, SeekOrigin.Begin);
             if ((identifier[0] == 'M') && (identifier[1] == 'Z'))
             {
-                Win32ExeHeader winHeader = Win32ExeHeader.FromBinaryReader(reader);
+                Win32ExeHeader winHeader = Win32ExeHeader.FromBinaryReader(this.reader);
                 if (winHeader == null)
                 {
                     return false;
                 }
 
-                startPosition += winHeader.EndOfExecutableRegion;
-                streamLength = reader.BaseStream.Length - startPosition;
-                reader.BaseStream.Seek(startPosition, SeekOrigin.Begin);
-                identifier = reader.ReadChars(4);
+                this.startPosition += winHeader.EndOfExecutableRegion;
+                this.streamLength = this.reader.BaseStream.Length - this.startPosition;
+                this.reader.BaseStream.Seek(this.startPosition, SeekOrigin.Begin);
+                identifier = this.reader.ReadChars(4);
                 if (identifier.Length < 4)
+                {
                     return false;
+                }
             }
 
             if (!((identifier[0] == 'D') && (identifier[1] == 'P') && (identifier[2] == 'M') && (identifier[3] == 'X')))
@@ -63,17 +67,17 @@ namespace KttK.HspDecompiler.DpmToAx
                 return false;
             }
 
-            reader.BaseStream.Seek(startPosition, SeekOrigin.Begin);
-            reader.ReadInt32();
-            reader.ReadInt32();
-            int fileCount = reader.ReadInt32();
-            reader.ReadInt32();
-            files.Capacity = fileCount;
-            fileOffsetStart = startPosition + 0x10 + fileCount * 0x20;
+            this.reader.BaseStream.Seek(this.startPosition, SeekOrigin.Begin);
+            this.reader.ReadInt32();
+            this.reader.ReadInt32();
+            int fileCount = this.reader.ReadInt32();
+            this.reader.ReadInt32();
+            this.files.Capacity = fileCount;
+            this.fileOffsetStart = this.startPosition + 0x10 + (fileCount * 0x20);
             for (int i = 0; i < fileCount; i++)
             {
-                DpmFileState file = new DpmFileState();
-                Char[] chars = reader.ReadChars(16);
+                DpmFileState file = default(DpmFileState);
+                char[] chars = this.reader.ReadChars(16);
                 int stringLength = 16;
                 for (int j = 0; j < 16; j++)
                 {
@@ -85,20 +89,20 @@ namespace KttK.HspDecompiler.DpmToAx
                 }
 
                 file.FileName = new string(chars, 0, stringLength);
-                file.unknown = reader.ReadInt32();
-                file.Encryptionkey = reader.ReadInt32();
-                file.FileOffset = reader.ReadInt32();
-                file.FileSize = reader.ReadInt32();
+                file.Unknown = this.reader.ReadInt32();
+                file.Encryptionkey = this.reader.ReadInt32();
+                file.FileOffset = this.reader.ReadInt32();
+                file.FileSize = this.reader.ReadInt32();
                 file.Parent = this;
-                if ((file.FileOffset + file.FileSize) > (streamLength))
+                if ((file.FileOffset + file.FileSize) > this.streamLength)
+                {
                     return false;
+                }
 
-                files.Add(file);
+                this.files.Add(file);
             }
 
-
             return true;
-
         }
 
         private BinaryReader reader;
@@ -106,24 +110,25 @@ namespace KttK.HspDecompiler.DpmToAx
 
         internal List<DpmFileState> FileList
         {
-            get { return files; }
+            get { return this.files; }
         }
-
 
         internal byte[] GetFile(int fileOffset, int fileSize)
         {
-            reader.BaseStream.Seek(fileOffset, SeekOrigin.Begin);
+            this.reader.BaseStream.Seek(fileOffset, SeekOrigin.Begin);
             byte[] buffer = new byte[fileSize];
-            reader.BaseStream.Read(buffer, 0, fileSize);
+            this.reader.BaseStream.Read(buffer, 0, fileSize);
             return buffer;
         }
 
         internal DpmFileState? GetStartAx()
         {
-            foreach (DpmFileState file in files)
+            foreach (DpmFileState file in this.files)
             {
                 if (file.FileName == "start.ax")
+                {
                     return file;
+                }
             }
 
             return null;
@@ -131,24 +136,23 @@ namespace KttK.HspDecompiler.DpmToAx
 
         internal bool SeekStartAx()
         {
-            foreach (DpmFileState file in files)
+            foreach (DpmFileState file in this.files)
             {
                 if (file.FileName.Equals("start.ax", StringComparison.Ordinal))
                 {
-                    reader.BaseStream.Seek(file.FileOffset + fileOffsetStart, SeekOrigin.Begin);
+                    this.reader.BaseStream.Seek(file.FileOffset + this.fileOffsetStart, SeekOrigin.Begin);
                     return true;
                 }
             }
 
             return false;
-
         }
 
         internal bool Seek(DpmFileState file)
         {
             try
             {
-                reader.BaseStream.Seek(file.FileOffset + fileOffsetStart, SeekOrigin.Begin);
+                this.reader.BaseStream.Seek(file.FileOffset + this.fileOffsetStart, SeekOrigin.Begin);
             }
             catch
             {
@@ -158,12 +162,9 @@ namespace KttK.HspDecompiler.DpmToAx
             return true;
         }
 
-        #region IDisposable メンバ
         public void Dispose()
         {
-
             throw new Exception("The method or operation is not implemented.");
         }
-        #endregion
     }
 }

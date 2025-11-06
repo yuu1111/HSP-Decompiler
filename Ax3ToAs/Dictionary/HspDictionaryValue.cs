@@ -6,23 +6,25 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
     {
         internal HspDictionaryValue(string theName, string theType, string[] theExtras)
         {
-            Name = theName;
-            Type = (HspCodeType)Enum.Parse(typeof(HspCodeType), theType);
-            Extra = HspCodeExtraFlags.NONE;
-            OparatorPriority = -1;
+            this.Name = theName;
+            this.Type = (HspCodeType)Enum.Parse(typeof(HspCodeType), theType);
+            this.Extra = HspCodeExtraFlags.NONE;
+            this.OparatorPriority = -1;
             foreach (string theExtra in theExtras)
             {
                 string testString = theExtra.Trim();
                 if (testString.Length == 0)
-                    continue;
-
-                if (testString.StartsWith("Priority_"))
                 {
-                    OparatorPriority = int.Parse(testString.Substring(9));
                     continue;
                 }
 
-                Extra |= (HspCodeExtraFlags)Enum.Parse(typeof(HspCodeExtraFlags), testString);
+                if (testString.StartsWith("Priority_"))
+                {
+                    this.OparatorPriority = int.Parse(testString.Substring(9));
+                    continue;
+                }
+
+                this.Extra |= (HspCodeExtraFlags)Enum.Parse(typeof(HspCodeExtraFlags), testString);
             }
         }
 
@@ -33,10 +35,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 
         public override string ToString()
         {
-            if (Name.Length == 0)
-                return Type.ToString();
+            if (this.Name.Length == 0)
+            {
+                return this.Type.ToString();
+            }
 
-            return Type + "  \"" + Name + "\"";
+            return this.Type + "  \"" + this.Name + "\"";
         }
     }
 }

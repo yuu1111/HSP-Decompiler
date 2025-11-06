@@ -1,6 +1,6 @@
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
-    abstract class CodeToken
+    internal abstract class CodeToken
     {
         internal abstract int TokenOffset { get; }
 

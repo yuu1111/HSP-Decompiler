@@ -5,11 +5,11 @@ using KttK.HspDecompiler.Ax2ToAs.Data;
 
 namespace KttK.HspDecompiler.Ax2ToAs
 {
-    class Ax2Decoder : AbstractAxDecoder
+    internal class Ax2Decoder : AbstractAxDecoder
     {
         public override List<string> Decode(BinaryReader reader)
         {
-            AxData data = null;
+            AxData? data = null;
             AxData.FromStream(reader.BaseStream);
             try
             {

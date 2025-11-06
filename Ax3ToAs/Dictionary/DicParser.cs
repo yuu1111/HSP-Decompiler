@@ -2,7 +2,7 @@ using System;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
 {
-    static class DicParser
+    internal static class DicParser
     {
         internal static int StringToInt32(string str, int defaultValue)
         {
@@ -12,10 +12,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
                 if (str.StartsWith("0x"))
                 {
                     str = str.Substring(2);
-                    return Int32.Parse(str, System.Globalization.NumberStyles.HexNumber);
+                    return int.Parse(str, System.Globalization.NumberStyles.HexNumber);
                 }
 
-                return Int32.Parse(str);
+                return int.Parse(str);
             }
             catch (Exception)
             {
@@ -32,7 +32,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
         {
             try
             {
-                return Double.Parse(str);
+                return double.Parse(str);
             }
             catch (Exception)
             {
@@ -45,7 +45,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
             return StringToDouble(str, 0.0);
         }
 
-        internal static Object StringToEnum(Type enumType, string str, int defaultValue)
+        internal static object StringToEnum(Type enumType, string str, int defaultValue)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
             {
                 try
                 {
-                    return Int32.Parse(str);
+                    return int.Parse(str);
                 }
                 catch (Exception)
                 {

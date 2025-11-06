@@ -1,45 +1,46 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
     internal enum FunctionType
     {
         NULL = 0x00,
-        func = 0x01,
-        cfunc = 0x02,
-        deffunc = 0x03,
-        defcfunc = 0x04,
-        comfunc = 0x05,
-        module = 0x06,
+        Func = 0x01,
+        Cfunc = 0x02,
+        Deffunc = 0x03,
+        Defcfunc = 0x04,
+        Comfunc = 0x05,
+        Module = 0x06,
     }
 
     internal enum FunctionFlags
     {
         NULL = 0,
-        onexit = 0x01,
+        Onexit = 0x01,
     }
 
-    class Function : Preprocessor
+    internal class Function : Preprocessor
     {
         private Function()
         {
         }
 
-        private Function(int index) : base(index)
+        private Function(int index)
+            : base(index)
         {
         }
 
         private int dllIndex;
         private int functionIndex;
 
-        List<Param> functionParams = new List<Param>();
-        int strIndex;
+        private List<Param> functionParams = new List<Param>();
+        private int strIndex;
         private int paramSizeSum;
         private int labelIndex;
-        private Int16 int_0;
+        private short int0;
         private int flags;
 
         internal static Function FromBinaryReader(BinaryReader reader, AxData parent, int index)
@@ -51,34 +52,46 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             int paramStart = reader.ReadInt32();
             int paramCount = reader.ReadInt32();
             if (paramCount != 0)
+            {
                 ret.functionParams = parent.FunctionParams.GetRange(paramStart, paramCount);
+            }
+
             ret.strIndex = reader.ReadInt32();
             if (ret.strIndex >= 0)
+            {
                 ret.defaultName = parent.ReadStringLiteral(ret.strIndex);
+            }
+
             ret.paramSizeSum = reader.ReadInt32();
             ret.labelIndex = reader.ReadInt32();
 
-            ret.int_0 = reader.ReadInt16();
+            ret.int0 = reader.ReadInt16();
             ret.flags = reader.ReadInt16();
             switch (ret.Type)
             {
-                case FunctionType.defcfunc:
-                case FunctionType.deffunc:
+                case FunctionType.Defcfunc:
+                case FunctionType.Deffunc:
                     Label label = parent.GetLabel(ret.labelIndex);
                     if (label != null)
+                    {
                         label.SetFunction(ret);
+                    }
+
                     ret.label = label;
                     break;
 
-                case FunctionType.func:
-                case FunctionType.cfunc:
-                case FunctionType.comfunc:
+                case FunctionType.Func:
+                case FunctionType.Cfunc:
+                case FunctionType.Comfunc:
                     Usedll dll = parent.GetUsedll(ret.dllIndex);
                     if (dll != null)
+                    {
                         dll.AddFunction(ret);
+                    }
+
                     ret.dll = dll;
                     break;
-                case FunctionType.module:
+                case FunctionType.Module:
                     parent.Modules.Add(ret);
                     break;
             }
@@ -88,22 +101,22 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal bool IsModuleFunction
         {
-            get { return Type == FunctionType.module; }
+            get { return this.Type == FunctionType.Module; }
         }
 
         internal bool IsComFunction
         {
-            get { return Type == FunctionType.comfunc; }
+            get { return this.Type == FunctionType.Comfunc; }
         }
 
         internal bool IsUserFunction
         {
             get
             {
-                switch (Type)
+                switch (this.Type)
                 {
-                    case FunctionType.deffunc:
-                    case FunctionType.defcfunc:
+                    case FunctionType.Deffunc:
+                    case FunctionType.Defcfunc:
                         return true;
                 }
 
@@ -115,10 +128,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                switch (Type)
+                switch (this.Type)
                 {
-                    case FunctionType.func:
-                    case FunctionType.cfunc:
+                    case FunctionType.Func:
+                    case FunctionType.Cfunc:
                         return true;
                 }
 
@@ -130,20 +143,24 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal string DefaultName
         {
-            get { return defaultName; }
+            get { return this.defaultName; }
         }
 
         internal Function ParentModule
         {
             get
             {
-                if (functionParams.Count == 0)
+                if (this.functionParams.Count == 0)
+                {
                     return null;
-                if (!functionParams[0].IsModuleType)
+                }
+
+                if (!this.functionParams[0].IsModuleType)
+                {
                     return null;
+                }
 
-                return functionParams[0].Module;
-
+                return this.functionParams[0].Module;
             }
         }
 
@@ -155,24 +172,43 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                if (dllIndex == -1)
-                    return FunctionType.deffunc;
-                if (dllIndex == -2)
-                    return FunctionType.defcfunc;
-                if (dllIndex == -3)
-                    return FunctionType.module;
-
-                if (dllIndex >= 0)
+                if (this.dllIndex == -1)
                 {
-                    //if (strIndex == -1)
-                    if (functionIndex == -7)
-                        return FunctionType.comfunc;
-                    if (labelIndex == 2 || labelIndex == 6)
-                        return FunctionType.func;
-                    if (labelIndex == 3) ///func onexit
-                        return FunctionType.func;
-                    if (labelIndex == 4)
-                        return FunctionType.cfunc;
+                    return FunctionType.Deffunc;
+                }
+
+                if (this.dllIndex == -2)
+                {
+                    return FunctionType.Defcfunc;
+                }
+
+                if (this.dllIndex == -3)
+                {
+                    return FunctionType.Module;
+                }
+
+                if (this.dllIndex >= 0)
+                {
+                    // if (strIndex == -1)
+                    if (this.functionIndex == -7)
+                    {
+                        return FunctionType.Comfunc;
+                    }
+
+                    if (this.labelIndex == 2 || this.labelIndex == 6)
+                    {
+                        return FunctionType.Func;
+                    }
+
+                    if (this.labelIndex == 3) // func onexit
+                    {
+                        return FunctionType.Func;
+                    }
+
+                    if (this.labelIndex == 4)
+                    {
+                        return FunctionType.Cfunc;
+                    }
                 }
 
                 return FunctionType.NULL;
@@ -183,10 +219,15 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                if ((flags == 1) && (dllIndex == -1))
-                    return FunctionFlags.onexit;
-                if ((dllIndex >= 0) && (labelIndex == 3))
-                    return FunctionFlags.onexit;
+                if ((this.flags == 1) && (this.dllIndex == -1))
+                {
+                    return FunctionFlags.Onexit;
+                }
+
+                if ((this.dllIndex >= 0) && (this.labelIndex == 3))
+                {
+                    return FunctionFlags.Onexit;
+                }
 
                 return FunctionFlags.NULL;
             }
@@ -201,31 +242,37 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                if (name != null)
-                    return name;
-
-                if (defaultName == null)
+                if (this.name != null)
                 {
-                    if (Type == FunctionType.comfunc)
-                        return "comfunc_" + index;
+                    return this.name;
+                }
+
+                if (this.defaultName == null)
+                {
+                    if (this.Type == FunctionType.Comfunc)
+                    {
+                        return "comfunc_" + this.index;
+                    }
 
                     return null;
                 }
 
-                switch (Type)
+                switch (this.Type)
                 {
-                    case FunctionType.defcfunc:
-                    case FunctionType.deffunc:
-                    case FunctionType.module:
-                        return defaultName;
-                    case FunctionType.func:
-                    case FunctionType.cfunc:
-                        if (name != null)
-                            return name;
+                    case FunctionType.Defcfunc:
+                    case FunctionType.Deffunc:
+                    case FunctionType.Module:
+                        return this.defaultName;
+                    case FunctionType.Func:
+                    case FunctionType.Cfunc:
+                        if (this.name != null)
+                        {
+                            return this.name;
+                        }
 
-                        return defaultName;
-                    case FunctionType.comfunc:
-                        return "comfunc_" + index;
+                        return this.defaultName;
+                    case FunctionType.Comfunc:
+                        return "comfunc_" + this.index;
                     default:
                         break;
                 }
@@ -234,10 +281,10 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             }
         }
 
-        private string modFunctionToString()
+        private string ModFunctionToString()
         {
             StringBuilder strBld = new StringBuilder();
-            switch (defaultName)
+            switch (this.defaultName)
             {
                 case "__init":
                     strBld.Append("#modinit");
@@ -248,52 +295,58 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 default:
                     strBld.Append("#modfunc");
                     strBld.Append(' ');
-                    strBld.Append(FunctionName);
+                    strBld.Append(this.FunctionName);
                     break;
             }
 
-            if (functionParams.Count > 1)
+            if (this.functionParams.Count > 1)
             {
-                for (int i = 1; i < functionParams.Count; i++)
+                for (int i = 1; i < this.functionParams.Count; i++)
                 {
                     if (i != 1)
+                    {
                         strBld.Append(',');
+                    }
+
                     strBld.Append(' ');
-                    strBld.Append(functionParams[i]);
+                    strBld.Append(this.functionParams[i]);
                 }
             }
 
             return strBld.ToString();
         }
 
-        private string moduleToString(bool useModuleStyle)
+        private string ModuleToString(bool useModuleStyle)
         {
             StringBuilder strBld = new StringBuilder();
             if (useModuleStyle)
             {
                 strBld.Append("#module ");
-                strBld.Append(FunctionName);
+                strBld.Append(this.FunctionName);
             }
             else
             {
                 strBld.Append("#struct ");
-                strBld.Append(FunctionName);
+                strBld.Append(this.FunctionName);
             }
 
-            if (functionParams.Count > 1)
+            if (this.functionParams.Count > 1)
             {
-                for (int i = 1; i < functionParams.Count; i++)
+                for (int i = 1; i < this.functionParams.Count; i++)
                 {
                     if (i != 1)
+                    {
                         strBld.Append(',');
+                    }
+
                     strBld.Append(' ');
                     if (useModuleStyle)
                     {
-                        strBld.Append(functionParams[i].ToString(true, true, true));
+                        strBld.Append(this.functionParams[i].ToString(true, true, true));
                     }
                     else
                     {
-                        strBld.Append(functionParams[i].ToString(true, false, true));
+                        strBld.Append(this.functionParams[i].ToString(true, false, true));
                     }
                 }
             }
@@ -306,62 +359,73 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             StringBuilder strBld = new StringBuilder();
 
             int paramStart = 0;
-            switch (Type)
+            switch (this.Type)
             {
-                case FunctionType.defcfunc:
+                case FunctionType.Defcfunc:
                     strBld.Append("#defcfunc ");
-                    strBld.Append(FunctionName);
+                    strBld.Append(this.FunctionName);
                     break;
-                case FunctionType.module:
-                    return moduleToString(useModuleStyle);
-                case FunctionType.deffunc:
+                case FunctionType.Module:
+                    return this.ModuleToString(useModuleStyle);
+                case FunctionType.Deffunc:
                     if (useModuleStyle)
-                        if ((functionParams.Count != 0) && (functionParams[0].IsModuleType))
-                            return modFunctionToString();
+                    {
+                        if ((this.functionParams.Count != 0) && this.functionParams[0].IsModuleType)
+                        {
+                            return this.ModFunctionToString();
+                        }
+                    }
 
                     strBld.Append("#deffunc ");
-                    strBld.Append(FunctionName);
-                    if ((Flags & FunctionFlags.onexit) == FunctionFlags.onexit)
+                    strBld.Append(this.FunctionName);
+                    if ((this.Flags & FunctionFlags.Onexit) == FunctionFlags.Onexit)
+                    {
                         strBld.Append(" onexit");
+                    }
+
                     break;
-                case FunctionType.func:
+                case FunctionType.Func:
                     strBld.Append("#func ");
-                    strBld.Append(FunctionName);
+                    strBld.Append(this.FunctionName);
                     strBld.Append(' ');
-                    if ((Flags & FunctionFlags.onexit) == FunctionFlags.onexit)
+                    if ((this.Flags & FunctionFlags.Onexit) == FunctionFlags.Onexit)
+                    {
                         strBld.Append("onexit ");
+                    }
+
                     strBld.Append('"');
-                    strBld.Append(defaultName);
+                    strBld.Append(this.defaultName);
                     strBld.Append('"');
                     break;
-                case FunctionType.cfunc:
+                case FunctionType.Cfunc:
                     strBld.Append("#cfunc ");
-                    strBld.Append(FunctionName);
+                    strBld.Append(this.FunctionName);
                     strBld.Append(@" """);
-                    strBld.Append(defaultName);
+                    strBld.Append(this.defaultName);
                     strBld.Append('"');
                     break;
-                case FunctionType.comfunc:
+                case FunctionType.Comfunc:
                     strBld.Append("#comfunc ");
-                    strBld.Append(FunctionName);
+                    strBld.Append(this.FunctionName);
                     strBld.Append(' ');
-                    strBld.Append(labelIndex.ToString());
+                    strBld.Append(this.labelIndex.ToString());
                     paramStart = 1;
                     break;
                 default:
                     return "/*#deffunc?*/";
-
             }
 
-            if (functionParams.Count > paramStart)
+            if (this.functionParams.Count > paramStart)
             {
-
-                for (int i = paramStart; i < functionParams.Count; i++)
+                for (int i = paramStart; i < this.functionParams.Count; i++)
                 {
                     if (i != paramStart)
+                    {
                         strBld.Append(',');
+                    }
+
                     strBld.Append(' ');
-                    strBld.Append(functionParams[i]);
+                    strBld.Append(this.functionParams[i]);
                 }
             }
 
@@ -370,7 +434,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         public override string ToString()
         {
-            return ToString(false);
+            return this.ToString(false);
         }
     }
 }

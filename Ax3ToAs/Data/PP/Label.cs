@@ -1,76 +1,88 @@
 using System;
 using System.IO;
+
 namespace KttK.HspDecompiler.Ax3ToAs.Data
 {
-	class Label : Preprocessor, IComparable<Label>
-	{
-		private Label() { }
-		private Label(int index):base(index) { }
-		private int tokenOffset = -1;
+    internal class Label : Preprocessor, IComparable<Label>
+    {
+        private Label()
+        {
+        }
 
-		internal int TokenOffset
-		{
-			get { return tokenOffset; }
-		}
+        private Label(int index)
+            : base(index)
+        {
+        }
 
-		internal static Label FromBinaryReader(BinaryReader reader, AxData parent, int index)
-		{
-			Label ret = new Label(index);
-			ret.tokenOffset = reader.ReadInt32();
-			return ret;
-		}
+        private int tokenOffset = -1;
 
+        internal int TokenOffset
+        {
+            get { return this.tokenOffset; }
+        }
 
+        internal static Label FromBinaryReader(BinaryReader reader, AxData parent, int index)
+        {
+            Label ret = new Label(index);
+            ret.tokenOffset = reader.ReadInt32();
+            return ret;
+        }
 
+        private bool visible;
 
+        internal bool Visible
+        {
+            get
+            {
+                if (this.function != null)
+                {
+                    return true;
+                }
 
-		private bool visible;
-		internal bool Visible
-		{
-			get
-			{
-				if (function != null)
-					return true;
-				return visible;
-			}
-			set { visible = value; }
-		}
-		private string labelName = "*label";
-		internal string LabelName
-		{
-			get { return labelName; }
-			set { labelName = value; }
-		}
+                return this.visible;
+            }
 
+            set
+            {
+                this.visible = value;
+            }
+        }
 
-		public override string ToString()
-		{
-			if (function != null)
-				return function.ToString();
-			return labelName;
-		}
+        private string labelName = "*label";
 
+        internal string LabelName
+        {
+            get { return this.labelName; }
+            set { this.labelName = value; }
+        }
 
+        public override string ToString()
+        {
+            if (this.function != null)
+            {
+                return this.function.ToString();
+            }
 
-		#region IComparable<Label> メンバ
+            return this.labelName;
+        }
 
-		public int CompareTo(Label other)
-		{
-			int ret =  tokenOffset.CompareTo(other.tokenOffset);
-			if (ret != 0)
-				return ret;
-			return index.CompareTo(other.index);
-			
-		}
+        public int CompareTo(Label other)
+        {
+            int ret = this.tokenOffset.CompareTo(other.tokenOffset);
+            if (ret != 0)
+            {
+                return ret;
+            }
 
-		#endregion
+            return this.index.CompareTo(other.index);
+        }
 
+        private Function function;
 
-		private Function function;
-		internal void SetFunction(Function f)
-		{
-			function = f;
-			visible = true;
-		}
-	}
+        internal void SetFunction(Function f)
+        {
+            this.function = f;
+            this.visible = true;
+        }
+    }
 }

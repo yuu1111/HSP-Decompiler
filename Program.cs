@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows.Forms;
+using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace KttK.HspDecompiler
 {
     internal static class Program
     {
         /// <summary>
-        /// アプリケーションのメイン エントリ ポイントです。
+        /// アプリケーションのメイン エントリ ポイントです。.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -21,7 +21,7 @@ namespace KttK.HspDecompiler
                 return;
             }
 
-            string filename = null;
+            string? filename = null;
             if ((args != null) && (args.Length > 0))
             {
                 foreach (string file in args)
@@ -36,7 +36,7 @@ namespace KttK.HspDecompiler
 
             try
             {
-                Application.Run(new deHspDialog(filename));
+                Application.Run(new DeHspDialog(filename));
             }
             catch (Exception e)
             {
@@ -52,28 +52,26 @@ namespace KttK.HspDecompiler
             }
 
             HspConsole.Close();
-
-
         }
 
-        private readonly static string exeDir = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
-        private readonly static string exeName = Path.GetFileName(Application.ExecutablePath);
-        private readonly static System.Diagnostics.FileVersionInfo exeVer =
+        private static readonly string ExeDirValue = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
+        private static readonly string ExeNameValue = Path.GetFileName(Application.ExecutablePath);
+        private static readonly System.Diagnostics.FileVersionInfo ExeVerValue =
             System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath);
 
         internal static string ExeName
         {
-            get { return exeName; }
+            get { return ExeNameValue; }
         }
 
         internal static System.Diagnostics.FileVersionInfo ExeVer
         {
-            get { return exeVer; }
+            get { return ExeVerValue; }
         }
 
         internal static string ExeDir
         {
-            get { return exeDir; }
+            get { return ExeDirValue; }
         }
     }
 }

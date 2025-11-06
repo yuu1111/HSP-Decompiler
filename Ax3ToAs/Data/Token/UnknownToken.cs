@@ -11,16 +11,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             this.token = token;
         }
 
-        PrimitiveToken token;
+        private PrimitiveToken token;
 
         internal override int TokenOffset
         {
-            get { return token.TokenOffset; }
+            get { return this.token.TokenOffset; }
         }
 
         public override string ToString()
         {
-            return " /*" + token + "*/";
+            return " /*" + this.token + "*/";
         }
     }
 }

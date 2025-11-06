@@ -1,71 +1,77 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace KttK.HspDecompiler
 {
-    internal sealed partial class deHspDialog : Form
+    internal sealed partial class DeHspDialog : Form
     {
-        internal deHspDialog()
+        internal DeHspDialog()
         {
-            InitializeComponent();
-            HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
+            this.InitializeComponent();
+            HspConsole.Flush += new HspConsole.WriteDown(this.HspConsole_Flush);
         }
 
-        internal deHspDialog(string arg)
+        internal DeHspDialog(string arg)
         {
-            InitializeComponent();
-            HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
-            nextFilePath = arg;
-            MaximumSize = Size;
-            MinimumSize = Size;
+            this.InitializeComponent();
+            HspConsole.Flush += new HspConsole.WriteDown(this.HspConsole_Flush);
+            this.nextFilePath = arg;
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
         }
 
-        string nextFilePath;
+        private string nextFilePath;
 
-        #region drag & drop
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
-            //コントロール内にドラッグされたとき実行される
+            // コントロール内にドラッグされたとき実行される
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                //ドラッグされたデータ形式を調べ、ファイルのときはコピーとする
+            {
+
+                // ドラッグされたデータ形式を調べ、ファイルのときはコピーとする
                 e.Effect = DragDropEffects.Copy;
+            }
             else
-                //ファイル以外は受け付けない
+            {
+
+                // ファイル以外は受け付けない
                 e.Effect = DragDropEffects.None;
-
-
+            }
         }
 
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
-            //コントロール内にドロップされたとき実行される
-            //ドロップされたすべてのファイル名を取得する
+            // コントロール内にドロップされたとき実行される
+            // ドロップされたすべてのファイル名を取得する
             string[] fileName =
                 (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if ((fileName == null) || (fileName.Length == 0))
+            {
                 return;
+            }
+
             if (string.IsNullOrEmpty(fileName[0]))
+            {
                 return;
+            }
 
-            Do(fileName[0]);
-
+            this.Do(fileName[0]);
         }
-        #endregion
 
         private void Do(string filePath)
         {
-            txtBoxMainInfo.Text = "";
+            this.txtBoxMainInfo.Text = string.Empty;
             HspConsole.DecompStart(filePath);
             HspDecoder decoder = new HspDecoder();
             string dirName = Path.GetDirectoryName(filePath) + @"\";
             string inputFileName = Path.GetFileNameWithoutExtension(filePath);
             int i = 1;
             string errorPath = filePath + ".log";
-            FileStream stream = null;
-            BinaryReader reader = null;
-            StreamWriter errorlog = null;
+            FileStream? stream = null;
+            BinaryReader? reader = null;
+            StreamWriter? errorlog = null;
             try
             {
                 HspConsole.Write(Path.GetFileName(filePath) + "を読み込み");
@@ -87,15 +93,19 @@ namespace KttK.HspDecompiler
 
                     errorPath = dirName + ".log";
                     dirName = dirName + @"\";
-                    decoder.DecompressDpm(reader, dpmFileList, dirName);
+                    decoder.DecompressDpm(reader, this.dpmFileList, dirName);
                 }
                 else if (bufStr.StartsWith("HSP2", StringComparison.Ordinal) || bufStr.StartsWith("HSP3", StringComparison.Ordinal))
                 {
-                    string outputFileExtention = null;
+                    string? outputFileExtention = null;
                     if (bufStr.StartsWith("HSP2", StringComparison.Ordinal))
+                    {
                         outputFileExtention = ".as";
+                    }
                     else
+                    {
                         outputFileExtention = ".hsp";
+                    }
 
                     string outputFileName = inputFileName;
                     string outputPath = dirName + outputFileName + outputFileExtention;
@@ -108,10 +118,11 @@ namespace KttK.HspDecompiler
 
                     decoder.Decode(reader, outputPath);
                     errorPath = outputPath + ".log";
-
                 }
                 else
+                {
                     throw new HspDecoderException("処理できないファイル形式です");
+                }
 
                 int warCount = HspConsole.Warnings.Count;
                 if (warCount != 0)
@@ -119,9 +130,10 @@ namespace KttK.HspDecompiler
                     MessageBox.Show(Path.GetFileName(errorPath) + "にエラーを出力します", @"コードを完全には復元できませんでした");
                     errorlog = new StreamWriter(errorPath, false, Encoding.GetEncoding("SHIFT-JIS"));
                     foreach (string line in HspConsole.Warnings)
+                    {
                         errorlog.WriteLine(line);
+                    }
                 }
-
             }
             catch (Exception e)
             {
@@ -131,35 +143,43 @@ namespace KttK.HspDecompiler
             finally
             {
                 if (reader != null)
+                {
                     reader.Close();
+                }
                 else if (stream != null)
+                {
                     stream.Close();
+                }
+
                 if (errorlog != null)
+                {
                     errorlog.Close();
+                }
             }
-
-
         }
 
-        void HspConsole_Flush()
+        private void HspConsole_Flush()
         {
             string line = HspConsole.NewLine;
             if (line != null)
-                txtBoxMainInfo.Text += line + Environment.NewLine;
-            Refresh();
+            {
+                this.txtBoxMainInfo.Text += line + Environment.NewLine;
+            }
+
+            this.Refresh();
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (this.openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Do(openFileDialog.FileName);
+                this.Do(this.openFileDialog.FileName);
             }
         }
 
         private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void ToolStripMenuItemAbout_Click(object sender, EventArgs e)
@@ -169,18 +189,20 @@ namespace KttK.HspDecompiler
             about.ShowDialog();
         }
 
-        private void deHspDialog_Load(object sender, EventArgs e)
+        private void DeHspDialog_Load(object sender, EventArgs e)
         {
         }
 
-        private void deHspDialog_Activated(object sender, EventArgs e)
+        private void DeHspDialog_Activated(object sender, EventArgs e)
         {
-            if (nextFilePath == null)
+            if (this.nextFilePath == null)
+            {
                 return;
+            }
 
-            string filepath = nextFilePath;
-            nextFilePath = null;
-            Do(filepath);
+            string filepath = this.nextFilePath;
+            this.nextFilePath = null;
+            this.Do(filepath);
         }
     }
 }

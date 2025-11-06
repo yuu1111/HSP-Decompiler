@@ -11,40 +11,43 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal VariableToken(VariablePrimitive var)
         {
-            primitive = var;
-            arg = null;
+            this.primitive = var;
+            this.arg = null;
         }
 
         internal VariableToken(VariablePrimitive var, ArgumentToken theArg)
         {
-            primitive = var;
-            arg = theArg;
+            this.primitive = var;
+            this.arg = theArg;
         }
 
-        readonly VariablePrimitive primitive;
-        readonly ArgumentToken arg;
+        private readonly VariablePrimitive primitive;
+        private readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
             get
             {
-                if (primitive == null)
+                if (this.primitive == null)
+                {
                     return -1;
+                }
 
-                return primitive.TokenOffset;
+                return this.primitive.TokenOffset;
             }
         }
 
         public override string ToString()
         {
-            if (arg == null)
-                return primitive.ToString();
+            if (this.arg == null)
+            {
+                return this.primitive.ToString();
+            }
 
-            StringBuilder builder = new StringBuilder(primitive.ToString());
-            builder.Append(arg);
+            StringBuilder builder = new StringBuilder(this.primitive.ToString());
+            builder.Append(this.arg);
             return builder.ToString();
         }
-
 
         internal override int Priority
         {
@@ -53,14 +56,18 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal override void CheckLabel()
         {
-            if (arg != null)
-                arg.CheckLabel();
+            if (this.arg != null)
+            {
+                this.arg.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
-            if (arg != null)
-                return arg.CheckRpn();
+            if (this.arg != null)
+            {
+                return this.arg.CheckRpn();
+            }
 
             return true;
         }

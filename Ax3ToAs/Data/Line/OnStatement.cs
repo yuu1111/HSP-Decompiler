@@ -1,11 +1,11 @@
 using System.Text;
-using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 using KttK.HspDecompiler.Ax3ToAs.Data.Primitive;
+using KttK.HspDecompiler.Ax3ToAs.Data.Token;
 
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
     /// <summary>
-    /// on ～ goto/gosub label構文
+    /// on ～ goto/gosub label構文.
     /// </summary>
     internal sealed class OnStatement : LogicalLine
     {
@@ -15,38 +15,38 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal OnStatement(OnFunctionPrimitive theToken, ExpressionToken exp, FunctionToken func)
         {
-            token = theToken;
+            this.token = theToken;
             this.exp = exp;
             this.func = func;
         }
 
-        private readonly OnFunctionPrimitive token; //on
-        private readonly ExpressionToken exp; //条件
-        private readonly FunctionToken func; //goto/gosub ～
+        private readonly OnFunctionPrimitive token; // on
+        private readonly ExpressionToken exp; // 条件
+        private readonly FunctionToken func; // goto/gosub ～
 
         internal override int TokenOffset
         {
-            get { return token.TokenOffset; }
+            get { return this.token.TokenOffset; }
         }
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            if (token != null)
+            if (this.token != null)
             {
-                builder.Append(token);
+                builder.Append(this.token);
             }
 
-            if (exp != null)
+            if (this.exp != null)
             {
                 builder.Append(' ');
-                builder.Append(exp);
+                builder.Append(this.exp);
             }
 
-            if (func != null)
+            if (this.func != null)
             {
                 builder.Append(' ');
-                builder.Append(func);
+                builder.Append(this.func);
             }
 
             return builder.ToString();
@@ -54,20 +54,30 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal override void CheckLabel()
         {
-            if (exp != null)
-                exp.CheckLabel();
-            if (func != null)
-                func.CheckLabel();
+            if (this.exp != null)
+            {
+                this.exp.CheckLabel();
+            }
 
+            if (this.func != null)
+            {
+                this.func.CheckLabel();
+            }
         }
 
         internal override bool CheckRpn()
         {
             bool ret = true;
-            if (exp != null)
-                ret &= exp.CheckRpn();
-            if (func != null)
-                ret &= func.CheckRpn();
+            if (this.exp != null)
+            {
+                ret &= this.exp.CheckRpn();
+            }
+
+            if (this.func != null)
+            {
+                ret &= this.func.CheckRpn();
+            }
+
             return ret;
         }
     }

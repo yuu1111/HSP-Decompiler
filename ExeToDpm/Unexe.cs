@@ -3,7 +3,7 @@ using System.IO;
 
 namespace KttK.HspDecompiler.ExeToDpm
 {
-    class Unexe
+    internal class Unexe
     {
         internal void GetDpmFile(string exeFilePath, string dpmFilePath)
         {
@@ -15,7 +15,7 @@ namespace KttK.HspDecompiler.ExeToDpm
                     FileStream dpmStream = new FileStream(dpmFilePath, FileMode.Create, FileAccess.Write);
                     using (dpmStream)
                     {
-                        GetDpmFile(stream, dpmStream);
+                        this.GetDpmFile(stream, dpmStream);
                     }
                 }
             }
@@ -29,9 +29,11 @@ namespace KttK.HspDecompiler.ExeToDpm
         {
             try
             {
-                long dpmOffset = seekDpmStart(exeStream);
+                long dpmOffset = this.SeekDpmStart(exeStream);
                 if (dpmOffset < 0)
+                {
                     return;
+                }
 
                 exeStream.Seek(dpmOffset, SeekOrigin.Begin);
                 int dpmSize = (int)(exeStream.Length - dpmOffset);
@@ -45,7 +47,7 @@ namespace KttK.HspDecompiler.ExeToDpm
             }
         }
 
-        private long seekDpmStart(Stream exeStream)
+        private long SeekDpmStart(Stream exeStream)
         {
             byte[] header = new byte[4];
             if (exeStream.Length >= 0x25004)
@@ -53,7 +55,9 @@ namespace KttK.HspDecompiler.ExeToDpm
                 exeStream.Seek(0x25000, SeekOrigin.Begin);
                 exeStream.Read(header, 0, 4);
                 if ((header[0] == 0x44) && (header[1] == 0x50) && (header[2] == 0x4d) && (header[3] == 0x58))
+                {
                     return 0x25000;
+                }
             }
 
             if (exeStream.Length >= 0x1BE04)
@@ -61,7 +65,9 @@ namespace KttK.HspDecompiler.ExeToDpm
                 exeStream.Seek(0x1BE00, SeekOrigin.Begin);
                 exeStream.Read(header, 0, 4);
                 if ((header[0] == 0x44) && (header[1] == 0x50) && (header[2] == 0x4d) && (header[3] == 0x58))
+                {
                     return 0x25000;
+                }
             }
 
             exeStream.Seek(0, SeekOrigin.Begin);
@@ -69,15 +75,18 @@ namespace KttK.HspDecompiler.ExeToDpm
             long length = exeStream.Length;
             while (index < length)
             {
-
                 exeStream.Seek(index, SeekOrigin.Begin);
                 if (exeStream.Read(header, 0, 4) < 4)
+                {
                     break;
+                }
 
                 if ((header[0] == 0x44) && (header[1] == 0x50) && (header[0] == 0x4d) && (header[0] == 0x58))
+                {
                     return index;
+                }
 
-                //functionIndex += 0x10;
+                // functionIndex += 0x10;
                 index += 0x04;
             }
 

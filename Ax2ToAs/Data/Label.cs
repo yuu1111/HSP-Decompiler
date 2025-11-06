@@ -1,22 +1,20 @@
 namespace KttK.HspDecompiler.Ax2ToAs.Data
 {
     /// <summary>
-    /// Label の概要の説明です。
+    /// Label の概要の説明です。.
     /// </summary>
     internal class Label
     {
         private Label()
         {
-            // 
             // TODO: コンストラクタ ロジックをここに追加してください。
-            //
         }
 
         internal Label(int p_index, int p_tokenIndex)
         {
-            index = p_index;
-            tokenIndex = p_tokenIndex;
-            name = "*label_" + index;
+            this.index = p_index;
+            this.tokenIndex = p_tokenIndex;
+            this.name = "*label_" + this.index;
         }
 
         private int index;
@@ -28,37 +26,43 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         internal int TokenIndex
         {
-            get { return tokenIndex; }
+            get { return this.tokenIndex; }
         }
 
         internal int Deffunc
         {
-            get { return deffunc; }
-            set { deffunc = value; }
+            get { return this.deffunc; }
+            set { this.deffunc = value; }
         }
 
         internal int LoadCount
         {
-            get { return loadCount; }
-            set { loadCount = value; }
+            get { return this.loadCount; }
+            set { this.loadCount = value; }
         }
 
         internal bool Enabled
         {
             get
             {
-                if (deffunc != -1)
+                if (this.deffunc != -1)
+                {
                     return true;
+                }
 
-                return enabled;
+                return this.enabled;
             }
-            set { enabled = value; }
+
+            set
+            {
+                this.enabled = value;
+            }
         }
     }
 }

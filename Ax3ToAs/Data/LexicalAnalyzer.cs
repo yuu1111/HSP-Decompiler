@@ -24,8 +24,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             dictionary = theDic;
         }
 
-        Hsp3Dictionary dictionary = null;
-        int tokenOffset = 0;
+        Hsp3Dictionary dictionary;
+        int tokenOffset;
 
         internal TokenCollection Analyze(AxData data)
         {
@@ -53,14 +53,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 {
                     string errMsg = GlobalVariablePrimitive.ToString(i);
                     errMsg += ":この変数は一度しか使われていません";
-                    global::KttK.HspDecompiler.HspConsole.Warning(errMsg);
+                    HspConsole.Warning(errMsg);
                 }
 
                 if (variablesCount[i] == 0)
                 {
                     string errMsg = GlobalVariablePrimitive.ToString(i);
                     errMsg += ":この変数は使われていません";
-                    global::KttK.HspDecompiler.HspConsole.Warning(errMsg);
+                    HspConsole.Warning(errMsg);
                 }
             }
 #endif

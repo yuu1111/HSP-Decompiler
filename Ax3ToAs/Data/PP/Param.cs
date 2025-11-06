@@ -36,16 +36,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             return ret;
         }
 
-        private bool paramNameIsUsed = false;
-        private UInt16 paramType = 0;
-        private Function module = null;
+        private bool paramNameIsUsed;
+        private UInt16 paramType;
+        private Function module;
 
         internal Function Module
         {
             get { return module; }
         }
 
-        private bool isStructParameter = false;
+        private bool isStructParameter;
 
         internal void SetFunction(AxData parent)
         {
@@ -57,8 +57,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 return;
 
             if (module.IsModuleFunction)
-                if (this.IsModuleType)
-                    this.nameFormatter = module.FunctionName;
+                if (IsModuleType)
+                    nameFormatter = module.FunctionName;
                 else
                     isStructParameter = true;
 
@@ -78,7 +78,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             //	return module.FunctionName;
             get
             {
-                if (this.isStructParameter)
+                if (isStructParameter)
                 {
 
                     StringBuilder strbd = new StringBuilder();
@@ -109,7 +109,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     strbd.Append(paramTypeName);
             }
 
-            if ((force_Named) || (paramNameIsUsed) || (this.IsModuleType))
+            if ((force_Named) || (paramNameIsUsed) || (IsModuleType))
             {
                 if (strbd.Length > 0)
                     strbd.Append(' ');

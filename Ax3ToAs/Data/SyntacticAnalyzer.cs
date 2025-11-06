@@ -9,7 +9,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
     /// </summary>
     class SyntacticAnalyzer
     {
-        int readingLine = 0;
+        int readingLine;
 
         internal List<LogicalLine> Analyze(TokenCollection stream, AxData data)
         {
@@ -83,7 +83,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             {
                 if (ret[i].GetErrorMes().Count != 0)
                     foreach (string errMes in ret[i].GetErrorMes())
-                        global::KttK.HspDecompiler.HspConsole.Warning(errMes, i + 1);
+                        HspConsole.Warning(errMes, i + 1);
 
             }
 

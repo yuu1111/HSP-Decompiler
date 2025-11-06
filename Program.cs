@@ -63,12 +63,12 @@ namespace KttK.HspDecompiler
 
         internal static string ExeName
         {
-            get { return Program.exeName; }
+            get { return exeName; }
         }
 
         internal static System.Diagnostics.FileVersionInfo ExeVer
         {
-            get { return Program.exeVer; }
+            get { return exeVer; }
         }
 
         internal static string ExeDir

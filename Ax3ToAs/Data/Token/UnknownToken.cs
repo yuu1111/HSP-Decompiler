@@ -20,7 +20,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         public override string ToString()
         {
-            return " /*" + token.ToString() + "*/";
+            return " /*" + token + "*/";
         }
     }
 }

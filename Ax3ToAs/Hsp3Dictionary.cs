@@ -26,7 +26,7 @@ namespace KttK.HspDecompiler.Ax3ToAs
             {
                 stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 parser = new TextFieldParser(stream, Encoding.GetEncoding("SHIFT-JIS"));
-                ret = Hsp3Dictionary.FromParser(parser);
+                ret = FromParser(parser);
 
             }
             catch

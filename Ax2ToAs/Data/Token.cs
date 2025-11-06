@@ -21,7 +21,7 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         {
         }
 
-        private static AxData data = null;
+        private static AxData data;
 
         internal static AxData CurrentData
         {
@@ -262,9 +262,9 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
                     ret = data.GetString(Value);
                     return "\"" + Escape(ret) + "\"";
                 case 0x18: //token_value=ラベルナンバー
-                    return "label_" + Value.ToString();
+                    return "label_" + Value;
                 case 0x20: //token_value=変数ナンバー
-                    return "var_" + Value.ToString();
+                    return "var_" + Value;
                 case 0x38: //hsp標準命令
                     ret = GetStdFunc1Name(Value);
                     if (ret != null)

@@ -21,8 +21,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             arg = theArg;
         }
 
-        readonly VariablePrimitive primitive = null;
-        readonly ArgumentToken arg = null;
+        readonly VariablePrimitive primitive;
+        readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
@@ -41,7 +41,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
                 return primitive.ToString();
 
             StringBuilder builder = new StringBuilder(primitive.ToString());
-            builder.Append(arg.ToString());
+            builder.Append(arg);
             return builder.ToString();
         }
 

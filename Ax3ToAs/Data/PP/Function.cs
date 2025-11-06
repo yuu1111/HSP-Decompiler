@@ -88,19 +88,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal bool IsModuleFunction
         {
-            get { return this.Type == FunctionType.module; }
+            get { return Type == FunctionType.module; }
         }
 
         internal bool IsComFunction
         {
-            get { return this.Type == FunctionType.comfunc; }
+            get { return Type == FunctionType.comfunc; }
         }
 
         internal bool IsUserFunction
         {
             get
             {
-                switch (this.Type)
+                switch (Type)
                 {
                     case FunctionType.deffunc:
                     case FunctionType.defcfunc:
@@ -115,7 +115,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                switch (this.Type)
+                switch (Type)
                 {
                     case FunctionType.func:
                     case FunctionType.cfunc:
@@ -126,7 +126,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             }
         }
 
-        private string defaultName = null;
+        private string defaultName;
 
         internal string DefaultName
         {
@@ -147,9 +147,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             }
         }
 
-        private string name = null;
-        private Label label = null;
-        private Usedll dll = null;
+        private string name;
+        private Label label;
+        private Usedll dll;
 
         internal FunctionType Type
         {
@@ -206,13 +206,13 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
                 if (defaultName == null)
                 {
-                    if (this.Type == FunctionType.comfunc)
-                        return "comfunc_" + index.ToString();
+                    if (Type == FunctionType.comfunc)
+                        return "comfunc_" + index;
 
                     return null;
                 }
 
-                switch (this.Type)
+                switch (Type)
                 {
                     case FunctionType.defcfunc:
                     case FunctionType.deffunc:
@@ -225,7 +225,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
                         return defaultName;
                     case FunctionType.comfunc:
-                        return "comfunc_" + index.ToString();
+                        return "comfunc_" + index;
                     default:
                         break;
                 }
@@ -237,7 +237,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         private string modFunctionToString()
         {
             StringBuilder strBld = new StringBuilder();
-            switch (this.defaultName)
+            switch (defaultName)
             {
                 case "__init":
                     strBld.Append("#modinit");
@@ -248,7 +248,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 default:
                     strBld.Append("#modfunc");
                     strBld.Append(' ');
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     break;
             }
 
@@ -259,7 +259,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     if (i != 1)
                         strBld.Append(',');
                     strBld.Append(' ');
-                    strBld.Append(functionParams[i].ToString());
+                    strBld.Append(functionParams[i]);
                 }
             }
 
@@ -272,12 +272,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             if (useModuleStyle)
             {
                 strBld.Append("#module ");
-                strBld.Append(this.FunctionName);
+                strBld.Append(FunctionName);
             }
             else
             {
                 strBld.Append("#struct ");
-                strBld.Append(this.FunctionName);
+                strBld.Append(FunctionName);
             }
 
             if (functionParams.Count > 1)
@@ -306,11 +306,11 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
             StringBuilder strBld = new StringBuilder();
 
             int paramStart = 0;
-            switch (this.Type)
+            switch (Type)
             {
                 case FunctionType.defcfunc:
                     strBld.Append("#defcfunc ");
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     break;
                 case FunctionType.module:
                     return moduleToString(useModuleStyle);
@@ -320,13 +320,13 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                             return modFunctionToString();
 
                     strBld.Append("#deffunc ");
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     if ((Flags & FunctionFlags.onexit) == FunctionFlags.onexit)
                         strBld.Append(" onexit");
                     break;
                 case FunctionType.func:
                     strBld.Append("#func ");
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     strBld.Append(' ');
                     if ((Flags & FunctionFlags.onexit) == FunctionFlags.onexit)
                         strBld.Append("onexit ");
@@ -336,14 +336,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     break;
                 case FunctionType.cfunc:
                     strBld.Append("#cfunc ");
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     strBld.Append(@" """);
                     strBld.Append(defaultName);
                     strBld.Append('"');
                     break;
                 case FunctionType.comfunc:
                     strBld.Append("#comfunc ");
-                    strBld.Append(this.FunctionName);
+                    strBld.Append(FunctionName);
                     strBld.Append(' ');
                     strBld.Append(labelIndex.ToString());
                     paramStart = 1;
@@ -361,7 +361,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                     if (i != paramStart)
                         strBld.Append(',');
                     strBld.Append(' ');
-                    strBld.Append(functionParams[i].ToString());
+                    strBld.Append(functionParams[i]);
                 }
             }
 

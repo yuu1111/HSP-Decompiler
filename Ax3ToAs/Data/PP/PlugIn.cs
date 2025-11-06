@@ -15,8 +15,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         }
 
         int int_0;
-        string dllName = null;
-        string exportName = null;
+        string dllName;
+        string exportName;
         int int_3;
 
         internal static PlugIn FromBinaryReader(BinaryReader reader, AxData parent, int index)
@@ -32,7 +32,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         }
 
         Dictionary<int, Cmd> cmds = new Dictionary<int, Cmd>();
-        private int extendedTypeCount = 0;
+        private int extendedTypeCount;
 
         internal int ExtendedTypeCount
         {

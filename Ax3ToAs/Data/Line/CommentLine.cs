@@ -14,7 +14,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         }
 
-        private readonly string comment = null;
+        private readonly string comment;
 
         internal override int TokenOffset
         {

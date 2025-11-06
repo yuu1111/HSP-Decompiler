@@ -36,7 +36,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Dictionary
             if (Name.Length == 0)
                 return Type.ToString();
 
-            return Type.ToString() + "  \"" + Name + "\"";
+            return Type + "  \"" + Name + "\"";
         }
     }
 }

@@ -15,14 +15,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal OnStatement(OnFunctionPrimitive theToken, ExpressionToken exp, FunctionToken func)
         {
-            this.token = theToken;
+            token = theToken;
             this.exp = exp;
             this.func = func;
         }
 
-        private readonly OnFunctionPrimitive token = null; //on
-        private readonly ExpressionToken exp = null; //条件
-        private readonly FunctionToken func = null; //goto/gosub ～
+        private readonly OnFunctionPrimitive token; //on
+        private readonly ExpressionToken exp; //条件
+        private readonly FunctionToken func; //goto/gosub ～
 
         internal override int TokenOffset
         {
@@ -34,19 +34,19 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             StringBuilder builder = new StringBuilder();
             if (token != null)
             {
-                builder.Append(token.ToString());
+                builder.Append(token);
             }
 
             if (exp != null)
             {
                 builder.Append(' ');
-                builder.Append(exp.ToString());
+                builder.Append(exp);
             }
 
             if (func != null)
             {
                 builder.Append(' ');
-                builder.Append(func.ToString());
+                builder.Append(func);
             }
 
             return builder.ToString();

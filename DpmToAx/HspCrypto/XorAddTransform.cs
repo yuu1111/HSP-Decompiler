@@ -10,7 +10,7 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 
         public override string ToString()
         {
-            return "xor:0x" + XorByte.ToString("X02") + "    " + "add:0x" + AddByte.ToString("X02") + "    " + "Farst xor:" + XorSum.ToString();
+            return "xor:0x" + XorByte.ToString("X02") + "    " + "add:0x" + AddByte.ToString("X02") + "    " + "Farst xor:" + XorSum;
         }
 
         internal byte Encode(byte b)

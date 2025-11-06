@@ -13,10 +13,10 @@ namespace KttK.HspDecompiler.Ax2ToAs
             AxData.FromStream(reader.BaseStream);
             try
             {
-                global::KttK.HspDecompiler.HspConsole.Write("ヘッダー解析中...");
+                HspConsole.Write("ヘッダー解析中...");
                 data = AxData.FromStream(reader.BaseStream);
 
-                global::KttK.HspDecompiler.HspConsole.Write("解析中...");
+                HspConsole.Write("解析中...");
                 data.Decompile();
             }
             catch (SystemException e)

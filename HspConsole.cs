@@ -9,7 +9,7 @@ namespace KttK.HspDecompiler
     internal static class HspConsole
     {
         private static int startTime = Environment.TickCount;
-        private static string newLine = null;
+        private static string newLine;
 
         private static StreamWriter logStream;
 
@@ -20,12 +20,12 @@ namespace KttK.HspDecompiler
 
         internal static void ExceptionHandlingClose(Exception e)
         {
-            WriteLog(e.GetType().ToString() + ":" + e.Source + ":" + e.Message);
+            WriteLog(e.GetType() + ":" + e.Source + ":" + e.Message);
             WriteLog("abort");
             if (logStream != null)
             {
                 logStream.Close();
-                MessageBox.Show("例外を適切にcatchできませんでした。詳細をlog.datに出力し終了します。", "致命的なエラー");
+                MessageBox.Show(@"例外を適切にcatchできませんでした。詳細をlog.datに出力し終了します。", @"致命的なエラー");
             }
 
             logStream = null;
@@ -41,7 +41,7 @@ namespace KttK.HspDecompiler
 
         internal static string NewLine
         {
-            get { return HspConsole.newLine; }
+            get { return newLine; }
         }
 
         internal static void DecompStart(string filePath)
@@ -62,7 +62,7 @@ namespace KttK.HspDecompiler
             WriteLog("decompile " + Path.GetFileName(filePath));
         }
 
-        private static int tabCount = 0;
+        private static int tabCount;
 
         internal static void Write(string line)
         {
@@ -111,7 +111,7 @@ namespace KttK.HspDecompiler
 
         internal static List<string> Warnings
         {
-            get { return HspConsole.warnings; }
+            get { return warnings; }
         }
 
         internal static void FatalError(string line)
@@ -135,7 +135,7 @@ namespace KttK.HspDecompiler
             builder.Append(':');
             if (e is SystemException)
             {
-                logBuilder.Append(e.GetType().ToString());
+                logBuilder.Append(e.GetType());
                 logBuilder.Append(':');
                 logBuilder.Append(e.Source);
                 logBuilder.Append(':');
@@ -168,7 +168,7 @@ namespace KttK.HspDecompiler
             if (logStream == null)
                 return;
 
-            logStream.WriteLine(DateTime.Now.ToString() + ":" + line);
+            logStream.WriteLine(DateTime.Now + ":" + line);
             logStream.Flush();
         }
     }

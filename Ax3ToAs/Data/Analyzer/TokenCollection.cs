@@ -12,7 +12,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
             get { return primitives; }
         }
 
-        private int position = 0;
+        private int position;
 
         internal int Position
         {
@@ -52,7 +52,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (this.NextIsEndOfStream)
+                if (NextIsEndOfStream)
                     return null;
 
                 return primitives[position];
@@ -63,7 +63,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Analyzer
         {
             get
             {
-                if (this.NextIsEndOfStream)
+                if (NextIsEndOfStream)
                     return false;
                 if ((position + 1) >= primitives.Count)
                     return false;

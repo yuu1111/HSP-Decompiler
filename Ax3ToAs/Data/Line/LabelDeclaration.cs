@@ -14,7 +14,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             this.pp = pp;
         }
 
-        private readonly Preprocessor pp = null;
+        private readonly Preprocessor pp;
 
 
         internal override int TabCount

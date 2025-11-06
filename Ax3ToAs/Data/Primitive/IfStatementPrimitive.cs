@@ -24,7 +24,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
                     return -1;
 
                 int ret = extraValue + TokenOffset;
-                if (this.HasLongTypeValue)
+                if (HasLongTypeValue)
                     ret += 4;
                 else
                     ret += 3;

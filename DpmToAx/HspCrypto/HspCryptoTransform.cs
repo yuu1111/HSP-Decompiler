@@ -118,7 +118,7 @@ namespace KttK.HspDecompiler.DpmToAx.HspCrypto
 
                 if (ok)
                 {
-                    global::KttK.HspDecompiler.HspConsole.Write(xoradd.ToString());
+                    HspConsole.Write(xoradd.ToString());
 
                     HspCryptoTransform decryptor = new HspCryptoTransform();
                     decryptor.xorAdd = xoradd;

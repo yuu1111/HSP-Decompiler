@@ -15,7 +15,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         List<Function> functions = new List<Function>();
         List<Param> functionParams = new List<Param>();
         List<PlugIn> plugIns = new List<PlugIn>();
-        Runtime runtime = null;
+        Runtime runtime;
         List<Function> modules = new List<Function>();
         List<string> variableName = new List<string>();
 
@@ -270,9 +270,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         }
 
         long seekOrigin;
-        BinaryReader reader = null;
-        Hsp3Dictionary dictionary = null;
-        bool isStarted = false;
+        BinaryReader reader;
+        Hsp3Dictionary dictionary;
+        bool isStarted;
 
         internal bool IsStarted
         {
@@ -507,8 +507,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 return;
 
             labels.Sort();
-            int keta = ((int)System.Math.Log10(labels.Count)) + 1;
-            string formatBase = "*label_{0:D0" + keta.ToString() + "}";
+            int keta = ((int)Math.Log10(labels.Count)) + 1;
+            string formatBase = "*label_{0:D0" + keta + "}";
             for (int i = 0; i < labels.Count; i++)
             {
                 labels[i].LabelName = string.Format(formatBase, i);

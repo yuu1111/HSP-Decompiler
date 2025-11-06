@@ -21,8 +21,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
         }
 
-        private string name = null;
-        private string clsName = null;
+        private string name;
+        private string clsName;
         private int type;
         private int int_2;
 
@@ -71,7 +71,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
                 return @"//#uselib? //dll名不明";
 
             StringBuilder strBld = new StringBuilder();
-            switch (this.Type)
+            switch (Type)
             {
                 case UsedllType.uselib:
                     strBld.Append(@"#uselib """);
@@ -114,7 +114,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal List<Function> GetFunctions()
         {
-            if ((this.Type == UsedllType.usecom) && (functions.Count != 0))
+            if ((Type == UsedllType.usecom) && (functions.Count != 0))
             {
                 List<Function> ret = new List<Function>(functions);
                 ret.RemoveAt(0);

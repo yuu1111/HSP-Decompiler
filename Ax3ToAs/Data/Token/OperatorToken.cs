@@ -16,7 +16,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             primitive = source;
         }
 
-        readonly OperatorPrimitive primitive = null;
+        readonly OperatorPrimitive primitive;
 
         internal override int TokenOffset
         {

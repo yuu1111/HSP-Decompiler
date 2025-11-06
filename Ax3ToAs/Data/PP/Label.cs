@@ -24,7 +24,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
 
 
-		private bool visible = false;
+		private bool visible;
 		internal bool Visible
 		{
 			get
@@ -66,7 +66,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 		#endregion
 
 
-		private Function function = null;
+		private Function function;
 		internal void SetFunction(Function f)
 		{
 			function = f;

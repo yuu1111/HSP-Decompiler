@@ -36,7 +36,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             label = dataSet.Parent.Labels[Value];
         }
 
-        readonly Label label = null;
+        readonly Label label;
 
         public override string ToString()
         {
@@ -94,7 +94,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             this.d = d;
         }
 
-        readonly double d = 0;
+        readonly double d;
 
         internal override bool IsNegativeNumber
         {
@@ -128,7 +128,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             this.str = str;
         }
 
-        readonly string str = null;
+        readonly string str;
 
         public override string ToString()
         {

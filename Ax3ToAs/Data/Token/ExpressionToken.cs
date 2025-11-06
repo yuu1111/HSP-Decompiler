@@ -18,9 +18,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             tokens = elements;
         }
 
-        private readonly List<ExpressionTermToken> tokens = null;
-        ExpressionTermToken convertedToken = null;
-        private bool tryConvert = false;
+        private readonly List<ExpressionTermToken> tokens;
+        ExpressionTermToken convertedToken;
+        private bool tryConvert;
 
         internal bool CanRpnConvert
         {
@@ -110,7 +110,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             {
                 if (i != 0)
                     builder.Append(' ');
-                builder.Append(token.ToString());
+                builder.Append(token);
                 i++;
             }
 
@@ -119,7 +119,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         public override string ToString()
         {
-            return this.ToString(true);
+            return ToString(true);
         }
 
 
@@ -131,7 +131,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
         internal override bool CheckRpn()
         {
-            return this.CanRpnConvert;
+            return CanRpnConvert;
         }
     }
 }

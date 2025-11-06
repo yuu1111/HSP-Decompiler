@@ -54,46 +54,46 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
             try
             {
-                this.header = Header.FromIntArray(buffer);
+                header = Header.FromIntArray(buffer);
             }
             catch (Exception e)
             {
                 throw new HspDecoderException("AxHeader", "ヘッダー解析中に想定外のエラー", e);
             }
 
-            if (this.header == null)
+            if (header == null)
                 throw new HspDecoderException("AxHeader", "ヘッダー解析に失敗");
 
             try
             {
-                Header head = this.header;
-                this.tokenData = new byte[head.ScriptByte];
+                Header head = header;
+                tokenData = new byte[head.ScriptByte];
                 stream.Seek(startPosition + head.ScriptOffset, SeekOrigin.Begin);
-                stream.Read(this.tokenData, 0, head.ScriptByte);
+                stream.Read(tokenData, 0, head.ScriptByte);
 
-                this.dllData = new byte[head.DllByte];
+                dllData = new byte[head.DllByte];
                 stream.Seek(startPosition + head.DllOffset, SeekOrigin.Begin);
-                stream.Read(this.dllData, 0, head.DllByte);
+                stream.Read(dllData, 0, head.DllByte);
 
-                this.funcData = new byte[head.FuncByte];
+                funcData = new byte[head.FuncByte];
                 stream.Seek(startPosition + head.FuncOffset, SeekOrigin.Begin);
-                stream.Read(this.funcData, 0, head.FuncByte);
+                stream.Read(funcData, 0, head.FuncByte);
 
-                this.deffuncData = new byte[head.DeffuncByte];
+                deffuncData = new byte[head.DeffuncByte];
                 stream.Seek(startPosition + head.DeffuncOffset, SeekOrigin.Begin);
-                stream.Read(this.deffuncData, 0, head.DeffuncByte);
+                stream.Read(deffuncData, 0, head.DeffuncByte);
 
-                this.moduleData = new byte[head.ModuleByte];
+                moduleData = new byte[head.ModuleByte];
                 stream.Seek(startPosition + head.ModuleOffset, SeekOrigin.Begin);
-                stream.Read(this.moduleData, 0, head.ModuleByte);
+                stream.Read(moduleData, 0, head.ModuleByte);
 
-                this.labelData = new byte[head.LabelByte];
+                labelData = new byte[head.LabelByte];
                 stream.Seek(startPosition + head.LabelOffset, SeekOrigin.Begin);
-                stream.Read(this.labelData, 0, head.LabelByte);
+                stream.Read(labelData, 0, head.LabelByte);
 
-                this.stringData = new byte[head.TextByte];
+                stringData = new byte[head.TextByte];
                 stream.Seek(startPosition + head.TextOffset, SeekOrigin.Begin);
-                stream.Read(this.stringData, 0, head.TextByte);
+                stream.Read(stringData, 0, head.TextByte);
             }
             catch (Exception e)
             {
@@ -224,7 +224,7 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         internal void Decompile()
         {
-            int startTime = System.Environment.TickCount;
+            int startTime = Environment.TickCount;
             Token.CurrentData = this;
             lines.Clear();
 
@@ -321,9 +321,9 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
 
         private int tabNo = 1;
         private List<int> ifEnd = new List<int>();
-        private int unknownCount = 0;
-        private int usedCount = 0;
-        private int enabledCount = 0;
+        private int unknownCount;
+        private int usedCount;
+        private int enabledCount;
 
         private string GetLine()
         {

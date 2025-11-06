@@ -13,7 +13,7 @@ namespace KttK.HspDecompiler
     internal sealed class HspDecoder
     {
         private const string dictionaryFileName = "Dictionary.csv";
-        private static Hsp3Dictionary dictionary = null;
+        private static Hsp3Dictionary dictionary;
 
         internal static bool Initialize()
         {
@@ -35,7 +35,7 @@ namespace KttK.HspDecompiler
 
             err:
             HspConsole.WriteLog("load " + dictionaryFileName + ":failed");
-            System.Windows.Forms.MessageBox.Show(dictionaryFileName + "の読込に失敗しました");
+            MessageBox.Show(dictionaryFileName + "の読込に失敗しました");
             dictionary = null;
             return false;
         }
@@ -48,7 +48,7 @@ namespace KttK.HspDecompiler
                 throw new ArgumentNullException();
 
             dpmFileListView.Items.Clear();
-            global::KttK.HspDecompiler.HspConsole.Write("DPMヘッダーの開始位置を検索中...");
+            HspConsole.Write("DPMヘッダーの開始位置を検索中...");
             Undpm undpm = Undpm.FromBinaryReader(reader);
             if (undpm == null)
                 throw new HspDecoderException("DPMヘッダーが見つかりません(HSPの実行ファイルではありません)");
@@ -81,18 +81,18 @@ namespace KttK.HspDecompiler
             Thread.Sleep(0);
             if ((fileCount - encryptCount) <= 0)
             {
-                MessageBox.Show("すべてのファイルが暗号化されています", fileCount.ToString() + "ファイル中、" + encryptCount.ToString() + "ファイルが暗号化されています。", MessageBoxButtons.OK);
-                global::KttK.HspDecompiler.HspConsole.Write("展開中断");
+                MessageBox.Show("すべてのファイルが暗号化されています", fileCount + "ファイル中、" + encryptCount + "ファイルが暗号化されています。", MessageBoxButtons.OK);
+                HspConsole.Write("展開中断");
                 return;
             }
 
             if (encryptCount > 0)
             {
                 DialogResult result = MessageBox.Show("暗号化されたファイルがあります。" + Environment.NewLine + "暗号化されたファイルを無視して展開を続けますか？",
-                    fileCount.ToString() + "ファイル中、" + encryptCount.ToString() + "ファイルが暗号化されています。", MessageBoxButtons.YesNo);
+                    fileCount + "ファイル中、" + encryptCount + "ファイルが暗号化されています。", MessageBoxButtons.YesNo);
                 if (result != DialogResult.Yes)
                 {
-                    global::KttK.HspDecompiler.HspConsole.Write("展開中断");
+                    HspConsole.Write("展開中断");
                     return;
                 }
             }
@@ -120,7 +120,7 @@ namespace KttK.HspDecompiler
                     if (!file.FileName.Equals("start.ax", StringComparison.OrdinalIgnoreCase))
 #endif
                     {
-                        global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "は暗号化されています");
+                        HspConsole.Write(file.FileName + "は暗号化されています");
                         continue;
                     }
                 }
@@ -128,13 +128,13 @@ namespace KttK.HspDecompiler
                 string outputPath = outputDir + file.FileName;
                 if (File.Exists(outputPath))
                 {
-                    global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "と同名のファイルが既に存在します");
+                    HspConsole.Write(file.FileName + "と同名のファイルが既に存在します");
                     continue;
                 }
 
                 if (!undpm.Seek(file))
                 {
-                    global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "の開始位置に移動できませんでした");
+                    HspConsole.Write(file.FileName + "の開始位置に移動できませんでした");
                     continue;
                 }
 
@@ -142,13 +142,13 @@ namespace KttK.HspDecompiler
 #if AllowDecryption
                 if (file.IsEncrypted)
                 {
-                    global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "の復号中...");
+                    HspConsole.Write(file.FileName + "の復号中...");
 
-                    KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform decrypter =
-                        KttK.HspDecompiler.DpmToAx.HspCrypto.HspCryptoTransform.CrackEncryption(buffer, dictionary, outputPath); // 変更
+                    DpmToAx.HspCrypto.HspCryptoTransform decrypter =
+                        DpmToAx.HspCrypto.HspCryptoTransform.CrackEncryption(buffer, dictionary, outputPath); // 変更
                     if (decrypter == null)
                     {
-                        global::KttK.HspDecompiler.HspConsole.Write(file.FileName + "の復号に失敗しました");
+                        HspConsole.Write(file.FileName + "の復号に失敗しました");
 
                         continue;
                     }
@@ -163,7 +163,7 @@ namespace KttK.HspDecompiler
                 }
                 catch
                 {
-                    global::KttK.HspDecompiler.HspConsole.Warning(file.FileName + "の保存に失敗しました");
+                    HspConsole.Warning(file.FileName + "の保存に失敗しました");
                 }
                 finally
                 {
@@ -173,7 +173,7 @@ namespace KttK.HspDecompiler
 
             }
 
-            global::KttK.HspDecompiler.HspConsole.Write("展開終了");
+            HspConsole.Write("展開終了");
         }
 
         internal void Decode(BinaryReader reader, string outputPath)
@@ -183,16 +183,16 @@ namespace KttK.HspDecompiler
             if (dictionary == null)
                 throw new InvalidOperationException();
 
-            global::KttK.HspDecompiler.HspConsole.StartParagraph();
+            HspConsole.StartParagraph();
             List<string> lines = null;
-            global::KttK.HspDecompiler.HspConsole.Write("逆コンパイル中...");
-            global::KttK.HspDecompiler.HspConsole.StartParagraph();
+            HspConsole.Write("逆コンパイル中...");
+            HspConsole.StartParagraph();
             lines = getDecoder(reader).Decode(reader);
 
-            global::KttK.HspDecompiler.HspConsole.EndParagraph();
-            global::KttK.HspDecompiler.HspConsole.Write("逆コンパイル終了");
-            global::KttK.HspDecompiler.HspConsole.EndParagraph();
-            global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(outputPath) + "に出力");
+            HspConsole.EndParagraph();
+            HspConsole.Write("逆コンパイル終了");
+            HspConsole.EndParagraph();
+            HspConsole.Write(Path.GetFileName(outputPath) + "に出力");
 
             StreamWriter writer = null;
             try
@@ -200,7 +200,7 @@ namespace KttK.HspDecompiler
                 writer = new StreamWriter(outputPath, false, Encoding.GetEncoding("SHIFT-JIS"));
                 foreach (string line in lines)
                     writer.WriteLine(line);
-                global::KttK.HspDecompiler.HspConsole.Write("解析終了");
+                HspConsole.Write("解析終了");
             }
             finally
             {

@@ -50,7 +50,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
 
         private readonly HspCodeExtraFlags codeExtraFlags;
-        private readonly AxData parent = null;
+        private readonly AxData parent;
         private int oparatorPriority;
         private string name;
         int tokenOffset;
@@ -59,7 +59,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
         {
             get
             {
-                if (!this.IsLineHead)
+                if (!IsLineHead)
                     return false;
                 if ((codeExtraFlags & HspCodeExtraFlags.HasGhostLabel) == HspCodeExtraFlags.HasGhostLabel)
                     return true;
@@ -116,17 +116,17 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
 
         internal void SetName()
         {
-            switch (this.codeType)
+            switch (codeType)
             {
                 case HspCodeType.Label:
 
-                    name = dicValueName + value.ToString();
+                    name = dicValueName + value;
                     return;
 
                 case HspCodeType.Integer:
                 case HspCodeType.Param:
                 case HspCodeType.Variable:
-                    name = dicValueName + value.ToString();
+                    name = dicValueName + value;
                     return;
                 case HspCodeType.UserFunction:
                 case HspCodeType.DllFunction:

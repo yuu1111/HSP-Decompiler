@@ -24,8 +24,8 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             arg = theArg;
         }
 
-        readonly IfStatementPrimitive ifToken = null;
-        readonly ArgumentToken arg = null;
+        readonly IfStatementPrimitive ifToken;
+        readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
@@ -65,7 +65,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             }
         }
 
-        private bool scoopEndIsDefined = false;
+        private bool scoopEndIsDefined;
 
         internal bool ScoopEndIsDefined
         {
@@ -84,7 +84,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             if (arg != null)
             {
                 builder.Append(" (");
-                builder.Append(arg.ToString());
+                builder.Append(arg);
                 builder.Append(" )");
             }
 

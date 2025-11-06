@@ -135,7 +135,7 @@ namespace KttK.HspDecompiler.DpmToAx
             {
                 if (file.FileName.Equals("start.ax", StringComparison.Ordinal))
                 {
-                    reader.BaseStream.Seek(file.FileOffset + this.fileOffsetStart, SeekOrigin.Begin);
+                    reader.BaseStream.Seek(file.FileOffset + fileOffsetStart, SeekOrigin.Begin);
                     return true;
                 }
             }
@@ -148,7 +148,7 @@ namespace KttK.HspDecompiler.DpmToAx
         {
             try
             {
-                reader.BaseStream.Seek(file.FileOffset + this.fileOffsetStart, SeekOrigin.Begin);
+                reader.BaseStream.Seek(file.FileOffset + fileOffsetStart, SeekOrigin.Begin);
             }
             catch
             {

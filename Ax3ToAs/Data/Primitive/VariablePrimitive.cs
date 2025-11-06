@@ -63,7 +63,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
                 param.ParamNameIsUsed = true;
         }
 
-        private readonly Param param = null;
+        private readonly Param param;
 
         public override string ToString()
         {

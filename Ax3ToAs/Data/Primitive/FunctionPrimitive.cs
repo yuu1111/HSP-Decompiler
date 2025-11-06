@@ -24,7 +24,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             func = dataSet.Parent.GetUserFunction(Value);
         }
 
-        private readonly Function func = null;
+        private readonly Function func;
 
         public override string ToString()
         {
@@ -47,7 +47,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             func = dataSet.Parent.GetDllFunction(Value);
         }
 
-        private readonly Function func = null;
+        private readonly Function func;
 
         public override string ToString()
         {
@@ -71,7 +71,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             cmd = dataSet.Parent.AddCmd(pluginIndex, Value);
         }
 
-        private readonly Cmd cmd = null;
+        private readonly Cmd cmd;
 
         public override string ToString()
         {
@@ -94,7 +94,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Primitive
             func = dataSet.Parent.GetDllFunction(Value - 0x1000);
         }
 
-        private readonly Function func = null;
+        private readonly Function func;
 
         public override string ToString()
         {

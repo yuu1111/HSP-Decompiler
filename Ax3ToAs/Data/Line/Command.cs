@@ -15,7 +15,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
         }
 
 
-        readonly FunctionToken function = null;
+        readonly FunctionToken function;
 
         internal override bool TabIncrement
         {

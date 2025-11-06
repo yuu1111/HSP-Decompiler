@@ -10,16 +10,16 @@ namespace KttK.HspDecompiler
         internal deHspDialog()
         {
             InitializeComponent();
-            global::KttK.HspDecompiler.HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
+            HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
         }
 
         internal deHspDialog(string arg)
         {
             InitializeComponent();
-            global::KttK.HspDecompiler.HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
+            HspConsole.Flush += new HspConsole.WriteDown(HspConsole_Flush);
             nextFilePath = arg;
-            this.MaximumSize = this.Size;
-            this.MinimumSize = this.Size;
+            MaximumSize = Size;
+            MinimumSize = Size;
         }
 
         string nextFilePath;
@@ -57,7 +57,7 @@ namespace KttK.HspDecompiler
         private void Do(string filePath)
         {
             txtBoxMainInfo.Text = "";
-            global::KttK.HspDecompiler.HspConsole.DecompStart(filePath);
+            HspConsole.DecompStart(filePath);
             HspDecoder decoder = new HspDecoder();
             string dirName = Path.GetDirectoryName(filePath) + @"\";
             string inputFileName = Path.GetFileNameWithoutExtension(filePath);
@@ -68,7 +68,7 @@ namespace KttK.HspDecompiler
             StreamWriter errorlog = null;
             try
             {
-                global::KttK.HspDecompiler.HspConsole.Write(Path.GetFileName(filePath) + "を読み込み");
+                HspConsole.Write(Path.GetFileName(filePath) + "を読み込み");
                 stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 reader = new BinaryReader(stream, Encoding.GetEncoding("SHIFT-JIS"));
 
@@ -87,7 +87,7 @@ namespace KttK.HspDecompiler
 
                     errorPath = dirName + ".log";
                     dirName = dirName + @"\";
-                    decoder.DecompressDpm(reader, this.dpmFileList, dirName);
+                    decoder.DecompressDpm(reader, dpmFileList, dirName);
                 }
                 else if (bufStr.StartsWith("HSP2", StringComparison.Ordinal) || bufStr.StartsWith("HSP3", StringComparison.Ordinal))
                 {
@@ -113,19 +113,19 @@ namespace KttK.HspDecompiler
                 else
                     throw new HspDecoderException("処理できないファイル形式です");
 
-                int warCount = global::KttK.HspDecompiler.HspConsole.Warnings.Count;
+                int warCount = HspConsole.Warnings.Count;
                 if (warCount != 0)
                 {
-                    MessageBox.Show(Path.GetFileName(errorPath) + "にエラーを出力します", "コードを完全には復元できませんでした");
+                    MessageBox.Show(Path.GetFileName(errorPath) + "にエラーを出力します", @"コードを完全には復元できませんでした");
                     errorlog = new StreamWriter(errorPath, false, Encoding.GetEncoding("SHIFT-JIS"));
-                    foreach (string line in global::KttK.HspDecompiler.HspConsole.Warnings)
+                    foreach (string line in HspConsole.Warnings)
                         errorlog.WriteLine(line);
                 }
 
             }
             catch (Exception e)
             {
-                global::KttK.HspDecompiler.HspConsole.FatalError(e);
+                HspConsole.FatalError(e);
                 return;
             }
             finally
@@ -143,10 +143,10 @@ namespace KttK.HspDecompiler
 
         void HspConsole_Flush()
         {
-            string line = global::KttK.HspDecompiler.HspConsole.NewLine;
+            string line = HspConsole.NewLine;
             if (line != null)
-                txtBoxMainInfo.Text += line + System.Environment.NewLine;
-            this.Refresh();
+                txtBoxMainInfo.Text += line + Environment.NewLine;
+            Refresh();
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -159,7 +159,7 @@ namespace KttK.HspDecompiler
 
         private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ToolStripMenuItemAbout_Click(object sender, EventArgs e)

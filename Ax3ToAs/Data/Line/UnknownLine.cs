@@ -40,7 +40,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             foreach (PrimitiveToken token in tokens)
             {
                 builder.Append(' ');
-                builder.Append(token.ToString());
+                builder.Append(token);
             }
 
             return builder.ToString();

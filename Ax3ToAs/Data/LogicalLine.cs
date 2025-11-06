@@ -18,7 +18,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data
     {
         internal abstract int TokenOffset { get; }
 
-        protected int tabCount = 0;
+        protected int tabCount;
 
         internal virtual int TabCount
         {

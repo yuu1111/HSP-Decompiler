@@ -15,12 +15,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal OnEventStatement(OnEventFunctionPrimitive theToken, FunctionToken func)
         {
-            this.token = theToken;
+            token = theToken;
             this.func = func;
         }
 
-        private readonly OnEventFunctionPrimitive token = null; //on####
-        private readonly FunctionToken func = null; //goto/gosub ～
+        private readonly OnEventFunctionPrimitive token; //on####
+        private readonly FunctionToken func; //goto/gosub ～
 
         internal override int TokenOffset
         {
@@ -32,13 +32,13 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             StringBuilder builder = new StringBuilder();
             if (token != null)
             {
-                builder.Append(token.ToString());
+                builder.Append(token);
             }
 
             if (func != null)
             {
                 builder.Append(' ');
-                builder.Append(func.ToString());
+                builder.Append(func);
             }
 
             return builder.ToString();

@@ -43,12 +43,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             if (p1.Priority < op.Priority)
             {
                 builder.Append('(');
-                builder.Append(p1.ToString());
+                builder.Append(p1);
                 builder.Append(')');
             }
             else
             {
-                builder.Append(p1.ToString());
+                builder.Append(p1);
             }
 
             builder.Append(' ');
@@ -57,12 +57,12 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             if (p2.Priority <= op.Priority)
             {
                 builder.Append('(');
-                builder.Append(p2.ToString());
+                builder.Append(p2);
                 builder.Append(')');
             }
             else
             {
-                builder.Append(p2.ToString());
+                builder.Append(p2);
             }
 
             return builder.ToString();
@@ -90,7 +90,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
 
             StringBuilder builder = new StringBuilder();
             builder.Append('-');
-            builder.Append(var.ToString());
+            builder.Append(var);
             return builder.ToString();
 
         }

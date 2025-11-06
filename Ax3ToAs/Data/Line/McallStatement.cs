@@ -12,16 +12,16 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 
         internal McallStatement(McallFunctionPrimitive theToken, VariablePrimitive var, ExpressionToken exp, ArgumentToken arg)
         {
-            this.token = theToken;
+            token = theToken;
             this.var = var;
             this.exp = exp;
             this.arg = arg;
         }
 
-        private readonly McallFunctionPrimitive token = null;
-        private readonly VariablePrimitive var = null; //配列変数も受け付けない。
-        private readonly ExpressionToken exp = null;
-        private readonly ArgumentToken arg = null;
+        private readonly McallFunctionPrimitive token;
+        private readonly VariablePrimitive var; //配列変数も受け付けない。
+        private readonly ExpressionToken exp;
+        private readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
@@ -34,22 +34,22 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
                 return token.ToString();
 
             StringBuilder builder = new StringBuilder();
-            builder.Append(token.ToString());
+            builder.Append(token);
             if (var != null)
             {
                 builder.Append(' ');
-                builder.Append(var.ToString());
+                builder.Append(var);
                 if (exp != null)
                 {
                     builder.Append(' ');
                     builder.Append(',');
-                    builder.Append(var.ToString());
+                    builder.Append(var);
                 }
             }
 
             if (arg != null)
             {
-                builder.Append(arg.ToString());
+                builder.Append(arg);
             }
 
             return builder.ToString();
@@ -67,9 +67,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
                 return ToStringFunctionStyle();
 
             StringBuilder builder = new StringBuilder();
-            builder.Append(var.ToString());
+            builder.Append(var);
             builder.Append("->");
-            builder.Append(exp.ToString());
+            builder.Append(exp);
             //deHSP1.20のバグ修正。expとargの間にカンマを入れないように修正。
             if (arg != null)
                 builder.Append(arg.ToString(true));

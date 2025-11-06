@@ -7,10 +7,10 @@ namespace KttK.HspDecompiler
     /// <summary>
     /// AboutDialog の概要の説明です。
     /// </summary>
-    internal sealed class AboutDialog : System.Windows.Forms.Form
+    internal sealed class AboutDialog : Form
     {
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label LB_Title;
+        private PictureBox pictureBox1;
+        private Label LB_Title;
         private Label LB_Copyright;
         /// <summary>
         /// 必要なデザイナ変数です。
@@ -64,61 +64,61 @@ namespace KttK.HspDecompiler
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutDialog));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.LB_Title = new System.Windows.Forms.Label();
-            this.LB_Copyright = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
+            pictureBox1 = new PictureBox();
+            LB_Title = new Label();
+            LB_Copyright = new Label();
+            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).BeginInit();
+            SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Image = ((Image)(resources.GetObject("pictureBox1.Image")));
+            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(32, 32);
+            pictureBox1.TabIndex = 4;
+            pictureBox1.TabStop = false;
             // 
             // LB_Title
             // 
-            this.LB_Title.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.LB_Title.Location = new System.Drawing.Point(50, 12);
-            this.LB_Title.Name = "LB_Title";
-            this.LB_Title.Size = new System.Drawing.Size(172, 16);
-            this.LB_Title.TabIndex = 5;
-            this.LB_Title.Text = "フリー HSP逆コンパイラ　Ver 1.20";
+            LB_Title.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+            LB_Title.Location = new Point(50, 12);
+            LB_Title.Name = "LB_Title";
+            LB_Title.Size = new Size(172, 16);
+            LB_Title.TabIndex = 5;
+            LB_Title.Text = "フリー HSP逆コンパイラ　Ver 1.20";
             // 
             // LB_Copyright
             // 
-            this.LB_Copyright.AutoSize = true;
-            this.LB_Copyright.Location = new System.Drawing.Point(66, 37);
-            this.LB_Copyright.Name = "LB_Copyright";
-            this.LB_Copyright.Size = new System.Drawing.Size(11, 12);
-            this.LB_Copyright.TabIndex = 6;
-            this.LB_Copyright.Text = "-";
+            LB_Copyright.AutoSize = true;
+            LB_Copyright.Location = new Point(66, 37);
+            LB_Copyright.Name = "LB_Copyright";
+            LB_Copyright.Size = new Size(11, 12);
+            LB_Copyright.TabIndex = 6;
+            LB_Copyright.Text = "-";
             // 
             // AboutDialog
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 12);
-            this.ClientSize = new System.Drawing.Size(240, 63);
-            this.Controls.Add(this.LB_Copyright);
-            this.Controls.Add(this.LB_Title);
-            this.Controls.Add(this.pictureBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(246, 90);
-            this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(246, 90);
-            this.Name = "AboutDialog";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.Text = "バージョン情報";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.RegistDialog_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleBaseSize = new Size(5, 12);
+            ClientSize = new Size(240, 63);
+            Controls.Add(LB_Copyright);
+            Controls.Add(LB_Title);
+            Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            ImeMode = ImeMode.Off;
+            MaximizeBox = false;
+            MaximumSize = new Size(246, 90);
+            MinimizeBox = false;
+            MinimumSize = new Size(246, 90);
+            Name = "AboutDialog";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            Text = "バージョン情報";
+            TopMost = true;
+            Load += new System.EventHandler(RegistDialog_Load);
+            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
         #endregion
@@ -129,22 +129,22 @@ namespace KttK.HspDecompiler
 
         private void buttonCancel_Click(object sender, System.EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
 
         private void RegistDialog_Load(object sender, System.EventArgs e)
         {
-            this.Location = initialLocation;
+            Location = initialLocation;
         }
 
         private Point initialLocation;
 
-        internal void SetInitialLocation(System.Windows.Forms.Form frm)
+        internal void SetInitialLocation(Form frm)
         {
             initialLocation = frm.Location;
             initialLocation.Offset(frm.Width / 2, frm.Height / 2);
-            initialLocation.Offset(-this.Width / 2, -this.Height / 2);
+            initialLocation.Offset(-Width / 2, -Height / 2);
         }
     }
 }

@@ -19,9 +19,9 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             this.firstArgIsNull = firstArgIsNull;
         }
 
-        readonly List<ExpressionToken> exps = null;
-        readonly bool hasBrackets = false;
-        readonly bool firstArgIsNull = false;
+        readonly List<ExpressionToken> exps;
+        readonly bool hasBrackets;
+        readonly bool firstArgIsNull;
 
         internal List<ExpressionToken> Exps
         {
@@ -59,7 +59,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
                 if ((i != 0) || (firstArgIsNull && !mcall))
                     builder.Append(", ");
                 i++;
-                builder.Append(exp.ToString());
+                builder.Append(exp);
             }
 
             if (hasBrackets)

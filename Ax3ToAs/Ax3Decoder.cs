@@ -42,25 +42,25 @@ namespace KttK.HspDecompiler.Ax3ToAs
             List<string> stringLines = new List<string>();
             try
             {
-                global::KttK.HspDecompiler.HspConsole.Write("ヘッダー解析中...");
+                HspConsole.Write("ヘッダー解析中...");
                 data.LoadStart(reader, dictionary);
                 data.ReadHeader();
-                global::KttK.HspDecompiler.HspConsole.Write("プリプロセッサ解析中...");
+                HspConsole.Write("プリプロセッサ解析中...");
                 data.ReadPreprocessor(dictionary);
-                global::KttK.HspDecompiler.HspConsole.Write("字句解析中...");
+                HspConsole.Write("字句解析中...");
                 lex = new LexicalAnalyzer(dictionary);
                 stream = lex.Analyze(data);
                 data.LoadEnd();
-                global::KttK.HspDecompiler.HspConsole.Write("構文解析中...");
+                HspConsole.Write("構文解析中...");
                 synt = new SyntacticAnalyzer();
                 lines = synt.Analyze(stream, data);
-                global::KttK.HspDecompiler.HspConsole.Write("出力ファイル作成中...");
+                HspConsole.Write("出力ファイル作成中...");
                 foreach (LogicalLine line in lines)
                 {
                     if (line.Visible)
                     {
                         string str = new string('\t', line.TabCount);
-                        stringLines.Add(str + line.ToString());
+                        stringLines.Add(str + line);
                     }
                 }
             }

@@ -25,11 +25,11 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             arg = theArg;
         }
 
-        readonly VariableToken var = null;
-        readonly OperatorToken op = null;
+        readonly VariableToken var;
+        readonly OperatorToken op;
 
         //普通はひとつの式だが、配列変数にはたくさん代入することもある。
-        readonly ArgumentToken arg = null;
+        readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
@@ -49,7 +49,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
             {
                 builder.Append(' ');
                 builder.Append(op.ToString(true, arg != null));
-                builder.Append(arg.ToString());
+                builder.Append(arg);
             }
             else
             {

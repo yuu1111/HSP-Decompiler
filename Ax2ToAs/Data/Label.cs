@@ -16,12 +16,12 @@ namespace KttK.HspDecompiler.Ax2ToAs.Data
         {
             index = p_index;
             tokenIndex = p_tokenIndex;
-            name = "*label_" + index.ToString();
+            name = "*label_" + index;
         }
 
         private int index;
         private int tokenIndex;
-        private int loadCount = 0;
+        private int loadCount;
         private string name;
         private bool enabled;
         private int deffunc = -1;

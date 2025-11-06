@@ -21,14 +21,14 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             arg = theArg;
         }
 
-        readonly FunctionPrimitive primitive = null;
+        readonly FunctionPrimitive primitive;
 
         internal FunctionPrimitive Primitive
         {
             get { return primitive; }
         }
 
-        readonly ArgumentToken arg = null;
+        readonly ArgumentToken arg;
 
         internal override int TokenOffset
         {
@@ -41,7 +41,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
                 return primitive.ToString();
 
             StringBuilder builder = new StringBuilder(primitive.ToString());
-            builder.Append(arg.ToString());
+            builder.Append(arg);
             return builder.ToString();
         }
 

@@ -13,7 +13,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
             this.token = token;
         }
 
-        readonly private LiteralPrimitive token = null;
+        readonly private LiteralPrimitive token;
 
         internal bool IsNegativeNumber
         {
@@ -54,7 +54,7 @@ namespace KttK.HspDecompiler.Ax3ToAs.Data.Token
         {
             get
             {
-                if (this.IsNegativeNumber)
+                if (IsNegativeNumber)
                     return -1;
 
                 return 100;

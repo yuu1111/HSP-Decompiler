@@ -1,18 +1,17 @@
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。 
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("HSP逆コンパイラ")]//プログラムの概要
-[assembly: AssemblyDescription("HSP逆コンパイラ")]//詳細な説明
+[assembly: AssemblyTitle("HSP逆コンパイラ")] //プログラムの概要
+[assembly: AssemblyDescription("HSP逆コンパイラ")] //詳細な説明
 //[assembly: AssemblyConfiguration("")]
 //[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HSP逆コンパイラ")]//正式名
+[assembly: AssemblyProduct("HSP逆コンパイラ")] //正式名
 [assembly: AssemblyCopyright("")]
 //[assembly: AssemblyTrademark("")]//商標
-[assembly: AssemblyCulture("")]//実行ファイルなら常に""
+[assembly: AssemblyCulture("")] //実行ファイルなら常に""
 
 // ComVisible を false に設定すると、このアセンブリ内の型は COM コンポーネントには 
 // 参照不可能になります。COM からこのアセンブリ内の型にアクセスする場合は、 

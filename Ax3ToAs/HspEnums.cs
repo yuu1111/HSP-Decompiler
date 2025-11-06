@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace KttK.HspDecompiler.Ax3ToAs
 {
@@ -13,7 +11,7 @@ namespace KttK.HspDecompiler.Ax3ToAs
 		String = 0x02,//#define TYPE_STRING 2
 		Double = 0x03,//#define TYPE_DNUM 3
 		Integer = 0x04,//#define TYPE_INUM 4
-		Param = 0x05,//#define TYPE_STRUCT 5
+		Param = 0x05, //#define TYPE_STRUCT 5
 		//#define TYPE_XLABEL 6
 		Label = 0x07,//#define TYPE_LABEL 7
 		HspFunction = 0x08,//#define TYPE_INTCMD 8

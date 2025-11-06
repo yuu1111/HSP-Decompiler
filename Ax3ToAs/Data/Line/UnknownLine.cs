@@ -1,46 +1,49 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
-using KttK.HspDecompiler.Ax3ToAs.Data;
-using KttK.HspDecompiler.Ax3ToAs.Data.Token;
-using KttK.HspDecompiler.Ax3ToAs.Data.Analyzer;
+
 namespace KttK.HspDecompiler.Ax3ToAs.Data.Line
 {
-	/// <summary>
-	/// 代入式
-	/// </summary>
-	internal sealed class UnknownLine : LogicalLine
-	{
-		private UnknownLine() { }
-		internal UnknownLine(List<PrimitiveToken> primitives)
-		{
-			tokens = new PrimitiveToken[primitives.Count];
-			primitives.CopyTo(tokens);
-		}
+    /// <summary>
+    /// 代入式
+    /// </summary>
+    internal sealed class UnknownLine : LogicalLine
+    {
+        private UnknownLine()
+        {
+        }
 
-		readonly PrimitiveToken[] tokens;
+        internal UnknownLine(List<PrimitiveToken> primitives)
+        {
+            tokens = new PrimitiveToken[primitives.Count];
+            primitives.CopyTo(tokens);
+        }
 
-		internal override int TokenOffset
-		{
-			get
-			{
-				if ((tokens == null) || (tokens.Length == 0))
-					return -1;
-				return tokens[0].TokenOffset;
-			}
-		}
+        readonly PrimitiveToken[] tokens;
 
-		public override string ToString()
-		{
-			if ((tokens == null) || (tokens.Length == 0))
-				return "//空";
-			StringBuilder builder = new StringBuilder("//");
-			foreach (PrimitiveToken token in tokens)
-			{
-				builder.Append(' ');
-				builder.Append(token.ToString());
-			}
-			return builder.ToString();
-		}
-	}
+        internal override int TokenOffset
+        {
+            get
+            {
+                if ((tokens == null) || (tokens.Length == 0))
+                    return -1;
+
+                return tokens[0].TokenOffset;
+            }
+        }
+
+        public override string ToString()
+        {
+            if ((tokens == null) || (tokens.Length == 0))
+                return "//空";
+
+            StringBuilder builder = new StringBuilder("//");
+            foreach (PrimitiveToken token in tokens)
+            {
+                builder.Append(' ');
+                builder.Append(token.ToString());
+            }
+
+            return builder.ToString();
+        }
+    }
 }

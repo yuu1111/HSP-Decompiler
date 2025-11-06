@@ -12,6 +12,7 @@ namespace KttK.HspDecompiler
         private PictureBox pictureBox1;
         private Label lBTitle;
         private Label lBCopyright;
+        private Label lBBuildInfo;
 
         /// <summary>
         /// 必要なデザイナ変数です。.
@@ -34,6 +35,9 @@ namespace KttK.HspDecompiler
             }
 
             this.lBCopyright.Text = appCopyright;
+
+            // Set build information
+            this.lBBuildInfo.Text = $"Build: {BuildInfo.BuildTimestamp}\nCommit: {BuildInfo.GitCommitHashShort}";
 
             // TODO: InitializeComponent 呼び出しの後に、コンストラクタ コードを追加してください。
         }
@@ -63,6 +67,7 @@ namespace KttK.HspDecompiler
             this.pictureBox1 = new PictureBox();
             this.lBTitle = new Label();
             this.lBCopyright = new Label();
+            this.lBBuildInfo = new Label();
             ((System.ComponentModel.ISupportInitialize)this.pictureBox1).BeginInit();
             this.SuspendLayout();
 
@@ -90,18 +95,29 @@ namespace KttK.HspDecompiler
             this.lBCopyright.TabIndex = 6;
             this.lBCopyright.Text = "-";
 
+            // LB_BuildInfo
+            this.lBBuildInfo.AutoSize = true;
+            this.lBBuildInfo.Font = new Font("MS UI Gothic", 8F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
+            this.lBBuildInfo.ForeColor = SystemColors.GrayText;
+            this.lBBuildInfo.Location = new Point(50, 52);
+            this.lBBuildInfo.Name = "LB_BuildInfo";
+            this.lBBuildInfo.Size = new Size(11, 11);
+            this.lBBuildInfo.TabIndex = 7;
+            this.lBBuildInfo.Text = "-";
+
             // AboutDialog
             this.AutoScaleBaseSize = new Size(5, 12);
-            this.ClientSize = new Size(240, 63);
+            this.ClientSize = new Size(400, 100);
+            this.Controls.Add(this.lBBuildInfo);
             this.Controls.Add(this.lBCopyright);
             this.Controls.Add(this.lBTitle);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.ImeMode = ImeMode.Off;
             this.MaximizeBox = false;
-            this.MaximumSize = new Size(246, 90);
+            this.MaximumSize = new Size(406, 127);
             this.MinimizeBox = false;
-            this.MinimumSize = new Size(246, 90);
+            this.MinimumSize = new Size(406, 127);
             this.Name = "AboutDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

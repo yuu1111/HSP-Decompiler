@@ -38,4 +38,50 @@
     </None>
   </ItemGroup>
 
+  <!-- Generate BuildInfo.cs with Git commit ID and build timestamp -->
+  <Target Name="GenerateBuildInfo" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <BuildInfoFile>$(IntermediateOutputPath)BuildInfo.cs</BuildInfoFile>
+    </PropertyGroup>
+
+    <!-- Get Git commit hash -->
+    <Exec Command="git rev-parse HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+      <Output TaskParameter="ExitCode" PropertyName="GitExitCode" />
+    </Exec>
+
+    <!-- Get short Git commit hash -->
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHashShort" />
+    </Exec>
+
+    <!-- Set defaults if git commands failed -->
+    <PropertyGroup Condition="'$(GitExitCode)' != '0'">
+      <GitCommitHash>unknown</GitCommitHash>
+      <GitCommitHashShort>unknown</GitCommitHashShort>
+    </PropertyGroup>
+
+    <!-- Get build timestamp -->
+    <PropertyGroup>
+      <BuildTimestamp>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC"))</BuildTimestamp>
+    </PropertyGroup>
+
+    <!-- Generate BuildInfo.cs -->
+    <WriteLinesToFile File="$(BuildInfoFile)" Lines="// &lt;auto-generated /&gt;
+namespace KttK.HspDecompiler
+{
+    internal static class BuildInfo
+    {
+        public const string GitCommitHash = &quot;$(GitCommitHash)&quot;%3B
+        public const string GitCommitHashShort = &quot;$(GitCommitHashShort)&quot;%3B
+        public const string BuildTimestamp = &quot;$(BuildTimestamp)&quot;%3B
+    }
+}" Overwrite="true" Encoding="utf-8" />
+
+    <ItemGroup>
+      <Compile Include="$(BuildInfoFile)" />
+      <FileWrites Include="$(BuildInfoFile)" />
+    </ItemGroup>
+  </Target>
+
 </Project>

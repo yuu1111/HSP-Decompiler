@@ -1,37 +1,89 @@
-# HSP-Decompiler
+# HSP逆コンパイラ (Fork)
+
 Decompiler for Hot Soup Processor 2/3. Original source code written by Kitsutsuki.
 
+**このプロジェクトについて:**
+- オリジナル: [YSRKEN/HSP-Decompiler](https://github.com/YSRKEN/HSP-Decompiler)
+- Fork元: [kaz-mighty/HSP-Decompiler](https://github.com/kaz-mighty/HSP-Decompiler)
+- このリポジトリ: [yuu1111/HSP-Decompiler](https://github.com/yuu1111/HSP-Decompiler)
+
 ## 概要
-　[HSP](http://hsp.tv/)でコンパイルされたファイル(*.ax, *.exe, *.dpm)をソースファイル(*.hsp, *.as)に戻すソフトです。  
-　HSPのバージョンは、HSP2およびHSP3に対応しています。  
-　オリジナルのソフトは[きつつき](http://www.vector.co.jp/vpack/browse/person/an043697.html)さんによって書かれました(後述)。
 
-## 歴史
-### 作者
-|ソフト名|作者|説明|
-|--------|----|----|
-|[HSP逆コンパイラ](http://www.vector.co.jp/soft/win95/prog/se390297.html)|[きつつき](http://www.vector.co.jp/vpack/browse/person/an043697.html)|オリジナルのソフト|
-|[HSPdeco](https://osdn.jp/projects/hspdeco/)|[minorshift](https://osdn.jp/users/minorshift/)|オリジナルの改良Ver|
-|[HSPdecom](http://stpr18.blogspot.jp/2015/10/hspdecohspelona.html)|[したぷる](https://www.blogger.com/profile/00794326060600750840)、[YSRKEN](https://github.com/YSRKEN)|HSPdecoの改良Ver|
-|[HSPdecoのパッチ](http://vivibit.net/hspdeco/)|[xx2zz](http://vivibit.net/about/)|復号が失敗する際の対策パッチ|
+[HSP](http://hsp.tv/)でコンパイルされたファイル(*.ax, *.exe, *.dpm)をソースファイル(*.hsp, *.as)に戻すソフトです。
 
-### ソフト
-|日付|ソフト名|バージョン|説明|
-|----|--------|----------|----|
-|2006/01/28|HSP逆コンパイラ|1.0|当初、シェアウェアとして公開された|
-|2007/09/10|HSP逆コンパイラ|1.1|HSP3に対応された|
-|2010/09/12|HSP逆コンパイラ|1.2|PDS・OSSになった他、バグ修正|
-|2012/01/13|HSPdeco|1.0|axファイルのデコード機能を開放、バグ修正|
-|2015/12/15|HSPdecom|1.0|変数名復元をサポート、辞書データ追加|
-|2016/08/16|HSPdecom|1.1|パッチを全て付加、GitHubに上げ直し|
+**対応バージョン:**
+- HSP2
+- HSP3 (HSP 3.7+のDPM2フォーマットにも対応)
+
+## 主な機能
+
+- HSP2/HSP3のコンパイル済みファイルの逆コンパイル
+- DPM2フォーマット(HSP 3.7+)のサポート
+- 変数名復元機能
+- Dictionary.csv による辞書データサポート
+- ビルド情報の自動埋め込み(Gitコミットハッシュ、ビルド日時)
+
+## このForkでの変更点
+
+### Ver 1.0.0
+- .NET 9への移行
+- HSP 3.7+のDPM2フォーマット対応
+  - HFPHED/HFPOBJヘッダー構造のサポート
+  - 新しいファイルパック形式の解析
+- Dictionary.csv のUTF-8エンコーディングサポート
+- ビルド情報の自動生成機能
+  - Gitコミットハッシュの埋め込み
+  - ビルドタイムスタンプの記録
+  - リポジトリURLの表示
+- コード品質の向上
+  - StyleCop.Analyzers によるコード規約の適用
+  - Nullable参照型の有効化
+  - C# 13.0 の機能活用
 
 ## 実行環境
-　オリジナルのソフトは[.NET Framework 2.0](https://www.microsoft.com/ja-jp/download/details.aspx?id=1639)で動作します。  
-　(ランタイム上で)高度な機能は全く使いませんので、後でもこれが踏襲されているようです。
+
+- Windows
+- .NET 9 Runtime
 
 ## 開発環境
-　オリジナルのソフトは恐らく[Visual Studio 2008](https://ja.wikipedia.org/wiki/Microsoft_Visual_Studio#Visual_Studio_2008)で書かれたのでしょう。  
-　ただし、わざわざ古いVerのVSを入れるのが面倒なので、パッチ当ては[VS2015 Community](https://www.visualstudio.com/ja-jp/products/visual-studio-community-vs.aspx)で行いました。
+
+- .NET 9 SDK
+- C# 13.0
+- Visual Studio 2022 / JetBrains Rider / VS Code
+
+## ビルド方法
+
+```bash
+# プロジェクトのクローン
+git clone https://github.com/yuu1111/HSP-Decompiler.git
+cd HSP-Decompiler
+
+# ビルド
+dotnet build
+
+# リリースビルド
+dotnet build -c Release
+```
+
+ビルド時に自動的に以下の情報が埋め込まれます:
+- Gitコミットハッシュ
+- ビルドタイムスタンプ (UTC)
+- リポジトリURL
 
 ## ライセンス
-　PDSライセンス(HSPdecoはzlib/libpngライセンス。詳しくはLICENSEファイルを参照)
+
+PDSライセンス(HSPdecoはzlib/libpngライセンス。詳しくは[LICENSE](LICENSE)ファイルを参照)
+
+## クレジット
+
+このソフトウェアは以下の方々の成果物をベースにしています:
+- [きつつき](http://www.vector.co.jp/vpack/browse/person/an043697.html) - オリジナル作者
+- [minorshift](https://osdn.jp/users/minorshift/) - HSPdeco
+- [したぷる](https://www.blogger.com/profile/00794326060600750840) - HSPdecom
+- [YSRKEN](https://github.com/YSRKEN) - HSPdecom、GitHub移行
+- [kaz-mighty](https://github.com/kaz-mighty) - 鍵の重複対策、HSP3.5 beta3対応
+
+## 参考資料
+
+- [HSP公式サイト](http://hsp.tv/)
+- [OpenHSP](https://github.com/onitama/OpenHSP) - HSPのオープンソース実装

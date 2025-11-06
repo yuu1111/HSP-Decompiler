@@ -75,6 +75,7 @@ namespace KttK.HspDecompiler
         public const string GitCommitHash = &quot;$(GitCommitHash)&quot;%3B
         public const string GitCommitHashShort = &quot;$(GitCommitHashShort)&quot;%3B
         public const string BuildTimestamp = &quot;$(BuildTimestamp)&quot;%3B
+        public const string RepositoryUrl = &quot;https://github.com/yuu1111/HSP-Decompiler&quot;%3B
     }
 }" Overwrite="true" Encoding="utf-8" />
 

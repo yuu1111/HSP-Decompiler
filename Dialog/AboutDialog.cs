@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace KttK.HspDecompiler
         private Label lBTitle;
         private Label lBCopyright;
         private Label lBBuildInfo;
+        private LinkLabel lBRepoLink;
 
         /// <summary>
         /// 必要なデザイナ変数です。.
@@ -37,7 +39,8 @@ namespace KttK.HspDecompiler
             this.lBCopyright.Text = appCopyright;
 
             // Set build information
-            this.lBBuildInfo.Text = $"Build: {BuildInfo.BuildTimestamp}\nCommit: {BuildInfo.GitCommitHashShort}";
+            this.lBBuildInfo.Text = $"Build: {BuildInfo.BuildTimestamp}\nCommit: {BuildInfo.GitCommitHash}";
+            this.lBRepoLink.Text = BuildInfo.RepositoryUrl;
 
             // TODO: InitializeComponent 呼び出しの後に、コンストラクタ コードを追加してください。
         }
@@ -68,6 +71,7 @@ namespace KttK.HspDecompiler
             this.lBTitle = new Label();
             this.lBCopyright = new Label();
             this.lBBuildInfo = new Label();
+            this.lBRepoLink = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)this.pictureBox1).BeginInit();
             this.SuspendLayout();
 
@@ -83,9 +87,9 @@ namespace KttK.HspDecompiler
             this.lBTitle.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point,  (byte)128);
             this.lBTitle.Location = new Point(50, 12);
             this.lBTitle.Name = "LB_Title";
-            this.lBTitle.Size = new Size(172, 16);
+            this.lBTitle.Size = new Size(220, 16);
             this.lBTitle.TabIndex = 5;
-            this.lBTitle.Text = "フリー HSP逆コンパイラ　Ver 1.20";
+            this.lBTitle.Text = "HSP逆コンパイラ (Fork) Ver 1.0.0";
 
             // LB_Copyright
             this.lBCopyright.AutoSize = true;
@@ -97,17 +101,28 @@ namespace KttK.HspDecompiler
 
             // LB_BuildInfo
             this.lBBuildInfo.AutoSize = true;
-            this.lBBuildInfo.Font = new Font("MS UI Gothic", 8F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
-            this.lBBuildInfo.ForeColor = SystemColors.GrayText;
+            this.lBBuildInfo.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
             this.lBBuildInfo.Location = new Point(50, 52);
             this.lBBuildInfo.Name = "LB_BuildInfo";
-            this.lBBuildInfo.Size = new Size(11, 11);
+            this.lBBuildInfo.Size = new Size(11, 12);
             this.lBBuildInfo.TabIndex = 7;
             this.lBBuildInfo.Text = "-";
 
+            // LB_RepoLink
+            this.lBRepoLink.AutoSize = true;
+            this.lBRepoLink.Font = new Font("MS UI Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
+            this.lBRepoLink.Location = new Point(50, 80);
+            this.lBRepoLink.Name = "LB_RepoLink";
+            this.lBRepoLink.Size = new Size(11, 12);
+            this.lBRepoLink.TabIndex = 8;
+            this.lBRepoLink.TabStop = true;
+            this.lBRepoLink.Text = "-";
+            this.lBRepoLink.LinkClicked += new LinkLabelLinkClickedEventHandler(this.RepoLink_LinkClicked);
+
             // AboutDialog
             this.AutoScaleBaseSize = new Size(5, 12);
-            this.ClientSize = new Size(400, 100);
+            this.ClientSize = new Size(450, 140);
+            this.Controls.Add(this.lBRepoLink);
             this.Controls.Add(this.lBBuildInfo);
             this.Controls.Add(this.lBCopyright);
             this.Controls.Add(this.lBTitle);
@@ -115,9 +130,9 @@ namespace KttK.HspDecompiler
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.ImeMode = ImeMode.Off;
             this.MaximizeBox = false;
-            this.MaximumSize = new Size(406, 127);
+            this.MaximumSize = new Size(456, 167);
             this.MinimizeBox = false;
-            this.MinimumSize = new Size(406, 127);
+            this.MinimumSize = new Size(456, 167);
             this.Name = "AboutDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -141,6 +156,15 @@ namespace KttK.HspDecompiler
         private void RegistDialog_Load(object sender, System.EventArgs e)
         {
             this.Location = this.initialLocation;
+        }
+
+        private void RepoLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = BuildInfo.RepositoryUrl,
+                UseShellExecute = true
+            });
         }
 
         private Point initialLocation;

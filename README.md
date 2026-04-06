@@ -26,7 +26,7 @@ Decompiler for Hot Soup Processor 2/3. Original source code written by Kitsutsuk
 ## このForkでの変更点
 
 ### Ver 1.0.0
-- .NET 9への移行
+- .NET 10への移行
 - HSP 3.7+のDPM2フォーマット対応
   - HFPHED/HFPOBJヘッダー構造のサポート
   - 新しいファイルパック形式の解析
@@ -43,11 +43,11 @@ Decompiler for Hot Soup Processor 2/3. Original source code written by Kitsutsuk
 ## 実行環境
 
 - Windows
-- .NET 9 Runtime
+- .NET 10 Runtime
 
 ## 開発環境
 
-- .NET 9 SDK
+- .NET 10 SDK
 - C# 13.0
 - Visual Studio 2022 / JetBrains Rider / VS Code
 

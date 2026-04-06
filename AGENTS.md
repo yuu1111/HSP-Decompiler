@@ -16,7 +16,7 @@ dotnet run                # 実行
 
 # 技術スタック
 
-- .NET 9 / C# 13.0 / Windows Forms
+- .NET 10 / C# 13.0 / Windows Forms
 - `ImplicitUsings: disable` — using文は明示的に書く
 - `Nullable: enable`
 - StyleCop.Analyzers によるコード規約
